@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Rett i kartet";
+}
+
+<!-- Overlay when loading page -->
+<div id="startupoverlay" class="startupoverlay">
+    <div id="welcometext" class="welcometext">
+        <h1>Trykk på kartet for å starte</h1>
+        <button id="overlaybutton">Skjønner!</button>
+    </div>
+</div>
+
+<div id="shapes-list-container">
+    <h4>Mine kommentarer:</h4>
+    <div id="shapes-list"></div>
+</div>
+
+<div>
+    <!-- Custom Zoom Control -->
+    <div class="custom-zoom-control">
+        <button id="zoom-in">+</button>
+        <button id="zoom-out">-</button>
+    </div>
+    <!-- The map itself -->
+    <div id="map"></div>
+</div>
+
+<div id="comment-modal" class="comment-modal" style="display: none;">
+    <div class="modal-content">
+        <h3>Add a comment</h3>
+        <textarea id="comment-input" rows="4" placeholder="Enter your comment here..."></textarea>
+        <div class="modal-buttons">
+            <button id="cancel-comment">Cancel</button>
+            <button id="submit-comment">Submit</button>
+        </div>
+    </div>
+</div>
