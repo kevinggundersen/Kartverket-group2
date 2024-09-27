@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Logg inn";
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        #login {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        .login-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input {
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        button {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .register-link {
+            margin-top: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body class="login">
+    <div style="position:fixed; display: flex; height: 95.3%; width: 100%; right: 0; left: 0; top: 0%; bottom: 4.7%;  z-index: -1; background-color: black; opacity: 0.5;"></div>
+    <img src="https://media.istockphoto.com/id/1306807452/vector/map-city-vector-illustration.jpg?s=2048x2048&w=is&k=20&c=Un6wXm8F4cCsxBhiLsOQX9fMXIwo5b6ijO4gbZtVAns=" alt="Kartbilde" style="position:fixed; display: flex; height: 95%; width: 100%; right: 0; left: 0; top: 0%; bottom: 5%;  z-index: -2;" />
+    <div class="login">
+        <div class="login-container">
+            <h2>Logg inn</h2>
+            <form>
+                <input type="text" placeholder="Epost/Brukernavn" required>
+                <input type="password" placeholder="Passord" required>
+                <button type="submit">Logg inn</button>
+            </form>
+            <div class="register-link">
+                <p>Har du ikke bruker? <a href="Register">Registrer deg her</a></p>
+            </div>
+        </div>
+    </div>
+</body>

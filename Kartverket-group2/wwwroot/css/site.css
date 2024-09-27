@@ -1,22 +1,289 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+}
+
+#map {
+    height: 95.3vh;
+    position: absolute;
+    top: 0%;
+    bottom: 0%;
+    right: 0;
+    left: 0;
+}
+
+.leaflet-popup-content button {
+    display: block;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.navbar {
+    z-index: 4000;
+}
+
+/*Zoom buttons*/
+.custom-zoom-control {
+    position: absolute;
+    top: 6%;
+    left: 10px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+    .custom-zoom-control button {
+        background: #fff;
+        border: none;
+        padding: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        border: 1px solid black;
+    }
+
+        .custom-zoom-control button:hover {
+            background: #f0f0f0;
+        }
+
+/*Overlay on page load*/
+#startupoverlay {
+    position: fixed; /* Stretches over the entire screen */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    display: flex; /* Flexbox to center content */
+    justify-content: center; /* Horizontally center */
+    align-items: center; /* Vertically center */
+    z-index: 10000; /* Makes sure it's on top of other content */
+}
+
+#welcometext {
+    color: white; /* Text color */
+    text-align: center; /* Center align text */
+    padding: 20px; /* Optional padding */
+    background-color: rgb(26, 131, 59); /* Optional background for the text area */
+    border-radius: 10px; /* Optional rounded corners */
+}
+
+/*Close overlay button*/
+#overlaybutton {
+    width: 100px;
+    height: 35px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #000;
+    background-color: #fff;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+}
+
+    #overlaybutton:hover {
+        background-color: #2EE59D;
+        color: white;
+    }
+
+/*List of shapes*/
+#shapes-list-container {
+    position: absolute;
+    bottom: 6%;
+    left: 10px;
+    background: white;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+    z-index: 1000;
+    max-width: 250px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+    #shapes-list-container h4 {
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+
+#shapes-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#shapes-list li {
+    cursor: pointer;
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+    #shapes-list li:hover {
+        background-color: #f0f0f0;
+    }
+
+/*Button when choosing shape to draw*/
+.shape-button {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #fff;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+}
+
+#markershapebutton {
+    background-color: rgb(255, 131, 59);
+}
+
+#circleshapebutton {
+    background-color: rgb(200, 50, 59);
+}
+
+#polylineshapebutton {
+    background-color: blue;
+}
+
+#polygonshapebutton {
+    background-color: green;
+}
+
+
+
+/*Icons*/
+/*These styles are required to make icons render reliably */
+.icon::before {
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+
+/*Custom comment window*/
+.comment-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: 300px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+    .modal-buttons button {
+        padding: 10px 20px;
+    }
+
+.userLocIcon {
+    text-align: center;
+    /* Horizontally center the text (icon) */
+    line-height: 20px;
+    /* Vertically center the text (icon) */
+    text-shadow: 0 0 5px #000;
+}
+
+/*Styling for the search icon*/
+.leaflet-control-geocoder {
+    position: absolute;
+    top: 5vh;
+    right: 10px;
+    z-index: 1000;
+}
+
+/*Loading icon when searching user location*/
+.leaflet-control-locate {
+    position: relative;
+}
+
+.locate-button {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+}
+
+.loading-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+}
+
+    .loading-indicator i {
+        font-size: 16px;
+        color: #555;
+    }
+
+/* Reset Leaflet's default styles that might interfere */
+.leaflet-control-locate a {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.leaflet-touch .leaflet-control-locate a {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
 }

@@ -11,6 +11,7 @@ namespace Kartverket_group2.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            
         }
 
         public IActionResult Index()

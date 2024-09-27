@@ -1,0 +1,162 @@
+﻿@{
+    ViewData["Title"] = "Admin submission page";
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table Page</title>
+    <style>
+        #adminsite {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .Scontainer {
+            display: grid;
+            grid-template-areas:
+                "title title"
+                "map info"
+                "map actions";
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto 1fr auto;
+            width: 80%;
+            max-width: 1200px;
+            background-color: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .Stitle {
+            grid-area: title;
+            background-color: #ddd;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .mapA {
+            grid-area: map;
+            background-color: #eee;
+            padding: 0;
+            height: 100%;
+        }
+
+        .SinfoContainer {
+            grid-area: info;
+            background-color: #eee;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .Sinfo {
+            text-align: left;
+        }
+
+        .Sactions {
+            border-top: solid 1px;
+            grid-area: actions;
+            background-color: #eee;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+            align-self: end;
+            height: auto;
+            max-height: 150px;
+        }
+
+    </style>
+</head>
+<body class="adminsite">
+
+    <div class="Scontainer">
+        <div class="Stitle"><h1>Innmelding: 1030</h1></div>
+        <div id="mapA" class="mapA"></div>
+        <div class="SinfoContainer">
+            <div><h2>Info</h2></div>
+            <div class="Sinfo">
+                <ul>
+                    <li>Fylke: </li>
+                    <li>Kommune: </li>
+                    <li>Stedsnavn: </li>
+                    <li>Koordinater: </li>
+                    <li>Tidspunkt: </li>
+                    <li>Type: </li>
+                </ul>
+                <div id="submissiontextbox">
+                    <div id="submissiontextheader">
+                        <h3>Innmeldings tekst</h3>
+                    </div>
+                    <div id="submissiontext"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="Sactions">
+            <div><h2>Handlinger</h2></div>
+            <div>
+                <button>  <i class="fa-solid fa-check"></i> Godkjenn</button>
+                <button>  <i class="fa-solid fa-xmark"></i> Avslå</button>
+                <button>  <i class="fa-solid fa-circle-info"></i> Spør om mer info</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Initialize Leaflet map
+        var Slocation = [51.505, -0.09];
+
+        var map = L.map('mapA').setView(Slocation, 16); // Centered on London
+
+        // Add a tile layer (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        // Add a marker and store it in a variable
+        var Smarker = L.marker(Slocation).addTo(map)
+            .bindPopup('<table>' +
+                '<tr><td><b> Innmelding: </b></td><td> 1030         </td> </tr>' +
+                '<tr><td><b> Kommune:    </b></td><td> Kommune Navn </td></tr>' +
+                '<tr><td><b> Tidspunkt:  </b></td><td> Tid          </td></tr>' +
+                '<tr><td><b> Lokasjon:   </b></td><td> Lokasjon     </td></tr>' +
+                '<tr><td><b> Type:       </b></td><td> Type         </td></tr>' +
+                '</table>')
+            .openPopup();
+
+        // Add a custom button to center on submission
+        L.Control.LocateButton = L.Control.extend({
+            onAdd: function (map) {
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+                var button = L.DomUtil.create('a', 'locate-button', container);
+                button.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i>'; // Font Awesome icon
+                button.href = '#';
+                button.title = 'Sentrer på innmelding';
+
+                L.DomEvent.on(button, 'click', function (e) {
+                    L.DomEvent.preventDefault(e);
+
+                    // Center the map on the location
+                    map.setView(Slocation, 16);
+                });
+
+                return container;
+            }
+        });
+
+        // Add the control button to the map
+        map.addControl(new L.Control.LocateButton({ position: 'bottomright' }));
+
+    </script>
+
+</body>
