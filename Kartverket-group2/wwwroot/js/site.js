@@ -93,6 +93,17 @@ document.getElementById('submit-comment').addEventListener('click', function () 
             // Update existing shape comment
             shapesList[shapeIndex].comment = comment;
         } else {
+
+            function getCoordinates(layer) {
+                if (layer instanceof L.Marker) {
+                    return JSON.stringify(layer.getLatLng());
+                } else if (layer instanceof L.Circle) {
+                    return JSON.stringify({ center: layer.getLatLng(), radius: layer.getRadius() });
+                } else if (layer instanceof L.Polygon || layer instanceof L.Polyline) {
+                    return JSON.stringify(layer.getLatLngs());
+                }
+                return "Unknown shape type";
+            }
             // If the shape is new (during creation), add it to the shapesList
             shapesList.push({
                 id: L.stamp(currentLayer),
@@ -100,6 +111,7 @@ document.getElementById('submit-comment').addEventListener('click', function () 
                     currentLayer instanceof L.Circle ? 'Sirkel' :
                         currentLayer instanceof L.Polygon ? 'Polygon' :
                             currentLayer instanceof L.Polyline ? 'Linje' : 'Unknown',
+                coordinates: getCoordinates(currentLayer),  // Add this line
                 comment: comment
             });
         }
@@ -355,4 +367,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize the shapes list
     updateShapesList();
+});
+
+
+
+
+
+
+
+document.getElementById('shapeForm').addEventListener('submit', function () {
+    document.getElementById('shapeData').value = JSON.stringify(shapesList);
 });

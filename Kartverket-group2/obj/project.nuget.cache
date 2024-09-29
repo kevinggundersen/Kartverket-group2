@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "qm6cZ7KZPuQ=",
+  "dgSpecHash": "xCas4lilOg4=",
   "success": true,
-  "projectFilePath": "C:\\Users\\kevin\\source\\repos\\Kartverket-group2\\Kartverket-group2\\Kartverket-group2.csproj",
+  "projectFilePath": "C:\\Users\\kevin\\Source\\Repos\\Kartverket-group2\\Kartverket-group2\\Kartverket-group2.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\kevin\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.21.0\\microsoft.visualstudio.azure.containers.tools.targets.1.21.0.nupkg.sha512"
+    "C:\\Users\\kevin\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.21.0\\microsoft.visualstudio.azure.containers.tools.targets.1.21.0.nupkg.sha512",
+    "C:\\Users\\kevin\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],
   "logs": []
 }
