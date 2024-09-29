@@ -29,3 +29,6 @@ C:\Users\kevin\source\repos\Kartverket-group2\Kartverket-group2\obj\Debug\net8.0
 C:\Users\kevin\source\repos\Kartverket-group2\Kartverket-group2\obj\Debug\net8.0\Kartverket-group2.pdb
 C:\Users\kevin\source\repos\Kartverket-group2\Kartverket-group2\obj\Debug\net8.0\Kartverket-group2.genruntimeconfig.cache
 C:\Users\kevin\source\repos\Kartverket-group2\Kartverket-group2\obj\Debug\net8.0\ref\Kartverket-group2.dll
+C:\Users\kevin\Source\Repos\Kartverket-group2\Kartverket-group2\obj\Debug\net8.0\Kartverket-group2.csproj.AssemblyReference.cache
+C:\Users\kevin\Source\Repos\Kartverket-group2\Kartverket-group2\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\kevin\Source\Repos\Kartverket-group2\Kartverket-group2\obj\Debug\net8.0\Kartverk.5E735102.Up2Date
