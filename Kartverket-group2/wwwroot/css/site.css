@@ -303,3 +303,9 @@ body {
     background-color: #23923d;
 }
 
+
+.wrapped-popup .leaflet-popup-content {
+    max-width: 200px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}

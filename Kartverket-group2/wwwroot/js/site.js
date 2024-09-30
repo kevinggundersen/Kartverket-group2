@@ -84,7 +84,7 @@ document.getElementById('cancel-comment').addEventListener('click', function () 
 document.getElementById('submit-comment').addEventListener('click', function () {
     var comment = document.getElementById('comment-input').value.trim();
     if (comment) {
-        currentLayer.bindPopup(comment); // Update the popup with the new comment
+        currentLayer.bindPopup(comment, { className: 'wrapped-popup' }); // Update the popup with the new comment
 
         // Find the shape in the shapes list by its ID and update the comment
         var shapeIndex = shapesList.findIndex(shape => shape.id === L.stamp(currentLayer));
@@ -284,39 +284,7 @@ geocoder.on('markgeocode', function (e) {
         .openPopup();
 });
 
-// Function to update the shapes list display
-function updateShapesList() {
-    var listContainer = document.getElementById('shapes-list');
-    listContainer.innerHTML = '';
-    if (shapesList.length === 0) {
-        listContainer.innerHTML = '<p>Ingen kommentarer enda.</p>';
-        return;
-    }
-    var ul = document.createElement('ul');
-    shapesList.forEach(function (shape) {
-        var li = document.createElement('li');
-        li.innerHTML = `
-            <strong>${shape.type}</strong>: ${shape.comment}
-            <button onclick="editCorrection(${shape.id})">Rediger</button>
-            <button onclick="deleteCorrection(${shape.id})">Slett</button>
-        `;
-        li.onclick = function (e) {
-            if (e.target.tagName !== 'BUTTON') {
-                var layer = drawnItems.getLayer(shape.id);
-                if (layer) {
-                    if (layer.getBounds) {
-                        map.fitBounds(layer.getBounds());
-                    } else if (layer.getLatLng) {
-                        map.setView(layer.getLatLng(), 16);
-                    }
-                    if (layer.getPopup()) layer.openPopup();
-                }
-            }
-        };
-        ul.appendChild(li);
-    });
-    listContainer.appendChild(ul);
-}
+
 
 // Function to delete a correction
 function deleteCorrection(id) {
@@ -453,7 +421,10 @@ function addPremadeShapes() {
 // Call the function to add premade shapes
 addPremadeShapes();
 
-// Make sure updateShapesList function is defined correctly
+
+
+
+// Function to update the shapes list display
 function updateShapesList() {
     var listContainer = document.getElementById('shapes-list');
     listContainer.innerHTML = '';
@@ -462,13 +433,35 @@ function updateShapesList() {
         return;
     }
     var ul = document.createElement('ul');
+    ul.style.listStyleType = 'none';
+    ul.style.padding = '0';
     shapesList.forEach(function (shape) {
         var li = document.createElement('li');
+        li.style.marginBottom = '10px';
+        li.style.border = '1px solid #ddd';
+        li.style.padding = '10px';
+        li.style.borderRadius = '5px';
         li.innerHTML = `
-            <strong>${shape.type}</strong>: ${shape.comment}
-            <button onclick="editCorrection(${shape.id})">Rediger</button>
-            <button onclick="deleteCorrection(${shape.id})">Slett</button>
+            <div><strong>${shape.type}</strong> (ID: ${shape.id})</div>
+            <div style="word-wrap: break-word; white-space: pre-wrap; margin: 5px 0;">${shape.comment}</div>
+            <div>
+                <button onclick="editCorrection(${shape.id})">Rediger</button>
+                <button onclick="deleteCorrection(${shape.id})">Slett</button>
+            </div>
         `;
+        li.onclick = function (e) {
+            if (e.target.tagName !== 'BUTTON') {
+                var layer = drawnItems.getLayer(shape.id);
+                if (layer) {
+                    if (layer.getBounds) {
+                        map.fitBounds(layer.getBounds());
+                    } else if (layer.getLatLng) {
+                        map.setView(layer.getLatLng(), 16);
+                    }
+                    if (layer.getPopup()) layer.openPopup();
+                }
+            }
+        };
         ul.appendChild(li);
     });
     listContainer.appendChild(ul);
