@@ -69,24 +69,24 @@ body {
 
 /*Overlay on page load*/
 #startupoverlay {
-    position: fixed; /* Stretches over the entire screen */
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100vw; /* Full width of the viewport */
-    height: 100vh; /* Full height of the viewport */
+    width: 100vw;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-    display: flex; /* Flexbox to center content */
-    justify-content: center; /* Horizontally center */
-    align-items: center; /* Vertically center */
-    z-index: 10000; /* Makes sure it's on top of other content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
 }
 
 #welcometext {
-    color: white; /* Text color */
-    text-align: center; /* Center align text */
-    padding: 20px; /* Optional padding */
-    background-color: rgb(26, 131, 59); /* Optional background for the text area */
-    border-radius: 10px; /* Optional rounded corners */
+    color: white;
+    text-align: center;
+    padding: 20px;
+    background-color: rgb(26, 131, 59);
+    border-radius: 10px;
 }
 
 /*Close overlay button*/
@@ -182,7 +182,6 @@ body {
 
 
 /*Icons*/
-/*These styles are required to make icons render reliably */
 .icon::before {
     display: inline-block;
     text-rendering: auto;
@@ -192,7 +191,7 @@ body {
 
 /*Custom comment window*/
 .comment-modal {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
     left: 0;
     top: 0;
@@ -224,9 +223,7 @@ body {
 
 .userLocIcon {
     text-align: center;
-    /* Horizontally center the text (icon) */
     line-height: 20px;
-    /* Vertically center the text (icon) */
     text-shadow: 0 0 5px #000;
 }
 
@@ -273,7 +270,6 @@ body {
         color: #555;
     }
 
-/* Reset Leaflet's default styles that might interfere */
 .leaflet-control-locate a {
     width: 30px;
     height: 30px;
@@ -298,14 +294,12 @@ button[type="submit"] {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    z-index: 10000;
+    z-index: 9000;
+    bottom: 6vh;
+    left: 22vh;
 }
 
 button[type="submit"]:hover {
     background-color: #0056b3;
-}
-
-.shapeForm {
-    z-index: 10000;
 }
 

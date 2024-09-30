@@ -21,7 +21,7 @@ namespace Kartverket_group2.Controllers
             {
                 PropertyNameCaseInsensitive = true
             };
-
+            
             List<Shape> shapes = JsonSerializer.Deserialize<List<Shape>>(shapeData, options);
 
             // Store the shape data in TempData for now (or in a database in the future)
