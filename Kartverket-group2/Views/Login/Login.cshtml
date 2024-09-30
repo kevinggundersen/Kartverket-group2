@@ -15,6 +15,7 @@
             align-items: center;
             background-color: #f0f0f0;
         }
+
         .login-container {
             background-color: white;
             padding: 2rem;
@@ -31,7 +32,8 @@
             border: 1px solid #ccc;
             border-radius: 3px;
         }
-        button {
+
+        #submit-button {
             margin-top: 1rem;
             padding: 0.5rem;
             background-color: #28a745;
@@ -40,6 +42,11 @@
             border-radius: 3px;
             cursor: pointer;
         }
+
+        #submit-button:hover {
+            background-color: #23923d;
+        }
+
         .register-link {
             margin-top: 1rem;
             text-align: center;
@@ -56,7 +63,7 @@
             <form>
                 <input type="text" placeholder="Epost/Brukernavn" required>
                 <input type="password" placeholder="Passord" required>
-                <button type="submit">Logg inn</button>
+                <button type="submit" id="submit-button">Logg inn</button>
             </form>
             <div class="register-link">
                 <p>Har du ikke bruker? <a href="Register">Registrer deg her</a></p>

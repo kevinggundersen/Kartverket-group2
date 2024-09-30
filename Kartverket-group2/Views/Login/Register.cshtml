@@ -31,7 +31,8 @@
             border: 1px solid #ccc;
             border-radius: 3px;
         }
-        button {
+
+        #submit-button {
             margin-top: 1rem;
             padding: 0.5rem;
             background-color: #28a745;
@@ -39,6 +40,10 @@
             border: none;
             border-radius: 3px;
             cursor: pointer;
+        }
+
+        #submit-button:hover {
+            background-color: #23923d;
         }
         .login-link {
             margin-top: 1rem;
@@ -57,7 +62,7 @@
                 <input type="text" placeholder="Brukernavn" required>
                 <input type="password" placeholder="Passord" required>
                 <input type="password" placeholder="Gjenta passord" required>
-                <button type="submit">Registrer</button>
+                <button type="submit" id="submit-button">Registrer</button>
             </form>
             <div class="login-link">
                 <p>Har du allerede bruker? <a href="Login">Logg inn her</a></p>
