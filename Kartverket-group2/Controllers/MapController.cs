@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;  // Add this line
+using System.Text.Json;
 using System.Collections.Generic;
-using Kartverket_group2.Models;  // Your model namespace
+using Kartverket_group2.Models;  
 
 namespace Kartverket_group2.Controllers
 {
     public class MapController : Controller
     {
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
@@ -15,14 +16,12 @@ namespace Kartverket_group2.Controllers
         [HttpPost]
         public ActionResult SaveShapes(string shapeData)
         {
-  
 
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
 
-            // Then use it in deserialization:
             List<Shape> shapes = JsonSerializer.Deserialize<List<Shape>>(shapeData, options);
 
             // Store the shape data in TempData for now (or in a database in the future)
@@ -42,7 +41,6 @@ namespace Kartverket_group2.Controllers
                 PropertyNameCaseInsensitive = true
             };
 
-            // Then use it in deserialization:
             List<Shape> shapes = JsonSerializer.Deserialize<List<Shape>>(shapeData, options);
 
             // Pass the shapes list to the view
