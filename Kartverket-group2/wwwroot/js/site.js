@@ -370,107 +370,11 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+
+
+
+
+
 document.getElementById('shapeForm').addEventListener('submit', function () {
     document.getElementById('shapeData').value = JSON.stringify(shapesList);
 });
-
-
-
-//
-//
-// Adding premade shapes. Code generated enitirely by Claude AI
-//
-//
-// Function to add a shape with a comment
-function addShapeWithComment(layer, type, comment) {
-    drawnItems.addLayer(layer);
-    layer.bindPopup(comment);
-
-    var shapeInfo = {
-        id: L.stamp(layer),
-        type: type,
-        coordinates: getCoordinates(layer),
-        comment: comment
-    };
-
-    shapesList.push(shapeInfo);
-    console.log("Added shape:", shapeInfo); // For debugging
-}
-
-// Function to get coordinates from a layer
-function getCoordinates(layer) {
-    if (layer instanceof L.Marker) {
-        return JSON.stringify(layer.getLatLng());
-    } else if (layer instanceof L.Circle) {
-        return JSON.stringify({ center: layer.getLatLng(), radius: layer.getRadius() });
-    } else if (layer instanceof L.Polygon || layer instanceof L.Polyline) {
-        return JSON.stringify(layer.getLatLngs());
-    }
-    return "Unknown shape type";
-}
-
-// Add premade shapes
-function addPremadeShapes() {
-    // Clear existing shapes
-    drawnItems.clearLayers();
-    shapesList = [];
-
-    // Marker
-    var marker = L.marker([58.1599, 8.0182]);
-    addShapeWithComment(marker, 'Markør', 'Dette er en markør');
-
-    // Circle
-    var circle = L.circle([58.1650, 8.0250], { radius: 500 });
-    addShapeWithComment(circle, 'Sirkel', 'Dette er en sirkel');
-
-    // Polyline
-    var polyline = L.polyline([
-        [58.1550, 8.0100],
-        [58.1600, 8.0150],
-        [58.1650, 8.0200]
-    ]);
-    addShapeWithComment(polyline, 'Linje', 'Dette er en linje');
-
-    // Polygon
-    var polygon = L.polygon([
-        [58.1500, 8.0250],
-        [58.1550, 8.0300],
-        [58.1600, 8.0350],
-        [58.1550, 8.0400]
-    ]);
-    addShapeWithComment(polygon, 'Polygon', 'Dette er en polygon');
-
-    // Update the shapes list display
-    updateShapesList();
-
-    console.log("Shapes list after adding:", shapesList); // For debugging
-
-    // Fit the map to show all shapes
-    var group = new L.featureGroup(drawnItems.getLayers());
-    map.fitBounds(group.getBounds().pad(0.1));
-}
-
-// Call the function to add premade shapes
-addPremadeShapes();
-
-// Make sure updateShapesList function is defined correctly
-function updateShapesList() {
-    var listContainer = document.getElementById('shapes-list');
-    listContainer.innerHTML = '';
-    if (shapesList.length === 0) {
-        listContainer.innerHTML = '<p>Ingen kommentarer enda.</p>';
-        return;
-    }
-    var ul = document.createElement('ul');
-    shapesList.forEach(function (shape) {
-        var li = document.createElement('li');
-        li.innerHTML = `
-            <strong>${shape.type}</strong>: ${shape.comment}
-            <button onclick="editCorrection(${shape.id})">Rediger</button>
-            <button onclick="deleteCorrection(${shape.id})">Slett</button>
-        `;
-        ul.appendChild(li);
-    });
-    listContainer.appendChild(ul);
-    console.log("Updated shapes list:", shapesList); // For debugging
-}
