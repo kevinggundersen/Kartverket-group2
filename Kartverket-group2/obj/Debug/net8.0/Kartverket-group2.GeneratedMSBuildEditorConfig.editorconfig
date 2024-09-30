@@ -9,63 +9,59 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Kartverket_group2
 build_property.RootNamespace = Kartverket_group2
-build_property.ProjectDir = C:\Users\kevin\Source\Repos\Kartverket-group2\Kartverket-group2\
+build_property.ProjectDir = C:\Users\kevin\source\repos\Kartverket-group2\Kartverket-group2\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\kevin\Source\Repos\Kartverket-group2\Kartverket-group2
+build_property.MSBuildProjectDirectory = C:\Users\kevin\source\repos\Kartverket-group2\Kartverket-group2
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/kevin/Source/Repos/Kartverket-group2/Kartverket-group2/Views/Administration/Admin.cshtml]
+[C:/Users/kevin/source/repos/Kartverket-group2/Kartverket-group2/Views/Administration/Admin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRpb25cQWRtaW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kevin/Source/Repos/Kartverket-group2/Kartverket-group2/Views/Administration/AdminSubmission.cshtml]
+[C:/Users/kevin/source/repos/Kartverket-group2/Kartverket-group2/Views/Administration/AdminSubmission.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRpb25cQWRtaW5TdWJtaXNzaW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kevin/Source/Repos/Kartverket-group2/Kartverket-group2/Views/Home/Index.cshtml]
+[C:/Users/kevin/source/repos/Kartverket-group2/Kartverket-group2/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kevin/Source/Repos/Kartverket-group2/Kartverket-group2/Views/Home/Privacy.cshtml]
+[C:/Users/kevin/source/repos/Kartverket-group2/Kartverket-group2/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kevin/Source/Repos/Kartverket-group2/Kartverket-group2/Views/Login/Login.cshtml]
+[C:/Users/kevin/source/repos/Kartverket-group2/Kartverket-group2/Views/Login/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kevin/Source/Repos/Kartverket-group2/Kartverket-group2/Views/Login/Register.cshtml]
+[C:/Users/kevin/source/repos/Kartverket-group2/Kartverket-group2/Views/Login/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cUmVnaXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kevin/Source/Repos/Kartverket-group2/Kartverket-group2/Views/Map/Index.cshtml]
+[C:/Users/kevin/source/repos/Kartverket-group2/Kartverket-group2/Views/Map/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFwXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kevin/Source/Repos/Kartverket-group2/Kartverket-group2/Views/Map/ViewShapes.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFwXFZpZXdTaGFwZXMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/kevin/Source/Repos/Kartverket-group2/Kartverket-group2/Views/Shared/Error.cshtml]
+[C:/Users/kevin/source/repos/Kartverket-group2/Kartverket-group2/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kevin/Source/Repos/Kartverket-group2/Kartverket-group2/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/kevin/source/repos/Kartverket-group2/Kartverket-group2/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kevin/Source/Repos/Kartverket-group2/Kartverket-group2/Views/_ViewImports.cshtml]
+[C:/Users/kevin/source/repos/Kartverket-group2/Kartverket-group2/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kevin/Source/Repos/Kartverket-group2/Kartverket-group2/Views/_ViewStart.cshtml]
+[C:/Users/kevin/source/repos/Kartverket-group2/Kartverket-group2/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kevin/Source/Repos/Kartverket-group2/Kartverket-group2/Views/Shared/_Layout.cshtml]
+[C:/Users/kevin/source/repos/Kartverket-group2/Kartverket-group2/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-dpuoubi2ni
