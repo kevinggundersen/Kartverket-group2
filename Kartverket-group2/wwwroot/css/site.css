@@ -115,6 +115,8 @@ body {
 /*List of shapes*/
 #shapes-list-container {
     position: absolute;
+    display: flex;
+    flex-direction: column;
     bottom: 6%;
     left: 10px;
     background: white;
@@ -127,26 +129,27 @@ body {
     overflow-y: auto;
 }
 
-    #shapes-list-container h4 {
-        margin-top: 0;
-        margin-bottom: 10px;
-    }
-
-#shapes-list ul {
-    list-style-type: none;
-    padding: 0;
+#shapes-list-header {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    padding: 10px 0;
     margin: 0;
+    z-index: 1;
 }
 
-#shapes-list li {
-    cursor: pointer;
-    padding: 5px 0;
-    border-bottom: 1px solid #eee;
+#shapes-list-scroll {
+    flex-grow: 1;
+    overflow-y: auto;
 }
 
-    #shapes-list li:hover {
-        background-color: #f0f0f0;
-    }
+#shapes-list {
+    padding: 10px 0;
+}
+
+#shapes-list li:hover {
+    background-color: #f0f0f0;
+}
 
 /*Button when choosing shape to draw*/
 .shape-button {
@@ -302,7 +305,6 @@ body {
 #submit-form-data:hover {
     background-color: #23923d;
 }
-
 
 .wrapped-popup .leaflet-popup-content {
     max-width: 200px;
