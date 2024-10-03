@@ -66,15 +66,14 @@ html {
     left: 10px;
 }
 
-
-.custom-zoom-control button {
-    background: #fff;
-    border: none;
-    padding: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    border: 1px solid black;
-}
+    .custom-zoom-control button {
+        background: #fff;
+        border: none;
+        padding: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        border: 1px solid black;
+    }
 
 .custom-zoom-control button:hover {
     background: #f0f0f0;
@@ -120,10 +119,10 @@ html {
     outline: none;
 }
 
-#overlaybutton:hover {
-    background-color: #2EE59D;
-    color: white;
-}
+    #overlaybutton:hover {
+        background-color: #2EE59D;
+        color: white;
+    }
 
 /*List of shapes*/
 #shapes-list-container {
@@ -136,6 +135,7 @@ html {
     border-radius: 4px;
     box-shadow: 0 1px 5px rgba(0,0,0,0.65);
     z-index: 1000;
+    min-width: 250px;
     max-width: 250px;
     overflow-y: auto;
     bottom: 70px; /* Adjust this value to position above the footer */
@@ -162,6 +162,7 @@ html {
 
 #shapes-list li:hover {
     background-color: #f0f0f0;
+    cursor: pointer;
 }
 
 /*Button when choosing shape to draw*/
@@ -323,4 +324,12 @@ html {
     max-width: 200px;
     word-wrap: break-word;
     white-space: pre-wrap;
+}
+
+/*Line between left and right aligned items in navbar when collapsed for smaller screens*/
+@media (max-width: 575.98px) {
+    .navbar-divider {
+        border-top: 1px solid #dee2e6;
+        width: 100%;
+    }
 }
