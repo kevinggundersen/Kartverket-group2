@@ -17,19 +17,30 @@ html {
     min-height: 100%;
 }
 
-body {
-    margin-bottom: 60px;
+#map-container {
+    position: fixed;
+    top: 56px; /* Adjust this value to match navbar height */
+    left: 0;
+    right: 0;
+    bottom: 50px; /* Adjust this value to match footer height */
+    z-index: 1;
 }
 
 #map {
-    height: 95.3vh;
-    position: absolute;
-    top: 0%;
-    bottom: 0%;
-    right: 0;
-    left: 0;
-    z-index: 1;
+    height: 100%;
+    width: 100%;
 }
+
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px; /* Adjust to match your footer height */
+    line-height: 60px; /* Vertically center the text there */
+    background-color: #f5f5f5;
+}
+
 
 .leaflet-popup-content button {
     display: block;
@@ -43,29 +54,31 @@ body {
 
 /*Zoom buttons*/
 .custom-zoom-control {
-    position: absolute;
-    top: 6%;
-    left: 10px;
+    position: fixed;
+
     z-index: 1000;
     display: flex;
     flex-direction: column;
     background: white;
     border-radius: 4px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    top: 66px; /* 10px below navbar */
+    left: 10px;
 }
 
-    .custom-zoom-control button {
-        background: #fff;
-        border: none;
-        padding: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        border: 1px solid black;
-    }
 
-        .custom-zoom-control button:hover {
-            background: #f0f0f0;
-        }
+.custom-zoom-control button {
+    background: #fff;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    border: 1px solid black;
+}
+
+.custom-zoom-control button:hover {
+    background: #f0f0f0;
+}
 
 /*Overlay on page load*/
 #startupoverlay {
@@ -107,17 +120,16 @@ body {
     outline: none;
 }
 
-    #overlaybutton:hover {
-        background-color: #2EE59D;
-        color: white;
-    }
+#overlaybutton:hover {
+    background-color: #2EE59D;
+    color: white;
+}
 
 /*List of shapes*/
 #shapes-list-container {
-    position: absolute;
+    position: fixed;
     display: flex;
     flex-direction: column;
-    bottom: 6%;
     left: 10px;
     background: white;
     padding: 10px;
@@ -125,8 +137,9 @@ body {
     box-shadow: 0 1px 5px rgba(0,0,0,0.65);
     z-index: 1000;
     max-width: 250px;
-    max-height: 400px;
     overflow-y: auto;
+    bottom: 70px; /* Adjust this value to position above the footer */
+    max-height: calc(80vh - 126px); /* Subtract navbar and footer heights */
 }
 
 #shapes-list-header {
@@ -220,9 +233,9 @@ body {
     margin-top: 10px;
 }
 
-    .modal-buttons button {
-        padding: 10px 20px;
-    }
+.modal-buttons button {
+    padding: 10px 20px;
+}
 
 .userLocIcon {
     text-align: center;
@@ -232,8 +245,8 @@ body {
 
 /*Styling for the search icon*/
 .leaflet-control-geocoder {
-    position: absolute;
-    top: 5vh;
+    position: fixed !important;
+    top: 60px;
     right: 10px;
     z-index: 1000;
 }
@@ -268,10 +281,10 @@ body {
     box-shadow: 0 1px 5px rgba(0,0,0,0.65);
 }
 
-    .loading-indicator i {
-        font-size: 16px;
-        color: #555;
-    }
+.loading-indicator i {
+    font-size: 16px;
+    color: #555;
+}
 
 .leaflet-control-locate a {
     width: 30px;
@@ -298,7 +311,7 @@ body {
     border-radius: 5px;
     cursor: pointer;
     z-index: 9000;
-    bottom: 6vh;
+    bottom: 70px; /* Adjust to position above footer */
     left: 270px;
 }
 

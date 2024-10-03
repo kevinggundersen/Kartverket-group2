@@ -1,7 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Rett i kartet";
 }
-
 <!-- Overlay when loading page -->
 <div id="startupoverlay" class="startupoverlay">
     <div id="welcometext" class="welcometext">
@@ -13,15 +12,13 @@
     <input type="hidden" name="shapeData" id="shapeData" />
     <button type="submit" id="submit-form-data">Save Shape Data</button>
 </form>
-
 <div id="shapes-list-container">
     <h4 id="shapes-list-header">Mine kommentarer:</h4>
     <div id="shapes-list-scroll">
         <div id="shapes-list"></div>
     </div>
 </div>
-
-<div>
+<div id="map-container">
     <!-- Custom Zoom Control -->
     <div class="custom-zoom-control">
         <button id="zoom-in">+</button>
@@ -30,7 +27,6 @@
     <!-- The map itself -->
     <div id="map"></div>
 </div>
-
 <div id="comment-modal" class="comment-modal" style="display: none;">
     <div class="modal-content">
         <h3>Add a comment</h3>
@@ -41,4 +37,3 @@
         </div>
     </div>
 </div>
-

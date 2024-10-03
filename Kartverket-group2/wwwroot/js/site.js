@@ -84,34 +84,24 @@ document.getElementById('cancel-comment').addEventListener('click', function () 
 document.getElementById('submit-comment').addEventListener('click', function () {
     var comment = document.getElementById('comment-input').value.trim();
     if (comment) {
-        currentLayer.bindPopup(comment, { className: 'wrapped-popup' }); // Update the popup with the new comment
+        var shapeId = L.stamp(currentLayer);
+        var popupContent = `<strong>ID: ${shapeId}</strong><br>${comment}`;
+        currentLayer.bindPopup(popupContent, { className: 'wrapped-popup' });
 
-        // Find the shape in the shapes list by its ID and update the comment
-        var shapeIndex = shapesList.findIndex(shape => shape.id === L.stamp(currentLayer));
+        var shapeIndex = shapesList.findIndex(shape => shape.id === shapeId);
 
         if (shapeIndex !== -1) {
             // Update existing shape comment
             shapesList[shapeIndex].comment = comment;
         } else {
-
-            function getCoordinates(layer) {
-                if (layer instanceof L.Marker) {
-                    return JSON.stringify(layer.getLatLng());
-                } else if (layer instanceof L.Circle) {
-                    return JSON.stringify({ center: layer.getLatLng(), radius: layer.getRadius() });
-                } else if (layer instanceof L.Polygon || layer instanceof L.Polyline) {
-                    return JSON.stringify(layer.getLatLngs());
-                }
-                return "Unknown shape type";
-            }
-            // If the shape is new (during creation), add it to the shapesList
+            // If the shape is new, add it to the shapesList
             shapesList.push({
-                id: L.stamp(currentLayer),
+                id: shapeId,
                 type: currentLayer instanceof L.Marker ? 'Markør' :
                     currentLayer instanceof L.Circle ? 'Sirkel' :
                         currentLayer instanceof L.Polygon ? 'Polygon' :
                             currentLayer instanceof L.Polyline ? 'Linje' : 'Unknown',
-                coordinates: getCoordinates(currentLayer),  // Add this line
+                coordinates: getCoordinates(currentLayer),
                 comment: comment
             });
         }
@@ -164,7 +154,7 @@ function selectShape(shapeType, latlng) {
 
     currentMode = shapeType;
 
-    // Add this timeout to reset currentMode if drawing doesn't start
+    // Add timeout to reset currentMode if drawing doesn't start
     setTimeout(function () {
         if (currentMode === shapeType) {
             currentMode = null;
@@ -268,7 +258,7 @@ L.Control.LocateButton = L.Control.extend({
 
 map.addControl(new L.Control.LocateButton());
 
-// Add the geocoder control
+// Add the geocoder control (Search function)
 var geocoder = L.Control.geocoder({
     defaultMarkGeocode: false, // Prevent default marker to allow custom behavior
     placeholder: "Søk..."
@@ -279,12 +269,10 @@ geocoder.getContainer().setAttribute('title', 'Søk etter steder'); // Add text 
 geocoder.on('markgeocode', function (e) {
     var latlng = e.geocode.center;
     map.setView(latlng, 16); // Set the map view to the selected location
-    L.marker(latlng).addTo(map) // Optionally add a marker at the selected location
+    L.marker(latlng).addTo(map) // Add a marker at the selected location
         .bindPopup(e.geocode.name)
         .openPopup();
 });
-
-
 
 // Function to delete a correction
 function deleteCorrection(id) {
@@ -309,7 +297,7 @@ map.on(L.Draw.Event.EDITED, function (e) {
             var newComment = prompt("Oppdater kommentar for denne formen:", shapesList[index].comment);
             if (newComment) {
                 shapesList[index].comment = newComment;
-                layer.setPopupContent(newComment);
+                layer.setPopupContent(`<strong>ID: ${id}</strong><br>${newComment}`);
                 updateShapesList();
             }
         }
@@ -337,32 +325,26 @@ document.addEventListener('DOMContentLoaded', function () {
     updateShapesList();
 });
 
-
 document.getElementById('shapeForm').addEventListener('submit', function () {
     document.getElementById('shapeData').value = JSON.stringify(shapesList);
 });
 
-
-
-//
-//
-// Adding premade shapes. Code generated enitirely by Claude AI
-//
-//
 // Function to add a shape with a comment
 function addShapeWithComment(layer, type, comment) {
     drawnItems.addLayer(layer);
-    layer.bindPopup(comment);
+    var shapeId = L.stamp(layer);
+    var popupContent = `<strong>ID: ${shapeId}</strong><br>${comment}`;
+    layer.bindPopup(popupContent);
 
     var shapeInfo = {
-        id: L.stamp(layer),
+        id: shapeId,
         type: type,
         coordinates: getCoordinates(layer),
         comment: comment
     };
 
     shapesList.push(shapeInfo);
-    console.log("Added shape:", shapeInfo); // For debugging
+    console.log("Added shape:", shapeInfo);
 }
 
 // Function to get coordinates from a layer
@@ -465,5 +447,5 @@ function updateShapesList() {
         ul.appendChild(li);
     });
     listContainer.appendChild(ul);
-    console.log("Updated shapes list:", shapesList); // For debugging
+    console.log("Updated shapes list:", shapesList);
 }
