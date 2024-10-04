@@ -30,6 +30,19 @@ var shapesList = [];
 var commentModal = document.getElementById('comment-modal');
 var currentLayer;
 
+// Function to get current timestamp
+function getCurrentTimestamp() {
+    return new Date().toISOString();
+}
+
+// Function to format timestamps
+function formatTimestamp(isoString) {
+    const date = new Date(isoString);
+    const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+    return `${date.toLocaleDateString('nb-NO', dateOptions)} ${date.toLocaleTimeString('nb-NO', timeOptions)}`;
+}
+
 // Function to show the comment modal
 function showCommentModal(layer) {
     currentLayer = layer;
@@ -84,23 +97,30 @@ document.getElementById('cancel-comment').addEventListener('click', function () 
 document.getElementById('submit-comment').addEventListener('click', function () {
     var comment = document.getElementById('comment-input').value.trim();
     if (comment) {
-        currentLayer.bindPopup(comment); // Update the popup with the new comment
+        var shapeId = L.stamp(currentLayer);
+        var timestamp = getCurrentTimestamp();
+        var formattedTimestamp = formatTimestamp(timestamp);
+        var popupContent = `<strong>ID: ${shapeId}</strong><br>${comment}<br><small>Sist endret: ${formattedTimestamp}</small>`;
+        currentLayer.bindPopup(popupContent, { className: 'wrapped-popup' });
 
-        // Find the shape in the shapes list by its ID and update the comment
-        var shapeIndex = shapesList.findIndex(shape => shape.id === L.stamp(currentLayer));
+        var shapeIndex = shapesList.findIndex(shape => shape.id === shapeId);
 
         if (shapeIndex !== -1) {
             // Update existing shape comment
             shapesList[shapeIndex].comment = comment;
+            shapesList[shapeIndex].lastEdited = formattedTimestamp;
         } else {
-            // If the shape is new (during creation), add it to the shapesList
+            // If the shape is new, add it to the shapesList
             shapesList.push({
-                id: L.stamp(currentLayer),
+                id: shapeId,
                 type: currentLayer instanceof L.Marker ? 'Markør' :
                     currentLayer instanceof L.Circle ? 'Sirkel' :
                         currentLayer instanceof L.Polygon ? 'Polygon' :
                             currentLayer instanceof L.Polyline ? 'Linje' : 'Unknown',
-                comment: comment
+                coordinates: getCoordinates(currentLayer),
+                comment: comment,
+                addedAt: formattedTimestamp,
+                lastEdited: formattedTimestamp
             });
         }
 
@@ -152,7 +172,7 @@ function selectShape(shapeType, latlng) {
 
     currentMode = shapeType;
 
-    // Add this timeout to reset currentMode if drawing doesn't start
+    // Add timeout to reset currentMode if drawing doesn't start
     setTimeout(function () {
         if (currentMode === shapeType) {
             currentMode = null;
@@ -256,7 +276,7 @@ L.Control.LocateButton = L.Control.extend({
 
 map.addControl(new L.Control.LocateButton());
 
-// Add the geocoder control
+// Add the geocoder control (Search function)
 var geocoder = L.Control.geocoder({
     defaultMarkGeocode: false, // Prevent default marker to allow custom behavior
     placeholder: "Søk..."
@@ -267,44 +287,10 @@ geocoder.getContainer().setAttribute('title', 'Søk etter steder'); // Add text 
 geocoder.on('markgeocode', function (e) {
     var latlng = e.geocode.center;
     map.setView(latlng, 16); // Set the map view to the selected location
-    L.marker(latlng).addTo(map) // Optionally add a marker at the selected location
+    L.marker(latlng).addTo(map) // Add a marker at the selected location
         .bindPopup(e.geocode.name)
         .openPopup();
 });
-
-// Function to update the shapes list display
-function updateShapesList() {
-    var listContainer = document.getElementById('shapes-list');
-    listContainer.innerHTML = '';
-    if (shapesList.length === 0) {
-        listContainer.innerHTML = '<p>Ingen kommentarer enda.</p>';
-        return;
-    }
-    var ul = document.createElement('ul');
-    shapesList.forEach(function (shape) {
-        var li = document.createElement('li');
-        li.innerHTML = `
-            <strong>${shape.type}</strong>: ${shape.comment}
-            <button onclick="editCorrection(${shape.id})">Rediger</button>
-            <button onclick="deleteCorrection(${shape.id})">Slett</button>
-        `;
-        li.onclick = function (e) {
-            if (e.target.tagName !== 'BUTTON') {
-                var layer = drawnItems.getLayer(shape.id);
-                if (layer) {
-                    if (layer.getBounds) {
-                        map.fitBounds(layer.getBounds());
-                    } else if (layer.getLatLng) {
-                        map.setView(layer.getLatLng(), 16);
-                    }
-                    if (layer.getPopup()) layer.openPopup();
-                }
-            }
-        };
-        ul.appendChild(li);
-    });
-    listContainer.appendChild(ul);
-}
 
 // Function to delete a correction
 function deleteCorrection(id) {
@@ -328,9 +314,7 @@ map.on(L.Draw.Event.EDITED, function (e) {
         if (index !== -1) {
             var newComment = prompt("Oppdater kommentar for denne formen:", shapesList[index].comment);
             if (newComment) {
-                shapesList[index].comment = newComment;
-                layer.setPopupContent(newComment);
-                updateShapesList();
+                updateComment(id, newComment);
             }
         }
     });
@@ -356,3 +340,134 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize the shapes list
     updateShapesList();
 });
+
+document.getElementById('shapeForm').addEventListener('submit', function () {
+    document.getElementById('shapeData').value = JSON.stringify(shapesList);
+});
+
+// Function to add a shape with a comment
+function addShapeWithComment(layer, type, comment) {
+    drawnItems.addLayer(layer);
+    var shapeId = L.stamp(layer);
+    var timestamp = getCurrentTimestamp();
+    var formattedTimestamp = formatTimestamp(timestamp);
+    var popupContent = `<strong>ID: ${shapeId}</strong><br>${comment}<br><small>Lagt til: ${formattedTimestamp}</small>`;
+    layer.bindPopup(popupContent);
+
+    var shapeInfo = {
+        id: shapeId,
+        type: type,
+        coordinates: getCoordinates(layer),
+        comment: comment,
+        addedAt: formattedTimestamp,
+        lastEdited: formattedTimestamp
+    };
+
+    shapesList.push(shapeInfo);
+    console.log("Added shape:", shapeInfo);
+}
+
+// Function to get coordinates from a layer
+function getCoordinates(layer) {
+    if (layer instanceof L.Marker) {
+        return JSON.stringify(layer.getLatLng());
+    } else if (layer instanceof L.Circle) {
+        return JSON.stringify({ center: layer.getLatLng(), radius: layer.getRadius() });
+    } else if (layer instanceof L.Polygon || layer instanceof L.Polyline) {
+        return JSON.stringify(layer.getLatLngs());
+    }
+    return "Unknown shape type";
+}
+
+// Add premade shapes
+function addPremadeShapes() {
+    // Clear existing shapes
+    drawnItems.clearLayers();
+    shapesList = [];
+
+    // Marker
+    var marker = L.marker([58.1599, 8.0182]);
+    addShapeWithComment(marker, 'Markør', 'Dette er en markør');
+
+    // Circle
+    var circle = L.circle([58.1650, 8.0250], { radius: 500 });
+    addShapeWithComment(circle, 'Sirkel', 'Dette er en sirkel');
+
+    // Polyline
+    var polyline = L.polyline([
+        [58.1550, 8.0100],
+        [58.1600, 8.0150],
+        [58.1650, 8.0200]
+    ]);
+    addShapeWithComment(polyline, 'Linje', 'Dette er en linje');
+
+    // Polygon
+    var polygon = L.polygon([
+        [58.1500, 8.0250],
+        [58.1550, 8.0300],
+        [58.1600, 8.0350],
+        [58.1550, 8.0400]
+    ]);
+    addShapeWithComment(polygon, 'Polygon', 'Dette er en polygon');
+
+    // Update the shapes list display
+    updateShapesList();
+
+    console.log("Shapes list after adding:", shapesList); // For debugging
+
+    // Fit the map to show all shapes
+    var group = new L.featureGroup(drawnItems.getLayers());
+    map.fitBounds(group.getBounds().pad(0.1));
+}
+
+// Call the function to add premade shapes
+addPremadeShapes();
+
+
+
+
+// Function to update the shapes list display
+function updateShapesList() {
+    var listContainer = document.getElementById('shapes-list');
+    listContainer.innerHTML = '';
+    if (shapesList.length === 0) {
+        listContainer.innerHTML = '<p>Ingen kommentarer enda.</p>';
+        return;
+    }
+    var ul = document.createElement('ul');
+    ul.style.listStyleType = 'none';
+    ul.style.padding = '0';
+    shapesList.forEach(function (shape) {
+        var li = document.createElement('li');
+        li.style.marginBottom = '10px';
+        li.style.border = '1px solid #ddd';
+        li.style.padding = '10px';
+        li.style.borderRadius = '5px';
+        li.innerHTML = `
+            <div><strong>${shape.type}</strong> (ID: ${shape.id})</div>
+            <div style="word-wrap: break-word; white-space: pre-wrap; margin: 5px 0;">${shape.comment}</div>
+            <div><small>Lagt til: ${shape.addedAt}</small></div>
+            <div><small>Sist endret: ${shape.lastEdited}</small></div>
+            <div>
+                <button onclick="editCorrection(${shape.id})">Rediger</button>
+                <button onclick="deleteCorrection(${shape.id})">Slett</button>
+            </div>
+        `;
+        li.onclick = function (e) {
+            if (e.target.tagName !== 'BUTTON') {
+                var layer = drawnItems.getLayer(shape.id);
+                if (layer) {
+                    if (layer.getBounds) {
+                        map.fitBounds(layer.getBounds());
+                    } else if (layer.getLatLng) {
+                        map.setView(layer.getLatLng(), 16);
+                    }
+                    if (layer.getPopup()) layer.openPopup();
+                }
+            }
+        };
+        ul.appendChild(li);
+    });
+    listContainer.appendChild(ul);
+    console.log("Updated shapes list:", shapesList);
+}

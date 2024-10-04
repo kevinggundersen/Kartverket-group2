@@ -17,18 +17,30 @@ html {
     min-height: 100%;
 }
 
-body {
-    margin-bottom: 60px;
+#map-container {
+    position: fixed;
+    top: 56px; /* Adjust this value to match navbar height */
+    left: 0;
+    right: 0;
+    bottom: 50px; /* Adjust this value to match footer height */
+    z-index: 1;
 }
 
 #map {
-    height: 95.3vh;
-    position: absolute;
-    top: 0%;
-    bottom: 0%;
-    right: 0;
-    left: 0;
+    height: 100%;
+    width: 100%;
 }
+
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px; /* Adjust to match your footer height */
+    line-height: 60px; /* Vertically center the text there */
+    background-color: #f5f5f5;
+}
+
 
 .leaflet-popup-content button {
     display: block;
@@ -42,15 +54,16 @@ body {
 
 /*Zoom buttons*/
 .custom-zoom-control {
-    position: absolute;
-    top: 6%;
-    left: 10px;
+    position: fixed;
+
     z-index: 1000;
     display: flex;
     flex-direction: column;
     background: white;
     border-radius: 4px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    top: 66px; /* 10px below navbar */
+    left: 10px;
 }
 
     .custom-zoom-control button {
@@ -62,30 +75,30 @@ body {
         border: 1px solid black;
     }
 
-        .custom-zoom-control button:hover {
-            background: #f0f0f0;
-        }
+.custom-zoom-control button:hover {
+    background: #f0f0f0;
+}
 
 /*Overlay on page load*/
 #startupoverlay {
-    position: fixed; /* Stretches over the entire screen */
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100vw; /* Full width of the viewport */
-    height: 100vh; /* Full height of the viewport */
+    width: 100vw;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-    display: flex; /* Flexbox to center content */
-    justify-content: center; /* Horizontally center */
-    align-items: center; /* Vertically center */
-    z-index: 10000; /* Makes sure it's on top of other content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
 }
 
 #welcometext {
-    color: white; /* Text color */
-    text-align: center; /* Center align text */
-    padding: 20px; /* Optional padding */
-    background-color: rgb(26, 131, 59); /* Optional background for the text area */
-    border-radius: 10px; /* Optional rounded corners */
+    color: white;
+    text-align: center;
+    padding: 20px;
+    background-color: rgb(26, 131, 59);
+    border-radius: 10px;
 }
 
 /*Close overlay button*/
@@ -113,39 +126,44 @@ body {
 
 /*List of shapes*/
 #shapes-list-container {
-    position: absolute;
-    bottom: 6%;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
     left: 10px;
     background: white;
     padding: 10px;
     border-radius: 4px;
     box-shadow: 0 1px 5px rgba(0,0,0,0.65);
     z-index: 1000;
-    max-width: 250px;
-    max-height: 400px;
+    min-width: 270px;
+    max-width: 270px;
+    overflow-y: auto;
+    bottom: 70px; /* Adjust this value to position above the footer */
+    max-height: calc(80vh - 126px); /* Subtract navbar and footer heights */
+}
+
+#shapes-list-header {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    padding: 10px 0;
+    margin: 0;
+    z-index: 1;
+}
+
+#shapes-list-scroll {
+    flex-grow: 1;
     overflow-y: auto;
 }
 
-    #shapes-list-container h4 {
-        margin-top: 0;
-        margin-bottom: 10px;
-    }
-
-#shapes-list ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+#shapes-list {
+    padding: 10px 0;
 }
 
-#shapes-list li {
+#shapes-list li:hover {
+    background-color: #f0f0f0;
     cursor: pointer;
-    padding: 5px 0;
-    border-bottom: 1px solid #eee;
 }
-
-    #shapes-list li:hover {
-        background-color: #f0f0f0;
-    }
 
 /*Button when choosing shape to draw*/
 .shape-button {
@@ -181,7 +199,6 @@ body {
 
 
 /*Icons*/
-/*These styles are required to make icons render reliably */
 .icon::before {
     display: inline-block;
     text-rendering: auto;
@@ -191,7 +208,7 @@ body {
 
 /*Custom comment window*/
 .comment-modal {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
     left: 0;
     top: 0;
@@ -217,22 +234,20 @@ body {
     margin-top: 10px;
 }
 
-    .modal-buttons button {
-        padding: 10px 20px;
-    }
+.modal-buttons button {
+    padding: 10px 20px;
+}
 
 .userLocIcon {
     text-align: center;
-    /* Horizontally center the text (icon) */
     line-height: 20px;
-    /* Vertically center the text (icon) */
     text-shadow: 0 0 5px #000;
 }
 
 /*Styling for the search icon*/
 .leaflet-control-geocoder {
-    position: absolute;
-    top: 5vh;
+    position: fixed !important;
+    top: 60px;
     right: 10px;
     z-index: 1000;
 }
@@ -267,12 +282,11 @@ body {
     box-shadow: 0 1px 5px rgba(0,0,0,0.65);
 }
 
-    .loading-indicator i {
-        font-size: 16px;
-        color: #555;
-    }
+.loading-indicator i {
+    font-size: 16px;
+    color: #555;
+}
 
-/* Reset Leaflet's default styles that might interfere */
 .leaflet-control-locate a {
     width: 30px;
     height: 30px;
@@ -286,4 +300,36 @@ body {
     width: 30px;
     height: 30px;
     line-height: 30px;
+}
+#submit-form-data {
+    position: fixed;
+    display: block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 9000;
+    bottom: 70px; /* Adjust to position above footer */
+    left: 290px;
+}
+
+#submit-form-data:hover {
+    background-color: #23923d;
+}
+
+.wrapped-popup .leaflet-popup-content {
+    max-width: 200px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+/*Line between left and right aligned items in navbar when collapsed for smaller screens*/
+@media (max-width: 575.98px) {
+    .navbar-divider {
+        border-top: 1px solid #dee2e6;
+        width: 100%;
+    }
 }

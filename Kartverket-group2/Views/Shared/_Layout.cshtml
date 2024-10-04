@@ -24,7 +24,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Rett i kartet</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Map" asp-action="Index">Rett i kartet</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -39,19 +39,21 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Admin">Admin</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="Admin">Admin</a>
                         </li>
                     </ul>
+                    <!-- Divider for mobile view -->
+                    <hr class="d-sm-none my-2 navbar-divider">
                     <!-- Right aligned links -->
-                    <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Logg inn</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Login">Logg inn</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Register">Registrer</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Register">Registrer</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logg ut</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Logg ut</a>
                         </li>
                     </ul>
                 </div>
