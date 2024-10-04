@@ -11,5 +11,8 @@ namespace Kartverket_group2.Models
         public string Type { get; set; }  // The type of shape, e.g., 'Circle', 'Polygon'
         public string Coordinates { get; set; }  // JSON or stringified coordinates of the shape
         public string Comment { get; set; }  // User comment for the shape
+
+        public string addedAt { get; set; }
+        public string lastEdited { get; set; }
     }
 }

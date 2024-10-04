@@ -6,7 +6,7 @@ using Kartverket_group2.Models;
 namespace Kartverket_group2.Controllers
 {
     public class MapController : Controller
-    {
+    {   
         [HttpGet]
         public IActionResult Index()
         {
