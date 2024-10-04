@@ -26,6 +26,23 @@ var currentMode = null;
 // Initialize an array to store shape information
 var shapesList = [];
 
+// Function to toggle the shapes list
+function toggleShapesList() {
+    var shapesList = document.getElementById('shapes-list-scroll');
+    var toggleButton = document.getElementById('toggle-shapes-list');
+    var icon = toggleButton.querySelector('i');
+
+    if (shapesList.style.display === 'none' || shapesList.style.display === '') {
+        shapesList.style.display = 'block';
+        icon.className = 'fa-solid fa-chevron-down';
+    } else {
+        shapesList.style.display = 'none';
+        icon.className = 'fa-solid fa-chevron-up';
+    }
+}
+// Event listener for the toggle button
+document.getElementById('toggle-shapes-list').addEventListener('click', toggleShapesList);
+
 // Create a modal dialog for comments
 var commentModal = document.getElementById('comment-modal');
 var currentLayer;
@@ -133,10 +150,10 @@ document.getElementById('submit-comment').addEventListener('click', function () 
 function showShapeSelectionPopup(latlng) {
     var popupContent = L.DomUtil.create('div', 'shape-selection-popup');
     popupContent.innerHTML = `
-        <button class="shape-button" id="markershapebutton"   data-shape="Marker">  <i class="fa-solid fa-location-dot"></i> Markør  </button>
-        <button class="shape-button" id="circleshapebutton"   data-shape="Circle">  <i class="fa-regular fa-circle"></i>     Sirkel  </button>
-        <button class="shape-button" id="polylineshapebutton" data-shape="Polyline">    <i class="fa-solid fa-minus"></i>    Linje   </button>
-        <button class="shape-button" id="polygonshapebutton"  data-shape="Polygon"> <i class="fa-solid fa-diamond"></i>      Polygon </button>
+        <button class="shape-button" id="markershapebutton"   data-shape="Marker">      <i class="fa-solid fa-location-dot"></i> Markør  </button>
+        <button class="shape-button" id="circleshapebutton"   data-shape="Circle">      <i class="fa-regular fa-circle"></i>     Sirkel  </button>
+        <button class="shape-button" id="polylineshapebutton" data-shape="Polyline">    <i class="fa-solid fa-minus"></i>        Linje   </button>
+        <button class="shape-button" id="polygonshapebutton"  data-shape="Polygon">     <i class="fa-solid fa-diamond"></i>      Polygon </button>
     `;
 
     // Add click event listeners to buttons
@@ -339,11 +356,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize the shapes list
     updateShapesList();
+
+    // Initially hide the shapes list and set the correct icon
+    var shapesList = document.getElementById('shapes-list-scroll');
+    var toggleButton = document.getElementById('toggle-shapes-list');
+    var icon = toggleButton.querySelector('i');
+
+    shapesList.style.display = 'none';
+    icon.className = 'fa-solid fa-chevron-up';
 });
 
-document.getElementById('shapeForm').addEventListener('submit', function () {
-    document.getElementById('shapeData').value = JSON.stringify(shapesList);
-});
+document.getElementById('toggle-shapes-list').addEventListener('click', toggleShapesList);
 
 // Function to add a shape with a comment
 function addShapeWithComment(layer, type, comment) {
@@ -429,45 +452,66 @@ addPremadeShapes();
 // Function to update the shapes list display
 function updateShapesList() {
     var listContainer = document.getElementById('shapes-list');
+    var toggleButton = document.getElementById('toggle-shapes-list');
+    var icon = toggleButton.querySelector('i');
     listContainer.innerHTML = '';
     if (shapesList.length === 0) {
-        listContainer.innerHTML = '<p>Ingen kommentarer enda.</p>';
-        return;
-    }
-    var ul = document.createElement('ul');
-    ul.style.listStyleType = 'none';
-    ul.style.padding = '0';
-    shapesList.forEach(function (shape) {
-        var li = document.createElement('li');
-        li.style.marginBottom = '10px';
-        li.style.border = '1px solid #ddd';
-        li.style.padding = '10px';
-        li.style.borderRadius = '5px';
-        li.innerHTML = `
-            <div><strong>${shape.type}</strong> (ID: ${shape.id})</div>
-            <div style="word-wrap: break-word; white-space: pre-wrap; margin: 5px 0;">${shape.comment}</div>
-            <div><small>Lagt til: ${shape.addedAt}</small></div>
-            <div><small>Sist endret: ${shape.lastEdited}</small></div>
-            <div>
-                <button onclick="editCorrection(${shape.id})">Rediger</button>
-                <button onclick="deleteCorrection(${shape.id})">Slett</button>
-            </div>
-        `;
-        li.onclick = function (e) {
-            if (e.target.tagName !== 'BUTTON') {
-                var layer = drawnItems.getLayer(shape.id);
-                if (layer) {
-                    if (layer.getBounds) {
-                        map.fitBounds(layer.getBounds());
-                    } else if (layer.getLatLng) {
-                        map.setView(layer.getLatLng(), 16);
+        listContainer.innerHTML = '<p class="shapes-list-empty">Ingen kommentarer enda. <br> Trykk på kartet for å starte</p>';
+    } else {
+        var ul = document.createElement('ul');
+        ul.className = 'shapes-list-ul';
+        ul.style.listStyleType = 'none';
+        ul.style.padding = '0';
+        shapesList.forEach(function (shape) {
+            var li = document.createElement('li');
+            li.className = 'shapes-list-item';
+            li.innerHTML = `
+                <div class="shapes-list-type"><strong>${shape.type}</strong> (ID: ${shape.id})</div>
+                <div class="shapes-list-comment">${shape.comment}</div>
+                <div class="shapes-list-timestamp"><small>Lagt til: ${shape.addedAt}</small></div>
+                <div class="shapes-list-timestamp"><small>Sist endret: ${shape.lastEdited}</small></div>
+                <div class="shapes-list-buttons">
+                    <button class="shapes-list-button" onclick="editCorrection(${shape.id})">Rediger</button>
+                    <button class="shapes-list-button" onclick="deleteCorrection(${shape.id})">Slett</button>
+                </div>
+            `;
+            li.onclick = function (e) {
+                if (e.target.tagName !== 'BUTTON') {
+                    var layer = drawnItems.getLayer(shape.id);
+                    if (layer) {
+                        if (layer.getBounds) {
+                            map.fitBounds(layer.getBounds());
+                        } else if (layer.getLatLng) {
+                            map.setView(layer.getLatLng(), 16);
+                        }
+                        if (layer.getPopup()) layer.openPopup();
                     }
-                    if (layer.getPopup()) layer.openPopup();
                 }
-            }
-        };
-        ul.appendChild(li);
-    });
-    listContainer.appendChild(ul);
+            };
+            ul.appendChild(li);
+        });
+        listContainer.appendChild(ul);
+    }
+
+    // Update the hidden input field with the current shape data
+    document.getElementById('shapeData').value = JSON.stringify(shapesList);
+
     console.log("Updated shapes list:", shapesList);
+
+    // Show the shapes list after updating
+    document.getElementById('shapes-list-scroll').style.display = 'block';
+    document.getElementById('toggle-shapes-list').querySelector('i').className = 'fa-solid fa-chevron-up';
 }
+
+// Add event listener for form submission
+document.getElementById('shapeForm').addEventListener('submit', function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    // Ensure shapeData is not empty before submitting
+    if (shapesList.length > 0) {
+        document.getElementById('shapeData').value = JSON.stringify(shapesList);
+        this.submit(); // Submit the form
+    } else {
+        alert('Ingen figurer å lagre. Legg til en figur før du fortsetter.');
+    }
+});
