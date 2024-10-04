@@ -20,6 +20,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 var drawnItems = new L.FeatureGroup();
 map.addLayer(drawnItems);
 
+// ariable to track whether user is editing or creating a new shape
+var isEditing = false;
+
 // Variable to store the current drawing mode
 var currentMode = null;
 
@@ -61,10 +64,18 @@ function formatTimestamp(isoString) {
 }
 
 // Function to show the comment modal
-function showCommentModal(layer) {
+function showCommentModal(layer, existingComment = null) {
     currentLayer = layer;
     commentModal.style.display = 'flex'; // Show the modal
-    document.getElementById('comment-input').focus(); // Focus on the input field
+    var commentInput = document.getElementById('comment-input');
+    if (existingComment) {
+        commentInput.value = existingComment;
+        isEditing = true;
+    } else {
+        commentInput.value = '';
+        isEditing = false;
+    }
+    commentInput.focus(); // Focus on the input field
 }
 
 // Function to hide the comment modal
@@ -72,12 +83,13 @@ function hideCommentModal(removeLayer = false) {
     commentModal.style.display = 'none'; // Hide the modal
     document.getElementById('comment-input').value = ''; // Clear the input field
 
-    // Remove the layer if specified (for cancel action)
-    if (removeLayer && currentLayer) {
+    // Remove the layer if specified (for cancel action) and not editing
+    if (removeLayer && !isEditing && currentLayer) {
         drawnItems.removeLayer(currentLayer);
     }
 
     currentLayer = null; // Reset currentLayer
+    isEditing = false; // Reset editing state
 }
 
 // Attach event listeners to modal buttons
@@ -87,10 +99,7 @@ document.getElementById('cancel-comment').addEventListener('click', function () 
 
 // Function to show the modal for editing a comment
 function showEditCommentModal(layer, existingComment) {
-    currentLayer = layer;
-    document.getElementById('comment-input').value = existingComment; // Populate with existing comment
-    commentModal.style.display = 'flex'; // Show the modal
-    document.getElementById('comment-input').focus(); // Focus on the input field
+    showCommentModal(layer, existingComment);
 }
 
 // Edit the existing marker's comment
@@ -108,7 +117,7 @@ function editCorrection(id) {
 
 // Attach event listeners to modal buttons
 document.getElementById('cancel-comment').addEventListener('click', function () {
-    hideCommentModal(true); // Remove the marker/shape on cancel
+    hideCommentModal(!isEditing); // Only remove layer if not editing
 });
 
 document.getElementById('submit-comment').addEventListener('click', function () {
