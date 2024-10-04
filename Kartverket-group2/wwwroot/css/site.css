@@ -135,8 +135,8 @@ html {
     border-radius: 4px;
     box-shadow: 0 1px 5px rgba(0,0,0,0.65);
     z-index: 1000;
-    min-width: 250px;
-    max-width: 250px;
+    min-width: 270px;
+    max-width: 270px;
     overflow-y: auto;
     bottom: 70px; /* Adjust this value to position above the footer */
     max-height: calc(80vh - 126px); /* Subtract navbar and footer heights */
@@ -313,7 +313,7 @@ html {
     cursor: pointer;
     z-index: 9000;
     bottom: 70px; /* Adjust to position above footer */
-    left: 270px;
+    left: 290px;
 }
 
 #submit-form-data:hover {

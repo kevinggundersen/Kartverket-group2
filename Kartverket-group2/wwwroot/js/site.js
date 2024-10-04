@@ -35,6 +35,14 @@ function getCurrentTimestamp() {
     return new Date().toISOString();
 }
 
+// Function to format timestamps
+function formatTimestamp(isoString) {
+    const date = new Date(isoString);
+    const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+    return `${date.toLocaleDateString('nb-NO', dateOptions)} ${date.toLocaleTimeString('nb-NO', timeOptions)}`;
+}
+
 // Function to show the comment modal
 function showCommentModal(layer) {
     currentLayer = layer;
@@ -91,7 +99,8 @@ document.getElementById('submit-comment').addEventListener('click', function () 
     if (comment) {
         var shapeId = L.stamp(currentLayer);
         var timestamp = getCurrentTimestamp();
-        var popupContent = `<strong>ID: ${shapeId}</strong><br>${comment}<br><small>Last edited: ${timestamp}</small>`;
+        var formattedTimestamp = formatTimestamp(timestamp);
+        var popupContent = `<strong>ID: ${shapeId}</strong><br>${comment}<br><small>Sist endret: ${formattedTimestamp}</small>`;
         currentLayer.bindPopup(popupContent, { className: 'wrapped-popup' });
 
         var shapeIndex = shapesList.findIndex(shape => shape.id === shapeId);
@@ -99,7 +108,7 @@ document.getElementById('submit-comment').addEventListener('click', function () 
         if (shapeIndex !== -1) {
             // Update existing shape comment
             shapesList[shapeIndex].comment = comment;
-            shapesList[shapeIndex].lastEdited = timestamp;
+            shapesList[shapeIndex].lastEdited = formattedTimestamp;
         } else {
             // If the shape is new, add it to the shapesList
             shapesList.push({
@@ -110,8 +119,8 @@ document.getElementById('submit-comment').addEventListener('click', function () 
                             currentLayer instanceof L.Polyline ? 'Linje' : 'Unknown',
                 coordinates: getCoordinates(currentLayer),
                 comment: comment,
-                addedAt: timestamp,
-                lastEdited: timestamp
+                addedAt: formattedTimestamp,
+                lastEdited: formattedTimestamp
             });
         }
 
@@ -341,7 +350,8 @@ function addShapeWithComment(layer, type, comment) {
     drawnItems.addLayer(layer);
     var shapeId = L.stamp(layer);
     var timestamp = getCurrentTimestamp();
-    var popupContent = `<strong>ID: ${shapeId}</strong><br>${comment}<br><small>Added: ${timestamp}</small>`;
+    var formattedTimestamp = formatTimestamp(timestamp);
+    var popupContent = `<strong>ID: ${shapeId}</strong><br>${comment}<br><small>Lagt til: ${formattedTimestamp}</small>`;
     layer.bindPopup(popupContent);
 
     var shapeInfo = {
@@ -349,8 +359,8 @@ function addShapeWithComment(layer, type, comment) {
         type: type,
         coordinates: getCoordinates(layer),
         comment: comment,
-        addedAt: timestamp,
-        lastEdited: timestamp
+        addedAt: formattedTimestamp,
+        lastEdited: formattedTimestamp
     };
 
     shapesList.push(shapeInfo);
@@ -436,8 +446,8 @@ function updateShapesList() {
         li.innerHTML = `
             <div><strong>${shape.type}</strong> (ID: ${shape.id})</div>
             <div style="word-wrap: break-word; white-space: pre-wrap; margin: 5px 0;">${shape.comment}</div>
-            <div><small>Added: ${shape.addedAt}</small></div>
-            <div><small>Last edited: ${shape.lastEdited}</small></div>
+            <div><small>Lagt til: ${shape.addedAt}</small></div>
+            <div><small>Sist endret: ${shape.lastEdited}</small></div>
             <div>
                 <button onclick="editCorrection(${shape.id})">Rediger</button>
                 <button onclick="deleteCorrection(${shape.id})">Slett</button>
