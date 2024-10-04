@@ -30,6 +30,7 @@ namespace Kartverket_group2.Controllers
             return RedirectToAction("ViewShapes");
         }
 
+        [HttpGet]
         public ActionResult ViewShapes()
         {
             // Get the shape data from TempData
