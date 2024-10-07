@@ -12,9 +12,31 @@ document.getElementById('zoom-out').onclick = function () {
 document.getElementById('zoom-out').title = "Zoom ut";
 
 //Add map tilelayer (Map image)
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
-}).addTo(map);
+});
+var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
+var topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data: © OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap (CC-BY-SA)'
+});
+
+// Create a layer control object
+var baseLayers = {
+    "Standard": osmLayer,
+    "Satellittbilde": satelliteLayer,
+    "Topografisk": topoLayer
+};
+
+// Add the layer control to the map with a custom position
+var layerControl = L.control.layers(baseLayers, null, { position: 'topleft' }).addTo(map);
+
+// Add a custom CSS class to the layer control
+L.DomUtil.addClass(layerControl.getContainer(), 'custom-layer-control');
+
+// Set the default layer
+map.addLayer(osmLayer);
 
 // Initialize the FeatureGroup to store editable layers
 var drawnItems = new L.FeatureGroup();

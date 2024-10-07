@@ -524,3 +524,11 @@ html {
         bottom: calc(70px + 50px); /* Adjust based on the height of the save button plus some spacing */
     }
 }
+
+
+.custom-layer-control {
+    position: absolute;
+    top: 80px;
+    right: -0px;
+    z-index: 1000;
+}
