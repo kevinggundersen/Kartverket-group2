@@ -29,7 +29,7 @@ namespace Kartverket_group2.Controllers
 
             try
             {
-                List<Shape> shapes = JsonSerializer.Deserialize<List<Shape>>(shapeData, options);
+                List<Shape>? shapes = JsonSerializer.Deserialize<List<Shape>>(shapeData, options);
                 // Store the shape data in TempData for now (or in a database in the future)
                 TempData["ShapeData"] = shapeData;
                 return RedirectToAction("ViewShapes");
@@ -52,8 +52,12 @@ namespace Kartverket_group2.Controllers
             {
                 PropertyNameCaseInsensitive = true
             };
-
-            List<Shape> shapes = JsonSerializer.Deserialize<List<Shape>>(shapeData, options);
+            if (string.IsNullOrEmpty(shapeData))
+            {
+                // Handle the case where no data is sent
+                return View("ViewShapes");
+            }
+            List<Shape>? shapes = JsonSerializer.Deserialize<List<Shape>>(shapeData, options);
 
             // Pass the shapes list to the view
             return View(shapes);

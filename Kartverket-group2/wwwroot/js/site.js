@@ -24,6 +24,7 @@ var topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', 
 
 // Create a layer control object
 var baseLayers = {
+
     "Standard": osmLayer,
     "Satellittbilde": satelliteLayer,
     "Topografisk": topoLayer
@@ -34,6 +35,19 @@ var layerControl = L.control.layers(baseLayers, null, { position: 'topleft' }).a
 
 // Add a custom CSS class to the layer control
 L.DomUtil.addClass(layerControl.getContainer(), 'custom-layer-control');
+L.DomUtil.addClass(layerControl.getContainer(), 'custom-fa-icon');
+// Add the Font Awesome icon
+var toggleButton = layerControl.getContainer().querySelector('.leaflet-control-layers-toggle');
+var icon = document.createElement('i');
+icon.className = 'fa-solid fa-layer-group';
+toggleButton.appendChild(icon);
+
+// Add header to list of layers
+var toggleButtons = layerControl.getContainer().querySelector('.custom-layer-control .leaflet-control-layers-list');
+var header = document.createElement('h4');
+header.classList.add("Kartgrunnlagheader");
+header.innerHTML = 'Kartgrunnlag';
+toggleButtons.prepend(header);
 
 // Set the default layer
 map.addLayer(osmLayer);
@@ -142,6 +156,7 @@ document.getElementById('cancel-comment').addEventListener('click', function () 
     hideCommentModal(!isEditing); // Only remove layer if not editing
 });
 
+//Creation of the shape object
 document.getElementById('submit-comment').addEventListener('click', function () {
     var comment = document.getElementById('comment-input').value.trim();
     if (comment) {
@@ -162,9 +177,9 @@ document.getElementById('submit-comment').addEventListener('click', function () 
             shapesList.push({
                 id: shapeId,
                 type: currentLayer instanceof L.Marker ? 'Markør' :
-                    currentLayer instanceof L.Circle ? 'Sirkel' :
-                        currentLayer instanceof L.Polygon ? 'Polygon' :
-                            currentLayer instanceof L.Polyline ? 'Linje' : 'Unknown',
+                        currentLayer instanceof L.Circle ? 'Sirkel' :
+                            currentLayer instanceof L.Polygon ? 'Polygon' :
+                                currentLayer instanceof L.Polyline ? 'Linje' : 'Unknown',
                 coordinates: getCoordinates(currentLayer),
                 comment: comment,
                 addedAt: formattedTimestamp,
@@ -506,6 +521,7 @@ function updateShapesList() {
                     <button class="shapes-list-button" onclick="deleteCorrection(${shape.id})">Slett</button>
                 </div>
             `;
+            // Pan to shape when clicked in list
             li.onclick = function (e) {
                 if (e.target.tagName !== 'BUTTON') {
                     var layer = drawnItems.getLayer(shape.id);
@@ -531,7 +547,7 @@ function updateShapesList() {
 
     // Show the shapes list after updating
     document.getElementById('shapes-list-scroll').style.display = 'block';
-    document.getElementById('toggle-shapes-list').querySelector('i').className = 'fa-solid fa-chevron-up';
+    document.getElementById('toggle-shapes-list').querySelector('i').className = 'fa-solid fa-chevron-down';
 }
 
 // Add event listener for form submission

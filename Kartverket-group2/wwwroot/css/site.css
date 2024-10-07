@@ -62,18 +62,31 @@ html {
     background: white;
     border-radius: 4px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    top: 66px; /* 10px below navbar */
+    top: 66px;
     left: 10px;
+
 }
 
-    .custom-zoom-control button {
-        background: #fff;
-        border: none;
-        padding: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        border: 1px solid black;
-    }
+.custom-zoom-control button {
+    background: #fff;
+    color: #28A745;
+    border: none;
+    padding: 5px;
+    padding-left: 16.33px;
+    padding-right: 16.33px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+#zoom-in {
+    border-radius: 5px 5px 0px 0px;
+    border-bottom: 1px solid black;
+    border-top: 2px solid rgba(0,0,0,0.2);
+}
+#zoom-out {
+    border-radius: 0px 0px 5px 5px;
+    border-bottom: 2px solid rgba(0,0,0,0.2);
+}
 
 .custom-zoom-control button:hover {
     background: #f0f0f0;
@@ -171,6 +184,7 @@ html {
     font-size: 1.2em;
     cursor: pointer;
     padding: 5px;
+    color: #28A745;
 }
 
 #shapes-list-scroll {
@@ -256,6 +270,8 @@ html {
     transition: all 0.3s ease 0s;
     cursor: pointer;
     outline: none;
+    text-align: left;
+    height: 20px;
 }
 
 #markershapebutton {
@@ -310,10 +326,26 @@ html {
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
+    
 }
 
 .modal-buttons button {
     padding: 10px 20px;
+    
+    border-radius: 5px;
+    border: none;
+}
+#submit-comment {
+    background-color: #28A745;
+    color: white;
+}
+#cancel-comment {
+    background-color: red;
+    color: white;
+}
+
+#comment-input {
+    border-radius: 5px;
 }
 
 .userLocIcon {
@@ -336,6 +368,9 @@ html {
     bottom: 10px;
     right: 10px;
     z-index: 1000;
+}
+.leaflet-bar a, .leaflet-bar a:hover {
+    color: #28A745 !important;
 }
 
 .locate-button {
@@ -526,9 +561,100 @@ html {
 }
 
 
+/* Button and poput for switching map layers*/
 .custom-layer-control {
     position: absolute;
-    top: 80px;
+    top: 85px;
     right: -0px;
     z-index: 1000;
+
+}
+
+/* Adjust the size of the control */
+.custom-layer-control.leaflet-control-layers {
+    width: 45px;
+    height: 45px;
+    border-radius: 4px;
+    background-color: white;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+    border: none !important;
+    overflow: hidden;
+}
+
+.custom-fa-icon .leaflet-control-layers-toggle {
+    width: 45px;
+    height: 45px;
+    background-image: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none !important;
+}
+
+.custom-fa-icon .leaflet-control-layers-toggle i {
+    font-size: 25px;
+    color: #28a745;
+}
+
+
+/* Style the expanded layer control */
+.custom-layer-control.leaflet-control-layers-expanded {
+    width: auto;
+    height: auto;
+    padding: 10px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+}
+
+/* Style the list of layers */
+.custom-layer-control .leaflet-control-layers-list {
+    margin: 0;
+    padding: 0;
+}
+
+/* Remove list circles and style list items */
+.custom-layer-control .leaflet-control-layers-base label,
+.custom-layer-control .leaflet-control-layers-overlays label {
+    display: block;
+    padding: 8px 10px;
+    margin: 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Hide the default radio buttons and checkboxes */
+.custom-layer-control input[type="radio"],
+.custom-layer-control input[type="checkbox"] {
+    display: none;
+}
+
+/* Hover effect for list items */
+.custom-layer-control .leaflet-control-layers-base label:hover,
+.custom-layer-control .leaflet-control-layers-overlays label:hover {
+    background-color: #f0f0f0; /* Light gray background on hover */
+}
+
+/* Style for selected item */
+.custom-layer-control input:checked + span {
+    font-weight: bold;
+}
+
+/* Background color for selected item */
+.custom-layer-control input:checked + span {
+    border-radius: 5px;
+    background-color: #28A745; /* Light blue background for selected item */
+    color: white;
+    display: block;
+    padding: 8px 10px;
+    margin: -8px -10px; /* Compensate for parent padding */
+}
+
+/* Remove separator */
+.custom-layer-control .leaflet-control-layers-separator {
+    display: none;
+}
+
+.Kartgrunnlagheader {
+    font-size: 20px;
 }
