@@ -1,0 +1,158 @@
+﻿@model Kartverket_group2.Models.Submission
+@{
+    ViewData["Title"] = "Submission Details";
+}
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .details {
+            flex: 1;
+            padding-right: 20px;
+        }
+
+        #map {
+            flex: 1;
+            height: 500px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+    
+        select, button {
+            padding: 5px 10px;
+            margin-right: 10px;
+        }
+    
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<a href="@Url.Action("Admin")">Tilbake til Admin</a>
+<h2>Innmelding detailjer</h2>
+
+<div class="container">
+    <div class="details">
+        <h4>Innmelding ID: @Model.Id</h4>
+        <p>Tittel: @Model.Comment</p>
+        <p>Tidsstempel: @Model.Timestamp</p>
+        <form asp-action="UpdateStatus" asp-controller="Administration" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <label for="status">Status:</label>
+            <select name="status" id="status">
+                @foreach (var status in new[] { "Uåpnet", "Under arbeid", "Akseptert", "Avvist" })
+                {
+                    <option value="@status" selected="@(Model.Status == status)">@status</option>
+                }
+            </select>
+            <button type="submit">Endre Status</button>
+        </form>
+
+        <h3>Figurer:</h3>
+        <ul>
+            @foreach (var feature in Model.GeoJsonData.Features)
+            {
+                <li>
+                    <strong>@feature.Properties.Type</strong> (ID: @feature.Properties.Id)<br />
+                    Comment: @feature.Properties.Comment<br />
+                    Added: @feature.Properties.AddedAt<br />
+                    Last Edited: @feature.Properties.LastEdited<br />
+                    @if (feature.Properties.Type == "circle" && feature.Properties.Radius.HasValue)
+                    {
+                        <span>Koordinater: @($"{feature.Geometry.Coordinates}, {{radius: {feature.Properties.Radius}}}")</span>
+                    }
+                    else
+                    {
+                        <span>Coordinates: @feature.Geometry.Coordinates</span>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+    <div id="map" style="height: 500px; width: 500px;"></div>
+</div>
+
+<script>
+    var map = L.map('map', {
+        dragging: false,
+        touchZoom: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        zoomControl: false
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    var geoJsonData = @Html.Raw(Json.Serialize(Model.GeoJsonData));
+    console.log("Full GeoJSON data:", geoJsonData);
+
+    var featureGroup = L.featureGroup().addTo(map);
+    var bounds = L.latLngBounds();
+
+    geoJsonData.features.forEach(function (feature) {
+        console.log("Processing feature:", feature);
+
+        var layer;
+        switch (feature.properties.type.toLowerCase()) {
+            case 'circle':
+                console.log("Creating circle with:", feature.geometry.coordinates, feature.properties.radius);
+                if (feature.geometry.type === "Point" && feature.properties.radius) {
+                    var latlng = L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
+                    layer = L.circle(latlng, { radius: feature.properties.radius });
+
+                    // Extend bounds with a box around the circle
+                    var radiusInDegrees = feature.properties.radius / 111300; // rough approximation
+                    bounds.extend([latlng.lat - radiusInDegrees, latlng.lng - radiusInDegrees]);
+                    bounds.extend([latlng.lat + radiusInDegrees, latlng.lng + radiusInDegrees]);
+                }
+                break;
+            case 'marker':
+            case 'point':
+                layer = L.marker(L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]));
+                bounds.extend(layer.getLatLng());
+                break;
+            case 'polygon':
+                layer = L.polygon(feature.geometry.coordinates[0].map(coord => [coord[1], coord[0]]));
+                bounds.extend(layer.getBounds());
+                break;
+            case 'polyline':
+            case 'linestring':
+                layer = L.polyline(feature.geometry.coordinates.map(coord => [coord[1], coord[0]]));
+                bounds.extend(layer.getBounds());
+                break;
+        }
+
+        if (layer) {
+            layer.bindPopup(feature.properties.comment || "No comment");
+            featureGroup.addLayer(layer);
+        } else {
+            console.log("Failed to create layer for feature:", feature);
+        }
+    });
+
+    if (!bounds.isValid()) {
+        console.log("No valid bounds, setting default view");
+        map.setView([0, 0], 2);
+    } else {
+        console.log("Fitting to bounds:", bounds);
+        map.fitBounds(bounds, { padding: [50, 50] });
+    }
+</script>

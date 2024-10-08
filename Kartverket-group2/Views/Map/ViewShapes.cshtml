@@ -1,28 +1,36 @@
-﻿@model List<Kartverket_group2.Models.Shape>
+﻿@model Kartverket_group2.Models.GeoJsonFeatureCollection
 
-@{
-    ViewData["Title"] = "View Shapes";
-}
+<h2>Shapes</h2>
 
-<h2>Alle figurer</h2>
-
-@if (Model != null && Model.Count > 0)
+@if (Model.Features.Any())
 {
     <ul>
-        @foreach (var shape in Model)
+        @foreach (var feature in Model.Features)
         {
             <li>
-                <strong>ID:</strong> @shape.Id <br />
-                <strong>Type:</strong> @shape.Type <br />
-                <strong>Koordinater:</strong> @shape.Coordinates <br />
-                <strong>Beskrivelse:</strong> @shape.Comment <br />
-                <strong>Lagt til:</strong> @shape.addedAt <br />
-                <strong>Sist endret:</strong> @shape.lastEdited <br />
+                Type: @feature.Properties.Type<br />
+                @if (feature.Properties.Radius > 0)
+                {
+                    <span>Koordinater: @($"{feature.Geometry.Coordinates}, {{radius: {feature.Properties.Radius}}}")</span>
+                }
+                else
+                {
+                    <span>Koordinater: @feature.Geometry.Coordinates</span>
+                }
+                <br />
+               
+
+                Comment: @feature.Properties.Comment<br />
+                Added: @feature.Properties.AddedAt<br />
+                Last Edited: @feature.Properties.LastEdited
             </li>
         }
     </ul>
 }
 else
 {
-    <p>Ingen data tilgjengelig.</p>
+    <p>No shapes found.</p>
 }
+
+
+

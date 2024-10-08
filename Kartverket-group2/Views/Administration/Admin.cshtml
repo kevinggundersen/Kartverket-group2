@@ -1,10 +1,11 @@
-﻿@{
+﻿@model List<Kartverket_group2.Models.Submission>
+@{
     ViewData["Title"] = "Admin page";
 }
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Table Page</title>
+    <title>Submissions Table</title>
     <style>
         #adminsite {
             font-family: Arial, sans-serif;
@@ -12,23 +13,35 @@
             padding: 20px;
             background-color: #f0f0f0;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             background-color: white;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+
         th, td {
             border: 1px solid #ddd;
             padding: 12px;
             text-align: left;
         }
+
         th {
             background-color: #f2f2f2;
             font-weight: bold;
         }
+
         tr:nth-child(even) {
             background-color: #f9f9f9;
+        }
+
+        .view-details-btn {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -37,58 +50,28 @@
     <table>
         <thead>
             <tr>
+                <th>Action</th>
                 <th>ID</th>
-                <th>Bruker</th>
-                <th>Kommune</th>
-                <th>Dato</th>
+                <th>Kommentar</th>
+                <th>Timestamp</th>
+                <th>Antall figurer</th>
                 <th>Status</th>
-
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Data 1</td>
-                <td>Data 2</td>
-                <td>Data 3</td>
-                <td>Data 4</td>
-                <td>Data 5</td>
-            </tr>
-            <tr>
-                <td>Data 8</td>
-                <td>Data 9</td>
-                <td>Data 10</td>
-                <td>Data 11</td>
-                <td>Data 12</td>
-            </tr>
-            <tr>
-                <td>Data 1</td>
-                <td>Data 2</td>
-                <td>Data 3</td>
-                <td>Data 4</td>
-                <td>Data 5</td>
-            </tr>
-            <tr>
-                <td>Data 8</td>
-                <td>Data 9</td>
-                <td>Data 10</td>
-                <td>Data 11</td>
-                <td>Data 12</td>
-            </tr>
-            <tr>
-                <td>Data 1</td>
-                <td>Data 2</td>
-                <td>Data 3</td>
-                <td>Data 4</td>
-                <td>Data 5</td>
-            </tr>
-            <tr>
-                <td>Data 8</td>
-                <td>Data 9</td>
-                <td>Data 10</td>
-                <td>Data 11</td>
-                <td>Data 12</td>
-            </tr>
-            <!-- Add more rows as needed -->
+            @foreach (var submission in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="@Url.Action("ViewSubmissionDetails", new { id = submission.Id })" class="view-details-btn">View Details</a>
+                    </td>
+                    <td>@submission.Id</td>
+                    <td>@submission.Comment</td>
+                    <td>@submission.Timestamp</td>
+                    <td>@submission.GeoJsonData.Features.Count</td>
+                    <td>@submission.Status</td>
+                </tr>
+            }
         </tbody>
     </table>
 </body>
