@@ -35,14 +35,59 @@
             color: white;
             border: none;
             cursor: pointer;
+            border-radius: 5px;
         }
     
         button:hover {
             background-color: #45a049;
         }
+
+        .confirm-dialog {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            border-radius: 5px;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 30001;
+        }
+
+        .confirm-dialog button {
+            margin: 5px;
+                border-radius: 5px;
+        }
+
+        #confirmDelete{
+
+            background-color: gray;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 30000;
+        }
+
+        .shapeData{
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .shapeData:hover {
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
     </style>
 </head>
-
+<div id="submissionBody">
 <a href="@Url.Action("Admin")">Tilbake til Admin</a>
 <h2>Innmelding detailjer</h2>
 
@@ -67,7 +112,7 @@
         <ul>
             @foreach (var feature in Model.GeoJsonData.Features)
             {
-                <li>
+                <li data-feature-id="@feature.Properties.Id" class="shapeData">
                     <strong>@feature.Properties.Type</strong> (ID: @feature.Properties.Id)<br />
                     Comment: @feature.Properties.Comment<br />
                     Added: @feature.Properties.AddedAt<br />
@@ -84,17 +129,23 @@
             }
         </ul>
     </div>
+    <form id="deleteForm" asp-action="DeleteSubmission" asp-controller="Administration" method="post">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button type="button" onclick="showConfirmDialog()" style="background-color: #f44336;">Slett innmelding</button>
+    </form>
+    <div class="overlay" id="overlay"></div>
+    
     <div id="map" style="height: 500px; width: 500px;"></div>
 </div>
-
+<div class="confirm-dialog" id="confirmDialog">
+    <p>Er du sikker på at du vil slette denne innsendingen?</p>
+    <button id="confirmDelete" onclick="confirmDelete()">Ja</button>
+    <button id="cancelDelete" onclick="hideConfirmDialog()">Nei</button>
+</div>
+</div>
 <script>
     var map = L.map('map', {
-        dragging: false,
-        touchZoom: false,
-        scrollWheelZoom: false,
-        doubleClickZoom: false,
-        boxZoom: false,
-        zoomControl: false
+
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -106,6 +157,7 @@
 
     var featureGroup = L.featureGroup().addTo(map);
     var bounds = L.latLngBounds();
+    var featureLayers = {};
 
     geoJsonData.features.forEach(function (feature) {
         console.log("Processing feature:", feature);
@@ -143,6 +195,7 @@
         if (layer) {
             layer.bindPopup(feature.properties.comment || "No comment");
             featureGroup.addLayer(layer);
+            featureLayers[feature.properties.id] = layer; // Store the layer with its ID
         } else {
             console.log("Failed to create layer for feature:", feature);
         }
@@ -154,5 +207,39 @@
     } else {
         console.log("Fitting to bounds:", bounds);
         map.fitBounds(bounds, { padding: [50, 50] });
+    }
+
+    function showConfirmDialog() {
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('confirmDialog').style.display = 'block';
+    }
+
+    function hideConfirmDialog() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('confirmDialog').style.display = 'none';
+    }
+
+    function confirmDelete() {
+        document.getElementById('deleteForm').submit();
+    }
+
+    document.querySelectorAll('[data-feature-id]').forEach(function (element) {
+        element.addEventListener('click', function () {
+            var featureId = this.getAttribute('data-feature-id');
+            panToFeature(featureId);
+        });
+    });
+    function panToFeature(id) {
+        console.log('Panning to feature:', id);
+        var layer = featureLayers[id];
+        if (layer) {
+            console.log('Layer found:', layer);
+            if (layer.getBounds) {
+                map.fitBounds(layer.getBounds());
+            } else if (layer.getLatLng) {
+                map.setView(layer.getLatLng(), 16);
+            }
+            if (layer.getPopup()) layer.openPopup();
+        }
     }
 </script>

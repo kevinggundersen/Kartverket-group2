@@ -1,57 +1,78 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using Kartverket_group2.Data;
 using Kartverket_group2.Models;
-using System.Collections.Generic;
+using System.Threading.Tasks;
+using Kartverket_group2.Services;
+using System.Text.Json;
 
 namespace Kartverket_group2.Controllers
 {
     public class AdministrationController : Controller
     {
-        private static List<Submission> submissions = new List<Submission>();
+        private readonly ApplicationDbContext _context;
+        private readonly KartverketApiService _kartverketApiService;
+        private readonly ILogger<AdministrationController> _logger;
 
-        public IActionResult Index()
+        public AdministrationController(ApplicationDbContext context, KartverketApiService kartverketApiService, ILogger<AdministrationController> logger)
         {
-            return View();
+            _context = context;
+            _kartverketApiService = kartverketApiService;
+            _logger = logger;
+        }
+
+
+        public async Task<IActionResult> Admin()
+        {
+            var submissions = await _context.Submissions.ToListAsync();
+            return View(submissions);
         }
 
         [HttpPost]
-        public IActionResult SaveShapes(string shapeData)
+        public async Task<IActionResult> SaveShapes(string shapeData)
         {
             if (string.IsNullOrEmpty(shapeData))
             {
                 return RedirectToAction("Index", new { message = "No shape data received." });
             }
 
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-
             try
             {
-                Submission? submission = JsonSerializer.Deserialize<Submission>(shapeData, options);
-                if (submission != null)
+                var submission = JsonSerializer.Deserialize<Submission>(shapeData);
+
+                var firstFeature = submission.GeoJsonData.Features.FirstOrDefault();
+                if (firstFeature != null && firstFeature.Geometry.Type == "Point")
                 {
-                    submissions.Add(submission);
+                    var coordinates = (JsonElement)firstFeature.Geometry.Coordinates;
+                    var longitude = coordinates[0].GetDouble();
+                    var latitude = coordinates[1].GetDouble();
+
+                    try
+                    {
+                        submission.Municipality = await _kartverketApiService.GetMunicipalityAsync(longitude, latitude);
+                    }
+                    catch (HttpRequestException ex)
+                    {
+                        _logger.LogError(ex, "Error fetching municipality data from Kartverket API");
+                        submission.Municipality = "Unable to determine";
+                    }
                 }
+
+                _context.Submissions.Add(submission);
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction("Admin");
             }
             catch (JsonException ex)
             {
-                Console.WriteLine($"Error deserializing submission data: {ex.Message}");
+                _logger.LogError(ex, "Error deserializing submission data");
                 return RedirectToAction("Index", new { message = "Error processing shape data." });
             }
         }
 
-        public IActionResult Admin()
+        public async Task<IActionResult> ViewSubmissionDetails(long id)
         {
-            return View(submissions);
-        }
-
-        public IActionResult ViewSubmissionDetails(long id)
-        {
-            var submission = submissions.Find(s => s.Id == id);
+            var submission = await _context.Submissions.FindAsync(id);
             if (submission == null)
             {
                 return NotFound();
@@ -60,16 +81,29 @@ namespace Kartverket_group2.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateStatus(long id, string status)
+        public async Task<IActionResult> UpdateStatus(long id, string status)
         {
-            var submission = submissions.Find(s => s.Id == id);
+            var submission = await _context.Submissions.FindAsync(id);
             if (submission == null)
             {
                 return NotFound();
             }
 
             submission.Status = status;
+            await _context.SaveChangesAsync();
             return RedirectToAction("ViewSubmissionDetails", new { id = id });
+        }
+
+        [HttpPost]
+        public IActionResult DeleteSubmission(long id)
+        {
+            var submission = _context.Submissions.Find(id);
+            if (submission != null)
+            {
+                _context.Submissions.Remove(submission);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Admin");
         }
     }
 }

@@ -20,6 +20,12 @@
 # Include dlls if they're in the CommonReferences directory
 !*CommonReferences/*.dll
 ####################
+# Secret stuff #
+####################
+appsettings.json
+appsettings.development.json
+docker-compose.yml
+####################
 # VS Upgrade stuff #
 ####################
 UpgradeLog.XML
@@ -78,3 +84,6 @@ _[Ss]cripts
 *.nupkg
 *.ncrunchsolution
 *.dot[Cc]over
+/docker-compose.yml.example
+/Kartverket-group2/appsettings.json
+/Kartverket-group2/appsettings.Development.json

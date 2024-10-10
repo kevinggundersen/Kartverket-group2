@@ -42,6 +42,12 @@
             color: white;
             border: none;
             cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .view-details-btn:hover{
+            background-color: #45a049;
+            color: white;
         }
     </style>
 </head>
@@ -56,6 +62,7 @@
                 <th>Timestamp</th>
                 <th>Antall figurer</th>
                 <th>Status</th>
+                <th>Kommune</th>
             </tr>
         </thead>
         <tbody>
@@ -70,6 +77,7 @@
                     <td>@submission.Timestamp</td>
                     <td>@submission.GeoJsonData.Features.Count</td>
                     <td>@submission.Status</td>
+                    <td>@submission.Municipality</td>
                 </tr>
             }
         </tbody>

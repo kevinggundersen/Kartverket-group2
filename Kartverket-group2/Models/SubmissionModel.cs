@@ -18,5 +18,8 @@ namespace Kartverket_group2.Models
 
         [JsonPropertyName("status")]
         public string Status { get; set; } = "Uåpnet"; // Default status
+
+        [JsonPropertyName("municipality")]
+        public string Municipality { get; set; }
     }
 }
