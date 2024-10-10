@@ -24,6 +24,7 @@
 ####################
 appsettings.json
 appsettings.development.json
+docker-compose.yml
 ####################
 # VS Upgrade stuff #
 ####################
