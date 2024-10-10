@@ -28,8 +28,9 @@
 
 8. Open Package Manager Console and run the following commands to set up the database:
    ```
-   Add-Migration InitialCreate
-   Update-Database
+   dotnet tool install --global dotnet-ef
+   dotnet restore
+   dotnet ef database update
    ```
 
 9. Build and run the project.
