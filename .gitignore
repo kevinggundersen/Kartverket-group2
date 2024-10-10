@@ -20,6 +20,11 @@
 # Include dlls if they're in the CommonReferences directory
 !*CommonReferences/*.dll
 ####################
+# Secret stuff #
+####################
+appsettings.json
+appsettings.development.json
+####################
 # VS Upgrade stuff #
 ####################
 UpgradeLog.XML
