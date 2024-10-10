@@ -26,7 +26,7 @@
    - Microsoft.EntityFrameworkCore.Tools
    - Microsoft.EntityFrameworkCore.Design
 
-8. Open Package Manager Console and run the following commands to set up the database:
+8. Open Terminal in project and run the following commands to set up the database:
    ```
    dotnet tool install --global dotnet-ef
    dotnet restore
