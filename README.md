@@ -15,16 +15,21 @@
    ```json
    "DefaultConnection": "Server=localhost;Port=3306;Database=your_database_name;User=your_username;Password=your_password;"
    ```
+   
+5. Change name of `docker-compose.yml.example` to `docker-compose.yml` and update the connection string with your local database details:
+   ```yml
+   "ConnectionStrings__DefaultConnection=Server=db;Port=3306;Database=kartverket_db;User=root;Password=your_password;"
+   ```
 
-5. Install the required NuGet packages:
+7. Install the required NuGet packages:
    - Pomelo.EntityFrameworkCore.MySql
    - Microsoft.EntityFrameworkCore.Tools
    - Microsoft.EntityFrameworkCore.Design
 
-6. Open Package Manager Console and run the following commands to set up the database:
+8. Open Package Manager Console and run the following commands to set up the database:
    ```
    Add-Migration InitialCreate
    Update-Database
    ```
 
-7. Build and run the project.
+9. Build and run the project.
