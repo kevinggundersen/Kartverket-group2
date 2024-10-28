@@ -185,10 +185,10 @@ document.getElementById('submit-comment').addEventListener('click', function () 
 function showShapeSelectionPopup(latlng) {
     var popupContent = L.DomUtil.create('div', 'shape-selection-popup');
     popupContent.innerHTML = `
-        <button class="shape-button" id="markershapebutton"   data-shape="Marker">      <i class="fa-solid fa-location-dot"></i> Markør  </button>
-        <button class="shape-button" id="circleshapebutton"   data-shape="Circle">      <i class="fa-regular fa-circle"></i>     Sirkel  </button>
-        <button class="shape-button" id="polylineshapebutton" data-shape="Polyline">    <i class="fa-solid fa-minus"></i>        Linje   </button>
-        <button class="shape-button" id="polygonshapebutton"  data-shape="Polygon">     <i class="fa-solid fa-diamond"></i>      Polygon </button>
+        <button class="shape-button" id="markershapebutton"   data-shape="Marker" title="Best for å vise nøyaktig punkt">      <i class="fa-solid fa-location-dot"></i> Markør  </button>
+        <button class="shape-button" id="circleshapebutton"   data-shape="Circle" title="Best for å vise ngenerelt område">      <i class="fa-regular fa-circle"></i>     Sirkel  </button>
+        <button class="shape-button" id="polylineshapebutton" data-shape="Polyline" title="Best for å vise ">    <i class="fa-solid fa-minus"></i>        Linje   </button>
+        <button class="shape-button" id="polygonshapebutton"  data-shape="Polygon" title="Best for å markere grensene for feilen">     <i class="fa-solid fa-diamond"></i>      Polygon </button>
     `;
 
     // Add click event listeners to buttons

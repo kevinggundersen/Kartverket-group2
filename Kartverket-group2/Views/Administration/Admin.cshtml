@@ -7,79 +7,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submissions Table</title>
     <style>
-        #adminsite {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f0f0f0;
-        }
+    #adminsite {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f0f0;
+        /* Set a max height for the container */
+        height: calc(100vh - 120px); /* Adjust 120px based on your header/footer height */
+        overflow: hidden; /* Prevent body scroll */
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+    .table-container {
+        position: relative;
+        max-height: calc(100vh - 180px); /* Adjust based on your needs */
+        overflow: auto;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background-color: white;
+    }
 
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
+    thead {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background-color: #f2f2f2;
+    }
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+        border: 1px solid #ddd;
+        border-bottom: 2px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
 
-        .view-details-btn {
-            padding: 5px 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
+    td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+        background-color: white;
+    }
 
-        .view-details-btn:hover{
-            background-color: #45a049;
-            color: white;
-        }
-    </style>
+    tr:nth-child(even) td {
+        background-color: #f9f9f9;
+    }
+
+    .view-details-btn {
+        padding: 5px 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .view-details-btn:hover {
+        background-color: #45a049;
+        color: white;
+    }
+
+    
+</style>
 </head>
 <body class="adminsite">
     <h2>Innsendinger</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Action</th>
-                <th>ID</th>
-                <th>Kommentar</th>
-                <th>Timestamp</th>
-                <th>Antall figurer</th>
-                <th>Status</th>
-                <th>Kommune</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var submission in Model)
-            {
+    <div class="table-container">
+        <table>
+            <thead>
                 <tr>
-                    <td>
-                        <a href="@Url.Action("ViewSubmissionDetails", new { id = submission.Id })" class="view-details-btn">View Details</a>
-                    </td>
-                    <td>@submission.Id</td>
-                    <td>@submission.Comment</td>
-                    <td>@submission.Timestamp</td>
-                    <td>@submission.GeoJsonData.Features.Count</td>
-                    <td>@submission.Status</td>
-                    <td>@submission.Municipality</td>
+                    <th>Action</th>
+                    <th>ID</th>
+                    <th>Kommentar</th>
+                    <th>Timestamp</th>
+                    <th>Antall figurer</th>
+                    <th>Status</th>
+                    <th>Kommune</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var submission in Model)
+                {
+                    <tr>
+                        <td>
+                            <a href="@Url.Action("ViewSubmissionDetails", new { id = submission.Id })" class="view-details-btn">View Details</a>
+                        </td>
+                        <td>@submission.Id</td>
+                        <td>@submission.Comment</td>
+                        <td>@submission.Timestamp</td>
+                        <td>@submission.GeoJsonData.Features.Count</td>
+                        <td>@submission.Status</td>
+                        <td>@submission.Municipality</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </body>
