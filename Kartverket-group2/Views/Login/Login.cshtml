@@ -5,24 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
+    <link rel="stylesheet" href="~/css/site.css" />
 
 </head>
 
-<body> 
+<body class="login-page"> 
     <div id="background-overlay"></div>
-    
-    <img src="~/Images/kart-bakgrunn.png" alt="Kartbilde" style="position:fixed; display: flex; height: 95%; width: 100%; right: 0; left: 0; top: 0%; bottom: 5%;  z-index: -2;" />
-    
-        <div id="login-container">
-            <h2>Logg inn</h2>
-            <form>
+    <div id="login-container">
+         <h2>Logg inn</h2>
+         <form>
                 <input type="text" placeholder="Epost/Brukernavn" required>
                 <input type="password" placeholder="Passord" required>
                 <button type="submit" id="submit-button">Logg inn</button>
-            </form>
-            <div id="register-link">
-                <p>Har du ikke bruker? <a href="Register">Registrer deg her</a></p>
-            </div>
-        </div>
+         </form>
+                <div id="register-link">
+                    <p>Har du ikke bruker? <a href="Register">Registrer deg her</a></p>
+                </div>
+    </div>
    
 </body>

@@ -676,6 +676,17 @@ html {
 
 /*login stuff*/
 
+body.login-page {
+    background-image: url('/Images/kart-bakgrunn.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    z-index: -2;
+}
+
 #login-container {
     background-color: white;
     padding: 2rem;
@@ -687,14 +698,25 @@ html {
     flex-direction: column;
 }
 
+#register-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
 input {
     margin: 0.5rem 0;
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 3px;
-    display: flex;
-    flex-direction: column;
-   /* width: 100%;*/
+    width: 100%;
    
 }
 
@@ -714,7 +736,12 @@ input {
         background-color: #23923d;
     }
 
-.register-link {
+#register-link {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+#login-link {
     margin-top: 1rem;
     text-align: center;
 }
