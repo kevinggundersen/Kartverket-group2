@@ -85,6 +85,31 @@
             background-color: #f0f0f0;
             cursor: pointer;
         }
+
+        .shapes-list {
+            max-height: 400px; /* Adjust this value as needed */
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+            .shapes-list ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .shapes-list li {
+                margin-bottom: 10px;
+                padding: 10px;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+                .shapes-list li:last-child {
+                    border-bottom: none;
+                }
     </style>
 </head>
 <div id="submissionBody">
@@ -109,25 +134,27 @@
         </form>
 
         <h3>Figurer:</h3>
-        <ul>
-            @foreach (var feature in Model.GeoJsonData.Features)
-            {
-                <li data-feature-id="@feature.Properties.Id" class="shapeData">
-                    <strong>@feature.Properties.Type</strong> (ID: @feature.Properties.Id)<br />
-                    Comment: @feature.Properties.Comment<br />
-                    Added: @feature.Properties.AddedAt<br />
-                    Last Edited: @feature.Properties.LastEdited<br />
-                    @if (feature.Properties.Type == "circle" && feature.Properties.Radius.HasValue)
-                    {
-                        <span>Koordinater: @($"{feature.Geometry.Coordinates}, {{radius: {feature.Properties.Radius}}}")</span>
-                    }
-                    else
-                    {
-                        <span>Coordinates: @feature.Geometry.Coordinates</span>
-                    }
-                </li>
-            }
-        </ul>
+        <div class="shapes-list">
+            <ul>
+                @foreach (var feature in Model.GeoJsonData.Features)
+                {
+                    <li data-feature-id="@feature.Properties.Id" class="shapeData">
+                        <strong>@feature.Properties.Type</strong> (ID: @feature.Properties.Id)<br />
+                        Comment: @feature.Properties.Comment<br />
+                        Added: @feature.Properties.AddedAt<br />
+                        Last Edited: @feature.Properties.LastEdited<br />
+                        @if (feature.Properties.Type == "circle" && feature.Properties.Radius.HasValue)
+                        {
+                            <span>Koordinater: @($"{feature.Geometry.Coordinates}, {{radius: {feature.Properties.Radius}}}")</span>
+                        }
+                        else
+                        {
+                            <span>Coordinates: @feature.Geometry.Coordinates</span>
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
     </div>
     <form id="deleteForm" asp-action="DeleteSubmission" asp-controller="Administration" method="post">
         <input type="hidden" name="id" value="@Model.Id" />
