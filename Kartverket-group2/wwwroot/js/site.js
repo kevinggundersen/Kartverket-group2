@@ -448,7 +448,7 @@ document.getElementById('shapeForm').addEventListener('submit', function (e) {
         // Create the submission object
         submission.id = Date.now(); // Use timestamp as ID
         submission.comment = submissionComment;
-        submission.timestamp = new Date().toISOString();
+        submission.timestamp = formatTimestamp(new Date().toISOString());
         submission.geoJsonData = geoJsonData;
 
         // Update the hidden input field with the submission data

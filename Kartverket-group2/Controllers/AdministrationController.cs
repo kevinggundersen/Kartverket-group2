@@ -41,22 +41,23 @@ namespace Kartverket_group2.Controllers
                 var submission = JsonSerializer.Deserialize<Submission>(shapeData);
 
                 var firstFeature = submission.GeoJsonData.Features.FirstOrDefault();
+                
                 if (firstFeature != null)
                 {
                     try
                     {
                         var (longitude, latitude) = GeoJsonCoordinateExtractor.ExtractFirstCoordinates(firstFeature.Geometry);
-                        submission.Municipality = await _kartverketApiService.GetMunicipalityAsync(longitude, latitude);
+                        submission.Municipalitynr = await _kartverketApiService.GetMunicipalityNumberAsync(longitude, latitude);
                     }
                     catch (HttpRequestException ex)
                     {
                         _logger.LogError(ex, "Error fetching municipality data from Kartverket API");
-                        submission.Municipality = "Unable to determine";
+                        submission.Municipalitynr = "Unable to determine";
                     }
                     catch (Exception ex)
                     {
                         _logger.LogError(ex, "Error extracting coordinates from geometry");
-                        submission.Municipality = "Unable to determine";
+                        submission.Municipalitynr = "Unable to determine";
                     }
                 }
 

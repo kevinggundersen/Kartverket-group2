@@ -17,19 +17,33 @@ namespace Kartverket_group2.Services
             _logger = logger;
         }
 
-        public async Task<string> GetMunicipalityAsync(double longitude, double latitude)
+        
+
+        public async Task<string> GetMunicipalityNumberAsync(double longitude, double latitude)
+        {
+            var jsonDocument = await GetKartverketDataAsync(longitude, latitude);
+
+            if (jsonDocument.RootElement.TryGetProperty("kommunenummer", out var kommunenummerElement) &&
+                kommunenummerElement.ValueKind == JsonValueKind.String)
+            {
+                return kommunenummerElement.GetString();
+            }
+
+            _logger.LogError("Property 'kommunenummer' not found or is not a string in the response.");
+            throw new JsonException("Property 'kommunenummer' not found or is not a string in the response.");
+        }
+
+        private async Task<JsonDocument> GetKartverketDataAsync(double longitude, double latitude)
         {
             // Ensure coordinates are correctly formatted
             var formattedLongitude = longitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
             var formattedLatitude = latitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
             // The API expects coordinates in EUREF89 UTM zone 33N (EPSG:25833)
-            // You might need to convert your coordinates if they're not in this system
             var url = $"{BaseUrl}?nord={formattedLatitude}&ost={formattedLongitude}&koordsys=4258";
             _logger.LogInformation("Requesting URL: {Url}", url);
-            var response = await _httpClient.GetAsync(url);
 
-            _logger.LogInformation("Requesting URL: {Url}", url);
+            var response = await _httpClient.GetAsync(url);
 
             if (response == null)
             {
@@ -40,20 +54,14 @@ namespace Kartverket_group2.Services
             if (!response.IsSuccessStatusCode)
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
-                _logger.LogError("API request failed with status code {StatusCode}. Error: {ErrorContent}", response.StatusCode, errorContent);
-                throw new HttpRequestException($"API request failed with status code {response.StatusCode}. Error: {errorContent}");
+                _logger.LogError("API request failed with status code {StatusCode}. Error: {ErrorContent}",
+                    response.StatusCode, errorContent);
+                throw new HttpRequestException(
+                    $"API request failed with status code {response.StatusCode}. Error: {errorContent}");
             }
 
             var content = await response.Content.ReadAsStringAsync();
-            var jsonDocument = JsonDocument.Parse(content);
-
-            if (jsonDocument.RootElement.TryGetProperty("kommunenavn", out var kommunenavnElement) && kommunenavnElement.ValueKind == JsonValueKind.String)
-            {
-                return kommunenavnElement.GetString();
-            }
-
-            _logger.LogError("Property 'kommunenavn' not found or is not a string in the response.");
-            throw new JsonException("Property 'kommunenavn' not found or is not a string in the response.");
+            return JsonDocument.Parse(content);
         }
     }
 }

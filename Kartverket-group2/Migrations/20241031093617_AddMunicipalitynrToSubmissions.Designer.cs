@@ -3,6 +3,7 @@ using Kartverket_group2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kartverket_group2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241031093617_AddMunicipalitynrToSubmissions")]
+    partial class AddMunicipalitynrToSubmissions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,6 +42,11 @@ namespace Kartverket_group2.Migrations
                         .IsRequired()
                         .HasColumnType("longtext")
                         .HasAnnotation("Relational:JsonPropertyName", "geoJsonData");
+
+                    b.Property<string>("Municipality")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasAnnotation("Relational:JsonPropertyName", "municipality");
 
                     b.Property<string>("Municipalitynr")
                         .IsRequired()

@@ -114,12 +114,13 @@
 </head>
 <div id="submissionBody">
 <a href="@Url.Action("Admin")">Tilbake til Admin</a>
-<h2>Innmelding detailjer</h2>
 
 <div class="container">
     <div class="details">
         <h4>Innmelding ID: @Model.Id</h4>
+        <p>Bruker: BrukerID: </p>
         <p>Tittel: @Model.Comment</p>
+        <p>Kommunenummer: @Model.Municipalitynr</p>
         <p>Tidsstempel: @Model.Timestamp</p>
         <form asp-action="UpdateStatus" asp-controller="Administration" method="post">
             <input type="hidden" name="id" value="@Model.Id" />
@@ -140,16 +141,16 @@
                 {
                     <li data-feature-id="@feature.Properties.Id" class="shapeData">
                         <strong>@feature.Properties.Type</strong> (ID: @feature.Properties.Id)<br />
-                        Comment: @feature.Properties.Comment<br />
-                        Added: @feature.Properties.AddedAt<br />
-                        Last Edited: @feature.Properties.LastEdited<br />
+                        Kommentar: @feature.Properties.Comment<br />
+                        Lagt til: @feature.Properties.AddedAt<br />
+                        Sist endret: @feature.Properties.LastEdited<br />
                         @if (feature.Properties.Type == "circle" && feature.Properties.Radius.HasValue)
                         {
                             <span>Koordinater: @($"{feature.Geometry.Coordinates}, {{radius: {feature.Properties.Radius}}}")</span>
                         }
                         else
                         {
-                            <span>Coordinates: @feature.Geometry.Coordinates</span>
+                            <span>Koordinater: @feature.Geometry.Coordinates</span>
                         }
                     </li>
                 }
@@ -220,7 +221,9 @@
         }
 
         if (layer) {
-            layer.bindPopup(feature.properties.comment || "No comment");
+
+            var popupContent = `ID: ${feature.properties.id}<br>${feature.properties.comment}`;
+            layer.bindPopup(popupContent, { className: 'wrapped-popup' });
             featureGroup.addLayer(layer);
             featureLayers[feature.properties.id] = layer; // Store the layer with its ID
         } else {

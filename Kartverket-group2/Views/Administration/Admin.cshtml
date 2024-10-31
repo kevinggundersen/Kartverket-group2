@@ -79,7 +79,7 @@
 </style>
 </head>
 <body class="adminsite">
-    <h2>Innsendinger</h2>
+
     <div class="table-container">
         <table>
             <thead>
@@ -90,7 +90,7 @@
                     <th>Timestamp</th>
                     <th>Antall figurer</th>
                     <th>Status</th>
-                    <th>Kommune</th>
+                    <th>Kommunenummer</th>
                 </tr>
             </thead>
             <tbody>
@@ -98,14 +98,14 @@
                 {
                     <tr>
                         <td>
-                            <a href="@Url.Action("ViewSubmissionDetails", new { id = submission.Id })" class="view-details-btn">View Details</a>
+                            <a href="@Url.Action("ViewSubmissionDetails", new { id = submission.Id })" class="view-details-btn">Åpne</a>
                         </td>
                         <td>@submission.Id</td>
                         <td>@submission.Comment</td>
                         <td>@submission.Timestamp</td>
                         <td>@submission.GeoJsonData.Features.Count</td>
                         <td>@submission.Status</td>
-                        <td>@submission.Municipality</td>
+                        <td>@submission.Municipalitynr</td>
                     </tr>
                 }
             </tbody>

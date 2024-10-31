@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿
 <Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
@@ -8,6 +8,7 @@
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>kartverket-group2</DockerServiceName>
+    <UserSecretsId>ad37cb10-0e67-4952-b8f8-51c8eec71bb9</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.yml.example" />
