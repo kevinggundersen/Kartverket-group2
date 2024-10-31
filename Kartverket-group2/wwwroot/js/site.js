@@ -13,13 +13,35 @@ var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/se
 var topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
     attribution: 'Map data: © OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap (CC-BY-SA)'
 });
+var turLayer = L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/toporaster/default/webmercator/{z}/{y}/{x}.png', {
+    attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>'
+})
+
+var sjoLayer = L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', {
+    attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>'
+})
+
 
 // Create a layer control object
 var baseLayers = {
     "Standard": osmLayer,
     "Satellittbilde": satelliteLayer,
-    "Topografisk": topoLayer
+    "Topografisk": topoLayer,
+    "Turkart": turLayer,
+    "Sjøkart": sjoLayer
 };
+
+var activeTileLayer = "Standard"; // Default layer
+
+// Add event listener to track the active tile layer
+map.on('baselayerchange', function (event) {
+    activeTileLayer = event.name;
+});
+
+// Function to get the active tile layer
+function getActiveTileLayer() {
+    return activeTileLayer;
+}
 
 // Add the layer control to the map with a custom position
 var layerControl = L.control.layers(baseLayers, null, { position: 'topleft' }).addTo(map);
@@ -444,6 +466,12 @@ document.getElementById('shapeForm').addEventListener('submit', function (e) {
             // User cancelled the prompt
             return;
         }
+
+        // Get the active tile layer
+        var activeTileLayer = getActiveTileLayer();
+
+        // Add the active tile layer to the geoJsonData
+        geoJsonData.activeTileLayer = activeTileLayer;
 
         // Create the submission object
         submission.id = Date.now(); // Use timestamp as ID

@@ -9,6 +9,9 @@ namespace Kartverket_group2.Models
 
         [JsonPropertyName("features")]
         public List<GeoJsonFeature> Features { get; set; } = new List<GeoJsonFeature>();
+
+        [JsonPropertyName("activeTileLayer")]
+        public string ActiveTileLayer { get; set; } // New property
     }
 
     public class GeoJsonFeature

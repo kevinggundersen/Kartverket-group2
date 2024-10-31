@@ -118,10 +118,11 @@
 <div class="container">
     <div class="details">
         <h4>Innmelding ID: @Model.Id</h4>
-        <p>Bruker: BrukerID: </p>
-        <p>Tittel: @Model.Comment</p>
-        <p>Kommunenummer: @Model.Municipalitynr</p>
-        <p>Tidsstempel: @Model.Timestamp</p>
+        <p><strong>Bruker:</strong> BrukerID: </p>
+        <p><strong>Tittel:</strong> @Model.Comment</p>
+        <p><strong>Kommunenummer:</strong> @Model.Municipalitynr</p>
+        <p><strong>Tidsstempel:</strong> @Model.Timestamp</p>
+        <p><strong>Kartgrunnlag:</strong> @Model.GeoJsonData.ActiveTileLayer</p> <!-- Display active tile layer -->
         <form asp-action="UpdateStatus" asp-controller="Administration" method="post">
             <input type="hidden" name="id" value="@Model.Id" />
             <label for="status">Status:</label>
