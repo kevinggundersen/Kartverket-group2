@@ -1,4 +1,4 @@
-﻿@model List<Kartverket_group2.Models.Submission>
+﻿@model Kartverket_group2.Models.AdminViewModel
 @{
     ViewData["Title"] = "Admin page";
 }
@@ -53,6 +53,12 @@
         padding: 12px;
         text-align: left;
         background-color: white;
+        
+    }
+    #comment {
+        overflow-y:auto;
+        max-width: 150px;
+        min-width: 75px;
     }
 
     tr:nth-child(even) td {
@@ -75,10 +81,41 @@
         color: white;
     }
 
+    .pagination a {
+        padding: 8px;
+        text-decoration: none;
+        border: 1px solid #ddd;
+        margin: 0 2px;
+    }
+
+    .pagination a.active {
+        font-weight: bold;
+        color: white;
+        background-color: #4CAF50;
+    }
     
 </style>
 </head>
 <body class="adminsite">
+
+    <form method="get" action="@Url.Action("Admin", "Administration")">
+        <label for="statusFilter">Status:</label>
+        <div>
+            <input type="checkbox" id="statusFilter_Avpåvist" name="statusFilter" value="Avvist" /> <label for="statusFilter_Avpåvist">Avvist</label>
+            <input type="checkbox" id="statusFilter_UnderArb" name="statusFilter" value="Under arbeid" /> <label for="statusFilter_UnderArb">Under arbeid</label>
+            <input type="checkbox" id="statusFilter_Akseptert" name="statusFilter" value="Akseptert" /> <label for="statusFilter_Akseptert">Akseptert</label>
+        </div>
+
+        <label for="municipalityMin">Municipality Number (Range):</label>
+        <input type="number" id="municipalityMin" name="municipalityMin" placeholder="Min" />
+        <input type="number" id="municipalityMax" name="municipalityMax" placeholder="Max" />
+
+        <label for="pageSize">Results per page:</label>
+        <input type="number" id="pageSize" name="pageSize" value="@Model.PageSize" min="1" />
+
+        <button type="submit">Search</button>
+    </form>
+
 
     <div class="table-container">
         <table>
@@ -94,14 +131,14 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var submission in Model)
+                @foreach (var submission in Model.Submissions)
                 {
                     <tr>
                         <td>
                             <a href="@Url.Action("ViewSubmissionDetails", new { id = submission.Id })" class="view-details-btn">Åpne</a>
                         </td>
                         <td>@submission.Id</td>
-                        <td>@submission.Comment</td>
+                        <td id="comment">@submission.Comment</td>
                         <td>@submission.Timestamp</td>
                         <td>@submission.GeoJsonData.Features.Count</td>
                         <td>@submission.Status</td>
@@ -110,5 +147,45 @@
                 }
             </tbody>
         </table>
+    </div>
+
+    <div class="pagination" style="margin-bottom: 80px; display: flex; justify-content: center;">
+        <!-- First page button (only show if not on the first page) -->
+        @if (Model.CurrentPage > 1)
+        {
+            <a href="@Url.Action("Admin", new { page = 1, pageSize = Model.PageSize, statusFilter = ViewData["statusFilter"], municipalityFilter = ViewData["municipalityFilter"] })">Første</a>
+        }
+
+        <!-- Calculate start and end for nearby pages -->
+        @{
+            int nearbyPages = 3; // Set the number of pages to display on each side of the current page
+            int startPage = Math.Max(1, Model.CurrentPage - nearbyPages);
+            int endPage = Math.Min(Model.TotalPages, Model.CurrentPage + nearbyPages);
+        }
+
+        <!-- Previous page button (only show if not on the first page) -->
+        @if (Model.CurrentPage > 1)
+        {
+            <a href="@Url.Action("Admin", new { page = Model.CurrentPage - 1, pageSize = Model.PageSize, statusFilter = ViewData["statusFilter"], municipalityFilter = ViewData["municipalityFilter"] })">Forrige</a>
+        }
+
+        <!-- Page number links for nearby pages -->
+        @for (int i = startPage; i <= endPage; i++)
+        {
+            <a href="@Url.Action("Admin", new { page = i, pageSize = Model.PageSize, statusFilter = ViewData["statusFilter"], municipalityFilter = ViewData["municipalityFilter"] })"
+               class="@(Model.CurrentPage == i ? "active" : "")">@i</a>
+        }
+
+        <!-- Next page button (only show if not on the last page) -->
+        @if (Model.CurrentPage < Model.TotalPages)
+        {
+            <a href="@Url.Action("Admin", new { page = Model.CurrentPage + 1, pageSize = Model.PageSize, statusFilter = ViewData["statusFilter"], municipalityFilter = ViewData["municipalityFilter"] })">Neste</a>
+        }
+
+        <!-- Last page button (only show if not on the last page) -->
+        @if (Model.CurrentPage < Model.TotalPages)
+        {
+            <a href="@Url.Action("Admin", new { page = Model.TotalPages, pageSize = Model.PageSize, statusFilter = ViewData["statusFilter"], municipalityFilter = ViewData["municipalityFilter"] })">Siste</a>
+        }
     </div>
 </body>

@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Kartverket_group2.Models;
 using System.Text.Json;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Kartverket_group2.Data
 {

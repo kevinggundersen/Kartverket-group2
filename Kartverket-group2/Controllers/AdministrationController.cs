@@ -22,10 +22,40 @@ namespace Kartverket_group2.Controllers
         }
 
 
-        public async Task<IActionResult> Admin()
+        public async Task<IActionResult> Admin(string statusFilter, string municipalityFilter, int page = 1, int pageSize = 10)
         {
-            var submissions = await _context.Submissions.ToListAsync();
-            return View(submissions);
+            var query = _context.Submissions.AsQueryable();
+
+            // Multi-status filter
+            if (!string.IsNullOrEmpty(statusFilter))
+            {
+                var statuses = statusFilter.Split(','); // Split the comma-separated statuses
+                query = query.Where(s => statuses.Contains(s.Status));
+            }
+
+            if (!string.IsNullOrEmpty(municipalityFilter))
+            {
+                query = query.Where(s => s.Municipalitynr == municipalityFilter);
+            }
+
+            // Total count for pagination
+            int totalItems = await query.CountAsync();
+
+            // Apply pagination
+            var submissions = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var viewModel = new AdminViewModel
+            {
+                Submissions = submissions,
+                CurrentPage = page,
+                PageSize = pageSize,
+                TotalItems = totalItems
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
