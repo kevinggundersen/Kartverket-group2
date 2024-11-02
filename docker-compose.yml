@@ -12,7 +12,7 @@ services:
         condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=db;Port=3306;Database=kartverket_db;User=root;Password=Innebandy1999;
+      - ConnectionStrings__DefaultConnection=Server=db;Port=${DB_PORT};Database=${DB_NAME};User=${DB_USER};Password=${DB_PASSWORD};
     healthcheck:
       test: ["CMD", "dotnet", "Kartverket-group2.dll", "--health-check"]
       interval: 30s
@@ -23,8 +23,10 @@ services:
   db:
     image: mariadb:latest
     environment:
-      MYSQL_ROOT_PASSWORD: Innebandy1999
-      MYSQL_DATABASE: kartverket_db
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mariadb_data:/var/lib/mysql
     ports:
