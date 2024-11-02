@@ -182,13 +182,77 @@
     th a:hover {
         color: #4CAF50;
     }
+
+    .filter-btn, .reset-btn {
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+    .filter-btn {
+        background-color: #4CAF50;
+        color: white;
+        border: 1px solid #45a049;
+    }
+
+    .filter-btn:hover {
+        background-color: #45a049;
+    }
+
+    .reset-btn {
+        background-color: #6c757d;
+        color: white;
+        border: 1px solid #5a6268;
+    }
+
+    .reset-btn:hover {
+        background-color: #5a6268;
+        color: white;
+    }
+
+    /* Style the form to better align elements */
+    #filterForm {
+        margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+    }
+
+    #filterForm div {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    #filterForm input[type="number"] {
+        width: 80px;
+        padding: 4px 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    #filterForm label {
+        margin-right: 5px;
+    }
 </style>
 </head>
 <body class="adminsite">
 
-    <form method="get" action="@Url.Action("Admin", "Administration")">
+    <form method="get" action="@Url.Action("Admin", "Administration")" id="filterForm">
         <div>
+            
+
             <label for="statusFilter"><strong>Status:</strong></label>
+
+            <input type="checkbox" id="statusFilter_Uapnet" name="statusFilter" value="Uåpnet"
+            @(Model.StatusFilter?.Contains("Uåpnet") == true ? "checked" : "") />
+            <label for="statusFilter_Uapnet">Uåpnet</label>
+
             <input type="checkbox" id="statusFilter_Avpåvist" name="statusFilter" value="Avvist"
             @(Model.StatusFilter?.Contains("Avvist") == true ? "checked" : "") />
             <label for="statusFilter_Avpåvist">Avvist</label>
@@ -206,14 +270,15 @@
         <input type="number" id="municipalityMin" name="municipalityMin" placeholder="Min" value="@Model.MunicipalityMin" />
         <input type="number" id="municipalityMax" name="municipalityMax" placeholder="Max" value="@Model.MunicipalityMax" />
 
-        <label for="pageSize"><strong>Resultat per side</strong></label>
+        <label for="pageSize"><strong>Resultat per side:</strong></label>
         <input type="number" id="pageSize" name="pageSize" value="@Model.PageSize" min="1" />
 
         <!-- Add hidden fields to maintain sort state when filtering -->
         <input type="hidden" name="sortColumn" value="@Model.CurrentSortColumn" />
         <input type="hidden" name="sortDescending" value="@Model.SortDescending" />
 
-        <button type="submit">Søk</button>
+        <button type="submit" class="filter-btn">Søk</button>
+        <a href="@Url.Action("Admin", "Administration")" class="reset-btn">Tilbakestill filter</a>
     </form>
 
 
@@ -320,12 +385,10 @@
         {"municipalityMax", Model.MunicipalityMax}
         };
 
+            // Handle multiple status filters correctly
             if (Model.StatusFilter != null && Model.StatusFilter.Any())
             {
-                foreach (var status in Model.StatusFilter)
-                {
-                    routeValues.Add("statusFilter", status);
-                }
+                routeValues["statusFilter"] = Model.StatusFilter.ToArray();
             }
         }
 
@@ -338,36 +401,30 @@
         @{
             int totalPages = Model.TotalPages;
             int currentPage = Model.CurrentPage;
-            int range = 2; // Number of pages to show on each side of current page
+            int range = 2;
 
-            // Always show first page
             routeValues["page"] = 1;
             <a href="@Url.Action("Admin", routeValues)" class="@(currentPage == 1 ? "active" : "")">1</a>
 
-            // Calculate start and end pages
             int start = Math.Max(2, currentPage - range);
             int end = Math.Min(totalPages - 1, currentPage + range);
 
-            // Show ellipsis after first page if needed
             if (start > 2)
             {
                 <span class="ellipsis">...</span>
             }
 
-            // Show page numbers
             for (int i = start; i <= end; i++)
             {
                 routeValues["page"] = i;
                 <a href="@Url.Action("Admin", routeValues)" class="@(currentPage == i ? "active" : "")">@i</a>
             }
 
-            // Show ellipsis before last page if needed
             if (end < totalPages - 1)
             {
                 <span class="ellipsis">...</span>
             }
 
-            // Always show last page if there is more than one page
             if (totalPages > 1)
             {
                 routeValues["page"] = totalPages;

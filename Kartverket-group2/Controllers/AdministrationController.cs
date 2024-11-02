@@ -26,8 +26,8 @@ namespace Kartverket_group2.Controllers
             string[] statusFilter,
             int? municipalityMin,
             int? municipalityMax,
-            int page = 1,
-            int pageSize = 25,
+            int page = 1, // Initial page
+            int pageSize = 25, // Results per page
             string sortColumn = "Id", // Default sort column
             bool sortDescending = false) // Default sort direction
         {
