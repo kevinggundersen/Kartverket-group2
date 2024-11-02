@@ -7,8 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submissions Table</title>
     <style>
+    html, body {
+        margin: 0;
+        overflow-x: hidden; /* Hide any unexpected horizontal overflow */
+        overflow: hidden;
+    }
     #adminsite {
         font-family: Arial, sans-serif;
+
         margin: 0;
         padding: 20px;
         background-color: #f0f0f0;
@@ -19,10 +25,11 @@
 
     .table-container {
         position: relative;
-        max-height: calc(100vh - 180px); /* Adjust based on your needs */
-        overflow: auto;
+        max-height: calc(100vh - 300px); /* Adjust based on your needs */
+        overflow-y: auto;
         border-radius: 5px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
     }
 
     table {
@@ -30,6 +37,7 @@
         border-collapse: separate;
         border-spacing: 0;
         background-color: white;
+        font-size: 15px;
     }
 
     thead {
@@ -44,20 +52,27 @@
         font-weight: bold;
         border: 1px solid #ddd;
         border-bottom: 2px solid #ddd;
-        padding: 12px;
+
         text-align: left;
     }
 
     td {
         border: 1px solid #ddd;
-        padding: 12px;
+
         text-align: left;
         background-color: white;
+        white-space: nowrap; /* Prevents text wrapping */
+        overflow: hidden; /* Hides overflowed text */
+        text-overflow: ellipsis; /* Adds ellipsis to clipped text */
         
     }
+
+    th, td {
+        padding: 6px 8px; /* Reduce padding for slimmer rows */
+
+    }
     #comment {
-        overflow-y:auto;
-        max-width: 150px;
+        max-width: 300px;
         min-width: 75px;
     }
 
@@ -81,39 +96,124 @@
         color: white;
     }
 
+    .pagination {
+        margin-bottom: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        padding: 5px;
+    }
+
     .pagination a {
-        padding: 8px;
+        min-width: 32px;
+        height: 32px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         text-decoration: none;
-        border: 1px solid #ddd;
-        margin: 0 2px;
+        border: 1px solid #dee2e6;
+        color: #212529;
+        background-color: #fff;
+        font-size: 14px;
+    }
+
+    .pagination a:hover {
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+        color: #0056b3;
     }
 
     .pagination a.active {
-        font-weight: bold;
+        background-color: #45a049;
         color: white;
-        background-color: #4CAF50;
     }
-    
+
+    /* Navigation arrows */
+    .pagination a.nav-arrow {
+        font-family: "system-ui";
+    }
+
+    .pagination .ellipsis {
+        min-width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+    }
+
+    .detaljer-column {
+        width: 10px;
+
+    }
+    .id-column {
+        width: 30px;
+
+    }
+
+
+    .time-column {
+        width: 30px;
+    }
+
+    .figur-column {
+        width: 30px;
+
+    }
+
+    .status-column {
+        width: 30px;
+    }
+    .kommunenummer-column {
+        width: 30px;
+
+    }
+
+    th a {
+        color: inherit;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    th a:hover {
+        color: #4CAF50;
+    }
 </style>
 </head>
 <body class="adminsite">
 
     <form method="get" action="@Url.Action("Admin", "Administration")">
-        <label for="statusFilter">Status:</label>
         <div>
-            <input type="checkbox" id="statusFilter_Avpåvist" name="statusFilter" value="Avvist" /> <label for="statusFilter_Avpåvist">Avvist</label>
-            <input type="checkbox" id="statusFilter_UnderArb" name="statusFilter" value="Under arbeid" /> <label for="statusFilter_UnderArb">Under arbeid</label>
-            <input type="checkbox" id="statusFilter_Akseptert" name="statusFilter" value="Akseptert" /> <label for="statusFilter_Akseptert">Akseptert</label>
+            <label for="statusFilter"><strong>Status:</strong></label>
+            <input type="checkbox" id="statusFilter_Avpåvist" name="statusFilter" value="Avvist"
+            @(Model.StatusFilter?.Contains("Avvist") == true ? "checked" : "") />
+            <label for="statusFilter_Avpåvist">Avvist</label>
+
+            <input type="checkbox" id="statusFilter_UnderArb" name="statusFilter" value="Under arbeid"
+            @(Model.StatusFilter?.Contains("Under arbeid") == true ? "checked" : "") />
+            <label for="statusFilter_UnderArb">Under arbeid</label>
+
+            <input type="checkbox" id="statusFilter_Akseptert" name="statusFilter" value="Akseptert"
+            @(Model.StatusFilter?.Contains("Akseptert") == true ? "checked" : "") />
+            <label for="statusFilter_Akseptert">Akseptert</label>
         </div>
 
-        <label for="municipalityMin">Municipality Number (Range):</label>
-        <input type="number" id="municipalityMin" name="municipalityMin" placeholder="Min" />
-        <input type="number" id="municipalityMax" name="municipalityMax" placeholder="Max" />
+        <label for="municipalityMin"><strong>Kommunenummer (Fra - til):</strong></label>
+        <input type="number" id="municipalityMin" name="municipalityMin" placeholder="Min" value="@Model.MunicipalityMin" />
+        <input type="number" id="municipalityMax" name="municipalityMax" placeholder="Max" value="@Model.MunicipalityMax" />
 
-        <label for="pageSize">Results per page:</label>
+        <label for="pageSize"><strong>Resultat per side</strong></label>
         <input type="number" id="pageSize" name="pageSize" value="@Model.PageSize" min="1" />
 
-        <button type="submit">Search</button>
+        <!-- Add hidden fields to maintain sort state when filtering -->
+        <input type="hidden" name="sortColumn" value="@Model.CurrentSortColumn" />
+        <input type="hidden" name="sortDescending" value="@Model.SortDescending" />
+
+        <button type="submit">Søk</button>
     </form>
 
 
@@ -121,71 +221,164 @@
         <table>
             <thead>
                 <tr>
-                    <th>Detaljer</th>
-                    <th>ID</th>
-                    <th>Kommentar</th>
-                    <th>Timestamp</th>
-                    <th>Antall figurer</th>
-                    <th>Status</th>
-                    <th>Kommunenummer</th>
+                    <th class="detaljer-column">Detaljer</th>
+                    <th class="id-column">
+                        <a href="@Url.Action("Admin", new {
+                                page = Model.CurrentPage,
+                                pageSize = Model.PageSize,
+                                sortColumn = "Id",
+                                sortDescending = Model.CurrentSortColumn == "Id" ? !Model.SortDescending : false,
+                                statusFilter = Model.StatusFilter,
+                                municipalityMin = Model.MunicipalityMin,
+                                municipalityMax = Model.MunicipalityMax
+                            })">
+                            ID @(Model.CurrentSortColumn == "Id" ? (Model.SortDescending ? "▼" : "▲") : "")
+                        </a>
+                    </th>
+                    <th class="kommentar-column">
+                        <a href="@Url.Action("Admin", new {
+                                page = Model.CurrentPage,
+                                pageSize = Model.PageSize,
+                                sortColumn = "Comment",
+                                sortDescending = Model.CurrentSortColumn == "Comment" ? !Model.SortDescending : false,
+                                statusFilter = Model.StatusFilter,
+                                municipalityMin = Model.MunicipalityMin,
+                                municipalityMax = Model.MunicipalityMax
+                            })">
+                            Kommentar @(Model.CurrentSortColumn == "Comment" ? (Model.SortDescending ? "▼" : "▲") : "")
+                        </a>
+                    </th>
+                    <th class="time-column">
+                        <a href="@Url.Action("Admin", new {
+                                page = Model.CurrentPage,
+                                pageSize = Model.PageSize,
+                                sortColumn = "Timestamp",
+                                sortDescending = Model.CurrentSortColumn == "Timestamp" ? !Model.SortDescending : false,
+                                statusFilter = Model.StatusFilter,
+                                municipalityMin = Model.MunicipalityMin,
+                                municipalityMax = Model.MunicipalityMax
+                            })">
+                            Tidsstempel @(Model.CurrentSortColumn == "Timestamp" ? (Model.SortDescending ? "▼" : "▲") : "")
+                        </a>
+                    </th>
+                    <th class="figur-column">Antall figurer</th>
+                    <th class="status-column">
+                        <a href="@Url.Action("Admin", new {
+                                page = Model.CurrentPage,
+                                pageSize = Model.PageSize,
+                                sortColumn = "Status",
+                                sortDescending = Model.CurrentSortColumn == "Status" ? !Model.SortDescending : false,
+                                statusFilter = Model.StatusFilter,
+                                municipalityMin = Model.MunicipalityMin,
+                                municipalityMax = Model.MunicipalityMax
+                            })">
+                            Status @(Model.CurrentSortColumn == "Status" ? (Model.SortDescending ? "▼" : "▲") : "")
+                        </a>
+                    </th>
+                    <th class="kommunenummer-column">
+                        <a href="@Url.Action("Admin", new {
+                                page = Model.CurrentPage,
+                                pageSize = Model.PageSize,
+                                sortColumn = "Municipalitynr",
+                                sortDescending = Model.CurrentSortColumn == "Municipalitynr" ? !Model.SortDescending : false,
+                                statusFilter = Model.StatusFilter,
+                                municipalityMin = Model.MunicipalityMin,
+                                municipalityMax = Model.MunicipalityMax
+                            })">
+                            Kommune nummer @(Model.CurrentSortColumn == "Municipalitynr" ? (Model.SortDescending ? "▼" : "▲") : "")
+                        </a>
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var submission in Model.Submissions)
                 {
                     <tr>
-                        <td>
+                        <td class="detaljer-column">
                             <a href="@Url.Action("ViewSubmissionDetails", new { id = submission.Id })" class="view-details-btn">Åpne</a>
                         </td>
-                        <td>@submission.Id</td>
-                        <td id="comment">@submission.Comment</td>
-                        <td>@submission.Timestamp</td>
-                        <td>@submission.GeoJsonData.Features.Count</td>
-                        <td>@submission.Status</td>
-                        <td>@submission.Municipalitynr</td>
+                        <td class="id-column">@submission.Id</td>
+                        <td class ="kommentar-column" id="comment" title="@submission.Comment">@submission.Comment</td>
+                        <td class="time-column">@submission.Timestamp</td>
+                        <td class="figur-column">@submission.GeoJsonData.Features.Count</td>
+                        <td class="status-column">@submission.Status</td>
+                        <td class="kommunenummer-column">@submission.Municipalitynr</td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 
-    <div class="pagination" style="margin-bottom: 80px; display: flex; justify-content: center;">
-        <!-- First page button (only show if not on the first page) -->
-        @if (Model.CurrentPage > 1)
-        {
-            <a href="@Url.Action("Admin", new { page = 1, pageSize = Model.PageSize, statusFilter = ViewData["statusFilter"], municipalityFilter = ViewData["municipalityFilter"] })">Første</a>
-        }
-
-        <!-- Calculate start and end for nearby pages -->
+    <div class="pagination">
         @{
-            int nearbyPages = 3; // Set the number of pages to display on each side of the current page
-            int startPage = Math.Max(1, Model.CurrentPage - nearbyPages);
-            int endPage = Math.Min(Model.TotalPages, Model.CurrentPage + nearbyPages);
+            var routeValues = new Dictionary<string, object>
+        {
+        {"pageSize", Model.PageSize},
+        {"sortColumn", Model.CurrentSortColumn},
+        {"sortDescending", Model.SortDescending},
+        {"municipalityMin", Model.MunicipalityMin},
+        {"municipalityMax", Model.MunicipalityMax}
+        };
+
+            if (Model.StatusFilter != null && Model.StatusFilter.Any())
+            {
+                foreach (var status in Model.StatusFilter)
+                {
+                    routeValues.Add("statusFilter", status);
+                }
+            }
         }
 
-        <!-- Previous page button (only show if not on the first page) -->
         @if (Model.CurrentPage > 1)
         {
-            <a href="@Url.Action("Admin", new { page = Model.CurrentPage - 1, pageSize = Model.PageSize, statusFilter = ViewData["statusFilter"], municipalityFilter = ViewData["municipalityFilter"] })">Forrige</a>
+            routeValues["page"] = Model.CurrentPage - 1;
+            <a href="@Url.Action("Admin", routeValues)" class="nav-arrow">‹</a>
         }
 
-        <!-- Page number links for nearby pages -->
-        @for (int i = startPage; i <= endPage; i++)
-        {
-            <a href="@Url.Action("Admin", new { page = i, pageSize = Model.PageSize, statusFilter = ViewData["statusFilter"], municipalityFilter = ViewData["municipalityFilter"] })"
-               class="@(Model.CurrentPage == i ? "active" : "")">@i</a>
+        @{
+            int totalPages = Model.TotalPages;
+            int currentPage = Model.CurrentPage;
+            int range = 2; // Number of pages to show on each side of current page
+
+            // Always show first page
+            routeValues["page"] = 1;
+            <a href="@Url.Action("Admin", routeValues)" class="@(currentPage == 1 ? "active" : "")">1</a>
+
+            // Calculate start and end pages
+            int start = Math.Max(2, currentPage - range);
+            int end = Math.Min(totalPages - 1, currentPage + range);
+
+            // Show ellipsis after first page if needed
+            if (start > 2)
+            {
+                <span class="ellipsis">...</span>
+            }
+
+            // Show page numbers
+            for (int i = start; i <= end; i++)
+            {
+                routeValues["page"] = i;
+                <a href="@Url.Action("Admin", routeValues)" class="@(currentPage == i ? "active" : "")">@i</a>
+            }
+
+            // Show ellipsis before last page if needed
+            if (end < totalPages - 1)
+            {
+                <span class="ellipsis">...</span>
+            }
+
+            // Always show last page if there is more than one page
+            if (totalPages > 1)
+            {
+                routeValues["page"] = totalPages;
+                <a href="@Url.Action("Admin", routeValues)" class="@(currentPage == totalPages ? "active" : "")">@totalPages</a>
+            }
         }
 
-        <!-- Next page button (only show if not on the last page) -->
         @if (Model.CurrentPage < Model.TotalPages)
         {
-            <a href="@Url.Action("Admin", new { page = Model.CurrentPage + 1, pageSize = Model.PageSize, statusFilter = ViewData["statusFilter"], municipalityFilter = ViewData["municipalityFilter"] })">Neste</a>
-        }
-
-        <!-- Last page button (only show if not on the last page) -->
-        @if (Model.CurrentPage < Model.TotalPages)
-        {
-            <a href="@Url.Action("Admin", new { page = Model.TotalPages, pageSize = Model.PageSize, statusFilter = ViewData["statusFilter"], municipalityFilter = ViewData["municipalityFilter"] })">Siste</a>
+            routeValues["page"] = Model.CurrentPage + 1;
+            <a href="@Url.Action("Admin", routeValues)" class="nav-arrow">›</a>
         }
     </div>
 </body>

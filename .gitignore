@@ -22,8 +22,7 @@
 ####################
 # Secret stuff #
 ####################
-appsettings.json
-appsettings.development.json
+.env
 
 ####################
 # VS Upgrade stuff #

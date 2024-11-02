@@ -22,21 +22,50 @@ namespace Kartverket_group2.Controllers
         }
 
 
-        public async Task<IActionResult> Admin(string statusFilter, string municipalityFilter, int page = 1, int pageSize = 10)
+        public async Task<IActionResult> Admin(
+            string[] statusFilter,
+            int? municipalityMin,
+            int? municipalityMax,
+            int page = 1,
+            int pageSize = 25,
+            string sortColumn = "Id", // Default sort column
+            bool sortDescending = false) // Default sort direction
         {
+
             var query = _context.Submissions.AsQueryable();
 
             // Multi-status filter
-            if (!string.IsNullOrEmpty(statusFilter))
+            if (statusFilter != null && statusFilter.Length > 0)
             {
-                var statuses = statusFilter.Split(','); // Split the comma-separated statuses
-                query = query.Where(s => statuses.Contains(s.Status));
+                query = query.Where(s => statusFilter.Contains(s.Status));
             }
 
-            if (!string.IsNullOrEmpty(municipalityFilter))
+            // Get all submissions to filter by municipality numbers after fetching
+            var submissionsList = await query.ToListAsync();
+
+            // Municipality number range filter
+            if (municipalityMin.HasValue)
             {
-                query = query.Where(s => s.Municipalitynr == municipalityFilter);
+                string minValue = municipalityMin.Value.ToString().PadRight(4, '0');
+                query = query.Where(s => string.Compare(s.Municipalitynr, minValue) >= 0);
             }
+
+            if (municipalityMax.HasValue)
+            {
+                string maxValue = municipalityMax.Value.ToString().PadRight(4, '9');
+                query = query.Where(s => string.Compare(s.Municipalitynr, maxValue) <= 0);
+            }
+
+            // Apply sorting
+            query = sortColumn?.ToLower() switch
+            {
+                "id" => sortDescending ? query.OrderByDescending(s => s.Id) : query.OrderBy(s => s.Id),
+                "comment" => sortDescending ? query.OrderByDescending(s => s.Comment) : query.OrderBy(s => s.Comment),
+                "timestamp" => sortDescending ? query.OrderByDescending(s => s.Timestamp) : query.OrderBy(s => s.Timestamp),
+                "status" => sortDescending ? query.OrderByDescending(s => s.Status) : query.OrderBy(s => s.Status),
+                "municipalitynr" => sortDescending ? query.OrderByDescending(s => s.Municipalitynr) : query.OrderBy(s => s.Municipalitynr),
+                _ => query.OrderBy(s => s.Id) // Default sorting
+            };
 
             // Total count for pagination
             int totalItems = await query.CountAsync();
@@ -52,7 +81,12 @@ namespace Kartverket_group2.Controllers
                 Submissions = submissions,
                 CurrentPage = page,
                 PageSize = pageSize,
-                TotalItems = totalItems
+                TotalItems = totalItems,
+                CurrentSortColumn = sortColumn,
+                SortDescending = sortDescending,
+                StatusFilter = statusFilter,
+                MunicipalityMin = municipalityMin,
+                MunicipalityMax = municipalityMax
             };
 
             return View(viewModel);
