@@ -244,18 +244,15 @@
 <body class="adminsite">
 
     <form method="get" action="@Url.Action("Admin", "Administration")" id="filterForm">
-        <div>
-            
-
+        <div class="status-filters">
             <label for="statusFilter"><strong>Status:</strong></label>
-
             <input type="checkbox" id="statusFilter_Uapnet" name="statusFilter" value="Uåpnet"
             @(Model.StatusFilter?.Contains("Uåpnet") == true ? "checked" : "") />
             <label for="statusFilter_Uapnet">Uåpnet</label>
 
-            <input type="checkbox" id="statusFilter_Avpåvist" name="statusFilter" value="Avvist"
+            <input type="checkbox" id="statusFilter_Avpavist" name="statusFilter" value="Avvist"
             @(Model.StatusFilter?.Contains("Avvist") == true ? "checked" : "") />
-            <label for="statusFilter_Avpåvist">Avvist</label>
+            <label for="statusFilter_Avpavist">Avvist</label>
 
             <input type="checkbox" id="statusFilter_UnderArb" name="statusFilter" value="Under arbeid"
             @(Model.StatusFilter?.Contains("Under arbeid") == true ? "checked" : "") />
@@ -266,19 +263,48 @@
             <label for="statusFilter_Akseptert">Akseptert</label>
         </div>
 
-        <label for="municipalityMin"><strong>Kommunenummer (Fra - til):</strong></label>
-        <input type="number" id="municipalityMin" name="municipalityMin" placeholder="Min" value="@Model.MunicipalityMin" />
-        <input type="number" id="municipalityMax" name="municipalityMax" placeholder="Max" value="@Model.MunicipalityMax" />
+        <div class="municipality-filters">
+            <strong>Kommunenummer:</strong>
+            <div class="search-type">
+                <input type="radio" id="singleMunicipality" name="municipalitySearchType" value="single"
+                @(string.IsNullOrEmpty(Model.MunicipalitySearchType) || Model.MunicipalitySearchType == "single" ? "checked" : "")
+                       onchange="toggleMunicipalitySearch()" />
+                <label for="singleMunicipality">Enkelt nummer</label>
 
-        <label for="pageSize"><strong>Resultat per side:</strong></label>
-        <input type="number" id="pageSize" name="pageSize" value="@Model.PageSize" min="1" />
+                <input type="radio" id="rangeMunicipality" name="municipalitySearchType" value="range"
+                @(Model.MunicipalitySearchType == "range" ? "checked" : "")
+                       onchange="toggleMunicipalitySearch()" />
+                <label for="rangeMunicipality">Intervall</label>
+            </div>
 
-        <!-- Add hidden fields to maintain sort state when filtering -->
+            <div id="singleMunicipalityInput" class="municipality-input"
+                 style="display: @(string.IsNullOrEmpty(Model.MunicipalitySearchType) || Model.MunicipalitySearchType == "single" ? "block" : "none")">
+                <input type="number" id="municipalitySingle" name="municipalitySingle"
+                       placeholder="Kommunenummer" value="@Model.MunicipalitySingle" />
+            </div>
+
+            <div id="rangeMunicipalityInput" class="municipality-input"
+                 style="display: @(Model.MunicipalitySearchType == "range" ? "block" : "none")">
+                <input type="number" id="municipalityMin" name="municipalityMin"
+                       placeholder="Fra" value="@Model.MunicipalityMin" />
+                <input type="number" id="municipalityMax" name="municipalityMax"
+                       placeholder="Til" value="@Model.MunicipalityMax" />
+            </div>
+        </div>
+
+        <div class="page-size">
+            <label for="pageSize"><strong>Resultat per side:</strong></label>
+            <input type="number" id="pageSize" name="pageSize" value="@Model.PageSize" min="1" />
+        </div>
+
+        <!-- Add hidden fields to maintain sort state -->
         <input type="hidden" name="sortColumn" value="@Model.CurrentSortColumn" />
-        <input type="hidden" name="sortDescending" value="@Model.SortDescending" />
+        <input type="hidden" name="sortDescending" value="@Model.SortDescending.ToString()" />
 
-        <button type="submit" class="filter-btn">Søk</button>
-        <a href="@Url.Action("Admin", "Administration")" class="reset-btn">Tilbakestill filter</a>
+        <div class="form-buttons">
+            <button type="submit" class="filter-btn">Søk</button>
+            <a href="@Url.Action("Admin", "Administration")" class="reset-btn">Tilbakestill filter</a>
+        </div>
     </form>
 
 
@@ -289,67 +315,77 @@
                     <th class="detaljer-column">Detaljer</th>
                     <th class="id-column">
                         <a href="@Url.Action("Admin", new {
-                                page = Model.CurrentPage,
-                                pageSize = Model.PageSize,
-                                sortColumn = "Id",
-                                sortDescending = Model.CurrentSortColumn == "Id" ? !Model.SortDescending : false,
-                                statusFilter = Model.StatusFilter,
-                                municipalityMin = Model.MunicipalityMin,
-                                municipalityMax = Model.MunicipalityMax
-                            })">
+                    page = Model.CurrentPage,
+                    pageSize = Model.PageSize,
+                    sortColumn = "Id",
+                    sortDescending = Model.CurrentSortColumn == "Id" ? !Model.SortDescending : false,
+                    statusFilter = Model.StatusFilter,
+                    municipalityMin = Model.MunicipalityMin,
+                    municipalityMax = Model.MunicipalityMax,
+                    municipalitySingle = Model.MunicipalitySingle,
+                    municipalitySearchType = Model.MunicipalitySearchType
+                })">
                             ID @(Model.CurrentSortColumn == "Id" ? (Model.SortDescending ? "▼" : "▲") : "")
                         </a>
                     </th>
                     <th class="kommentar-column">
                         <a href="@Url.Action("Admin", new {
-                                page = Model.CurrentPage,
-                                pageSize = Model.PageSize,
-                                sortColumn = "Comment",
-                                sortDescending = Model.CurrentSortColumn == "Comment" ? !Model.SortDescending : false,
-                                statusFilter = Model.StatusFilter,
-                                municipalityMin = Model.MunicipalityMin,
-                                municipalityMax = Model.MunicipalityMax
-                            })">
+                    page = Model.CurrentPage,
+                    pageSize = Model.PageSize,
+                    sortColumn = "Comment",
+                    sortDescending = Model.CurrentSortColumn == "Comment" ? !Model.SortDescending : false,
+                    statusFilter = Model.StatusFilter,
+                    municipalityMin = Model.MunicipalityMin,
+                    municipalityMax = Model.MunicipalityMax,
+                    municipalitySingle = Model.MunicipalitySingle,
+                    municipalitySearchType = Model.MunicipalitySearchType
+                })">
                             Kommentar @(Model.CurrentSortColumn == "Comment" ? (Model.SortDescending ? "▼" : "▲") : "")
                         </a>
                     </th>
                     <th class="time-column">
                         <a href="@Url.Action("Admin", new {
-                                page = Model.CurrentPage,
-                                pageSize = Model.PageSize,
-                                sortColumn = "Timestamp",
-                                sortDescending = Model.CurrentSortColumn == "Timestamp" ? !Model.SortDescending : false,
-                                statusFilter = Model.StatusFilter,
-                                municipalityMin = Model.MunicipalityMin,
-                                municipalityMax = Model.MunicipalityMax
-                            })">
+                    page = Model.CurrentPage,
+                    pageSize = Model.PageSize,
+                    sortColumn = "Timestamp",
+                    sortDescending = Model.CurrentSortColumn == "Timestamp" ? !Model.SortDescending : false,
+                    statusFilter = Model.StatusFilter,
+                    municipalityMin = Model.MunicipalityMin,
+                    municipalityMax = Model.MunicipalityMax,
+                    municipalitySingle = Model.MunicipalitySingle,
+                    municipalitySearchType = Model.MunicipalitySearchType
+                })">
                             Tidsstempel @(Model.CurrentSortColumn == "Timestamp" ? (Model.SortDescending ? "▼" : "▲") : "")
                         </a>
                     </th>
                     <th class="figur-column">Antall figurer</th>
                     <th class="status-column">
                         <a href="@Url.Action("Admin", new {
-                                page = Model.CurrentPage,
-                                pageSize = Model.PageSize,
-                                sortColumn = "Status",
-                                sortDescending = Model.CurrentSortColumn == "Status" ? !Model.SortDescending : false,
-                                statusFilter = Model.StatusFilter,
-                                municipalityMin = Model.MunicipalityMin,
-                                municipalityMax = Model.MunicipalityMax
-                            })">
+                    page = Model.CurrentPage,
+                    pageSize = Model.PageSize,
+                    sortColumn = "Status",
+                    sortDescending = Model.CurrentSortColumn == "Status" ? !Model.SortDescending : false,
+                    statusFilter = Model.StatusFilter,
+                    municipalityMin = Model.MunicipalityMin,
+                    municipalityMax = Model.MunicipalityMax,
+                    municipalitySingle = Model.MunicipalitySingle,
+                    municipalitySearchType = Model.MunicipalitySearchType
+                })">
                             Status @(Model.CurrentSortColumn == "Status" ? (Model.SortDescending ? "▼" : "▲") : "")
                         </a>
                     </th>
                     <th class="kommunenummer-column">
                         <a href="@Url.Action("Admin", new {
-                                page = Model.CurrentPage,
-                                pageSize = Model.PageSize,
-                                sortColumn = "Municipalitynr",
-                                sortDescending = Model.CurrentSortColumn == "Municipalitynr" ? !Model.SortDescending : false,
-                                statusFilter = Model.StatusFilter,
-                                municipalityMin = Model.MunicipalityMin,
-                                municipalityMax = Model.MunicipalityMax
-                            })">
+                    page = Model.CurrentPage,
+                    pageSize = Model.PageSize,
+                    sortColumn = "Municipalitynr",
+                    sortDescending = Model.CurrentSortColumn == "Municipalitynr" ? !Model.SortDescending : false,
+                    statusFilter = Model.StatusFilter,
+                    municipalityMin = Model.MunicipalityMin,
+                    municipalityMax = Model.MunicipalityMax,
+                    municipalitySingle = Model.MunicipalitySingle,
+                    municipalitySearchType = Model.MunicipalitySearchType
+                })">
                             Kommune nummer @(Model.CurrentSortColumn == "Municipalitynr" ? (Model.SortDescending ? "▼" : "▲") : "")
                         </a>
                     </th>
@@ -382,7 +418,9 @@
         {"sortColumn", Model.CurrentSortColumn},
         {"sortDescending", Model.SortDescending},
         {"municipalityMin", Model.MunicipalityMin},
-        {"municipalityMax", Model.MunicipalityMax}
+        {"municipalityMax", Model.MunicipalityMax},
+        {"municipalitySingle", Model.MunicipalitySingle},
+        {"municipalitySearchType", Model.MunicipalitySearchType}
         };
 
             // Handle multiple status filters correctly
@@ -438,4 +476,32 @@
             <a href="@Url.Action("Admin", routeValues)" class="nav-arrow">›</a>
         }
     </div>
+
+    <script>
+        function toggleMunicipalitySearch() {
+            const singleSearch = document.getElementById('singleMunicipality').checked;
+            const singleInput = document.getElementById('singleMunicipalityInput');
+            const rangeInput = document.getElementById('rangeMunicipalityInput');
+
+            singleInput.style.display = singleSearch ? 'block' : 'none';
+            rangeInput.style.display = singleSearch ? 'none' : 'block';
+
+            // Clear the unused inputs but maintain the used ones
+            if (singleSearch) {
+                document.getElementById('municipalityMin').value = '';
+                document.getElementById('municipalityMax').value = '';
+            } else {
+                document.getElementById('municipalitySingle').value = '';
+            }
+        }
+
+        // Initialize the correct display state on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Ensure a default selection if none is made
+            if (!document.querySelector('input[name="municipalitySearchType"]:checked')) {
+                document.getElementById('singleMunicipality').checked = true;
+            }
+            toggleMunicipalitySearch();
+        });
+    </script>
 </body>

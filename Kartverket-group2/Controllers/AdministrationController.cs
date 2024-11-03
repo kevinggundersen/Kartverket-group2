@@ -26,34 +26,43 @@ namespace Kartverket_group2.Controllers
             string[] statusFilter,
             int? municipalityMin,
             int? municipalityMax,
-            int page = 1, // Initial page
-            int pageSize = 25, // Results per page
-            string sortColumn = "Id", // Default sort column
-            bool sortDescending = false) // Default sort direction
+            int? municipalitySingle,
+            string municipalitySearchType = "single", // Set default value
+            int page = 1,
+            int pageSize = 25,
+            string sortColumn = "Id",
+            bool sortDescending = false)
         {
-
             var query = _context.Submissions.AsQueryable();
 
-            // Multi-status filter
+            // Apply status filter if any statuses are selected
             if (statusFilter != null && statusFilter.Length > 0)
             {
                 query = query.Where(s => statusFilter.Contains(s.Status));
             }
 
-            // Get all submissions to filter by municipality numbers after fetching
-            var submissionsList = await query.ToListAsync();
-
-            // Municipality number range filter
-            if (municipalityMin.HasValue)
+            // Apply municipality filter based on search type
+            if (!string.IsNullOrEmpty(municipalitySearchType))
             {
-                string minValue = municipalityMin.Value.ToString().PadRight(4, '0');
-                query = query.Where(s => string.Compare(s.Municipalitynr, minValue) >= 0);
-            }
+                if (municipalitySearchType == "single" && municipalitySingle.HasValue)
+                {
+                    string singleValue = municipalitySingle.Value.ToString().PadRight(4, '0');
+                    query = query.Where(s => s.Municipalitynr == singleValue);
+                }
+                else if (municipalitySearchType == "range")
+                {
+                    if (municipalityMin.HasValue)
+                    {
+                        string minValue = municipalityMin.Value.ToString().PadRight(4, '0');
+                        query = query.Where(s => string.Compare(s.Municipalitynr, minValue) >= 0);
+                    }
 
-            if (municipalityMax.HasValue)
-            {
-                string maxValue = municipalityMax.Value.ToString().PadRight(4, '9');
-                query = query.Where(s => string.Compare(s.Municipalitynr, maxValue) <= 0);
+                    if (municipalityMax.HasValue)
+                    {
+                        string maxValue = municipalityMax.Value.ToString().PadRight(4, '9');
+                        query = query.Where(s => string.Compare(s.Municipalitynr, maxValue) <= 0);
+                    }
+                }
             }
 
             // Apply sorting
@@ -64,13 +73,11 @@ namespace Kartverket_group2.Controllers
                 "timestamp" => sortDescending ? query.OrderByDescending(s => s.Timestamp) : query.OrderBy(s => s.Timestamp),
                 "status" => sortDescending ? query.OrderByDescending(s => s.Status) : query.OrderBy(s => s.Status),
                 "municipalitynr" => sortDescending ? query.OrderByDescending(s => s.Municipalitynr) : query.OrderBy(s => s.Municipalitynr),
-                _ => query.OrderBy(s => s.Id) // Default sorting
+                _ => query.OrderBy(s => s.Id)
             };
 
-            // Total count for pagination
             int totalItems = await query.CountAsync();
 
-            // Apply pagination
             var submissions = await query
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -86,7 +93,9 @@ namespace Kartverket_group2.Controllers
                 SortDescending = sortDescending,
                 StatusFilter = statusFilter,
                 MunicipalityMin = municipalityMin,
-                MunicipalityMax = municipalityMax
+                MunicipalityMax = municipalityMax,
+                MunicipalitySingle = municipalitySingle,
+                MunicipalitySearchType = municipalitySearchType
             };
 
             return View(viewModel);

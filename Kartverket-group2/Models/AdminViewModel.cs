@@ -12,5 +12,8 @@
         public int? MunicipalityMin { get; set; }
         public int? MunicipalityMax { get; set; }
         public int TotalPages => (int)Math.Ceiling(TotalItems / (double)PageSize);
+        public int? MunicipalitySingle { get; set; }
+
+        public string MunicipalitySearchType { get; set; }
     }
 }
