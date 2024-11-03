@@ -1,4 +1,5 @@
-﻿@{
+﻿@model RegisterViewModel
+@{
     ViewData["Title"] = "Registrer";
 }
 <head>
@@ -49,6 +50,12 @@
             margin-top: 1rem;
             text-align: center;
         }
+
+        .text-danger {
+            color: #dc3545;
+            font-size: 0.875em;
+            margin-top: 0.25rem;
+        }
     </style>
 </head>
 <body>
@@ -57,16 +64,32 @@
     <div class="login">
         <div class="register-container">
             <h2>Registrer</h2>
-            <form>
-                <input type="email" placeholder="Epost" required>
-                <input type="text" placeholder="Brukernavn" required>
-                <input type="password" placeholder="Passord" required>
-                <input type="password" placeholder="Gjenta passord" required>
+            <form asp-action="Register" asp-controller="Login" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <input asp-for="Email" type="email" placeholder="Epost" required>
+                <span asp-validation-for="Email" class="text-danger"></span>
+
+                <input asp-for="Username" type="text" placeholder="Brukernavn" required>
+                <span asp-validation-for="Username" class="text-danger"></span>
+
+                <input asp-for="Password" type="password" placeholder="Passord" required>
+                <span asp-validation-for="Password" class="text-danger"></span>
+
+                <input asp-for="ConfirmPassword" type="password" placeholder="Gjenta passord" required>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
                 <button type="submit" id="submit-button">Registrer</button>
             </form>
             <div class="login-link">
-                <p>Har du allerede bruker? <a href="Login">Logg inn her</a></p>
+                <p>Har du allerede bruker? <a asp-action="Login">Logg inn her</a></p>
             </div>
         </div>
     </div>
 </body>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

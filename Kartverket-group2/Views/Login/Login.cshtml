@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Kartverket_group2.Models.LoginViewModel
+@{
     ViewData["Title"] = "Logg inn";
 }
 <head>
@@ -60,9 +61,10 @@
     <div class="login">
         <div class="login-container">
             <h2>Logg inn</h2>
-            <form>
-                <input type="text" placeholder="Epost/Brukernavn" required>
-                <input type="password" placeholder="Passord" required>
+            <form asp-controller="Login" asp-action="Login" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input asp-for="EmailOrUsername" placeholder="Epost/Brukernavn" required>
+                <input asp-for="Password" type="password" placeholder="Passord" required>
                 <button type="submit" id="submit-button">Logg inn</button>
             </form>
             <div class="register-link">
@@ -70,4 +72,18 @@
             </div>
         </div>
     </div>
+
+    @if (Context.User.Identity?.IsAuthenticated == true)
+    {
+        <div style="background-color: lightgreen; padding: 10px; margin: 10px;">
+            <p>Authenticated as: @Context.User.Identity.Name</p>
+            <p>Roles: @string.Join(", ", Context.User.Claims.Where(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Select(c => c.Value))</p>
+        </div>
+    }
+    else
+    {
+        <div style="background-color: lightpink; padding: 10px; margin: 10px;">
+            <p>Not authenticated</p>
+        </div>
+    }
 </body>

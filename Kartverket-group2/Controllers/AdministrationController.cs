@@ -5,9 +5,11 @@ using Kartverket_group2.Models;
 using System.Threading.Tasks;
 using Kartverket_group2.Services;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Kartverket_group2.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
         private readonly ApplicationDbContext _context;
