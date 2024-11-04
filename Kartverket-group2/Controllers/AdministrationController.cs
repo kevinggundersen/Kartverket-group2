@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Kartverket_group2.Controllers
 {
-    [Authorize(Roles = "Admin")]
+
     public class AdministrationController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,7 +23,7 @@ namespace Kartverket_group2.Controllers
             _logger = logger;
         }
 
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Admin(
             string[] statusFilter,
             int? municipalityMin,
@@ -103,6 +103,7 @@ namespace Kartverket_group2.Controllers
             return View(viewModel);
         }
 
+        [Authorize(Roles = "User")]
         [HttpPost]
         public async Task<IActionResult> SaveShapes(string shapeData)
         {
@@ -139,7 +140,7 @@ namespace Kartverket_group2.Controllers
                 _context.Submissions.Add(submission);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Admin");
+                return RedirectToAction("Index", "Map");
             }
             catch (JsonException ex)
             {
@@ -147,7 +148,7 @@ namespace Kartverket_group2.Controllers
                 return RedirectToAction("Index", new { message = "Error processing shape data." });
             }
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ViewSubmissionDetails(long id)
         {
             var submission = await _context.Submissions.FindAsync(id);
@@ -157,7 +158,7 @@ namespace Kartverket_group2.Controllers
             }
             return View(submission);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> UpdateStatus(long id, string status)
         {
@@ -171,7 +172,7 @@ namespace Kartverket_group2.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("ViewSubmissionDetails", new { id = id });
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult DeleteSubmission(long id)
         {
