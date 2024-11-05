@@ -658,3 +658,80 @@ html {
 .Kartgrunnlagheader {
     font-size: 20px;
 }
+/*Welcome page*/
+
+.background-image-welcome {
+    position: fixed;
+    display: flex;
+    height: 95%;
+    width: 100%;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 5%;
+    z-index: -2;
+    background-image: url('/Images/KV_background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.box-container {
+    display: flex;
+    gap: 1rem;
+    width: 50%;
+
+}
+
+.box {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 75%;
+    text-align: center;
+}
+
+    .box a {
+        display: block;
+        margin-top: 1rem;
+        padding: 0.5rem;
+        background-color: green;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+.description-box {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    text-align: center;
+}
+
+
+@media (max-width: 768px) {
+    .box-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .description-box {
+        width: 90%;
+    }
+
+    .box {
+        width: 90%;
+    }
+

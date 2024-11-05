@@ -14,7 +14,7 @@ namespace Kartverket_group2.Controllers
             
         }
 
-        public IActionResult Index()
+        public IActionResult Welcome()
         {
             return View();
         }

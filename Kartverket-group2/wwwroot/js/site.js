@@ -461,7 +461,7 @@ document.getElementById('shapeForm').addEventListener('submit', function (e) {
     // Ensure shapeData is not empty before submitting
     if (geoJsonData.features.length > 0) {
         // Prompt user for a submission comment
-        var submissionComment = prompt("Please enter a comment for this submission:");
+        var submissionComment = prompt("Gi innmeldingen et navn:");
         if (submissionComment === null) {
             // User cancelled the prompt
             return;
