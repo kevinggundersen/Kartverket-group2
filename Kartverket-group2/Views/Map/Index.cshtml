@@ -12,7 +12,7 @@
 <!-- Form for storing shape data for http post -->
 <form id="shapeForm" asp-action="SaveShapes" asp-controller="Administration" method="post">
     <input type="hidden" name="shapeData" id="shapeData" />
-    <button type="submit" id="submit-form-data" class="save-shape-button">Lagre endringer</button>
+    <button type="submit" id="submit-form-data" class="save-shape-button">Send innmelding</button>
 </form>
 
 <!-- List of shapes user has drawn -->
@@ -46,7 +46,7 @@
         <textarea id="comment-input" rows="4" placeholder="Skriv beskrivelsen din her..."></textarea>
         <div class="modal-buttons">
             <button id="cancel-comment">Kanslerer</button>
-            <button id="submit-comment">Send</button>
+            <button id="submit-comment">Lagre</button>
         </div>
     </div>
 </div>
