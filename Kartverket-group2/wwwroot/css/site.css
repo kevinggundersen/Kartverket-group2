@@ -734,4 +734,137 @@ html {
     .box {
         width: 90%;
     }
+}
 
+/*Background image*/
+
+.background-image-basic {
+    position: fixed;
+    display: flex;
+    height: 95%;
+    width: 100%;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 5%;
+    z-index: -2;
+    background-image: url('/Images/kart-bakgrunn.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/*Profile page*/
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    width: 75%;
+}
+
+.profile-box {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 75%;
+    align-items: center;
+    text-align: center;
+}
+
+/*Login page*/
+
+.login-main {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.login-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+@media (max-width: 990px) {
+    .login-container {
+        width: 90%;
+    }
+}
+
+    #login-form {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    input {
+        margin: 0.5rem 0;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    #submit-button {
+        margin-top: 1rem;
+        padding: 0.5rem;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+        #submit-button:hover {
+            background-color: #23923d;
+        }
+
+    .register-link {
+        margin-top: 1rem;
+        text-align: center;
+    }
+
+.auth-ok {
+    background-color: lightgreen;
+    padding: 10px;
+    margin: 10px;
+    width: 40%;
+}
+@media (max-width: 990px) {
+    .auth-ok {
+        width: 90%;
+    }
+}
+.auth-bad {
+    background-color: lightpink;
+    padding: 10px;
+    margin: 10px;
+    width: 40%;
+}
+@media (max-width: 990px) {
+    .auth-bad {
+        width: 90%;
+    }
+}
+
+    /*Register page*/
+
+    .login-link {
+        margin-top: 1rem;
+        text-align: center;
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.875em;
+        margin-top: 0.25rem;
+    }

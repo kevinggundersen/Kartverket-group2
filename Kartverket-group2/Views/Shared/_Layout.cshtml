@@ -44,6 +44,12 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="Admin">Admin</a>
                             </li>
                         }
+                        @if (User.IsInRole("User"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Profile">Profil</a>
+                            </li>
+                        }
                     </ul>
                     <!-- Divider for mobile view -->
                     <hr class="d-sm-none my-2 navbar-divider">
