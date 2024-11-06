@@ -146,29 +146,25 @@
 
     .detaljer-column {
         width: 10px;
-
     }
     .id-column {
         width: 30px;
-
     }
-
-
-    .time-column {
+    .userid-column {
         width: 30px;
     }
-
+    .time-column {
+        width: 40px;
+    }
     .figur-column {
         width: 30px;
 
     }
-
     .status-column {
         width: 30px;
     }
     .kommunenummer-column {
         width: 30px;
-
     }
 
     th a {
@@ -328,6 +324,21 @@
                             ID @(Model.CurrentSortColumn == "Id" ? (Model.SortDescending ? "▼" : "▲") : "")
                         </a>
                     </th>
+                    <th class ="userid-column">
+                        <a href="@Url.Action("Admin", new {
+                    page = Model.CurrentPage,
+                    pageSize = Model.PageSize,
+                    sortColumn = "UserId",
+                    sortDescending = Model.CurrentSortColumn == "UserId" ? !Model.SortDescending : false,
+                    statusFilter = Model.StatusFilter,
+                    municipalityMin = Model.MunicipalityMin,
+                    municipalityMax = Model.MunicipalityMax,
+                    municipalitySingle = Model.MunicipalitySingle,
+                    municipalitySearchType = Model.MunicipalitySearchType
+                })">
+                            UserId @(Model.CurrentSortColumn == "UserId" ? (Model.SortDescending ? "▼" : "▲") : "")
+                        </a>
+                    </th>
                     <th class="kommentar-column">
                         <a href="@Url.Action("Admin", new {
                     page = Model.CurrentPage,
@@ -399,6 +410,7 @@
                             <a href="@Url.Action("ViewSubmissionDetails", new { id = submission.Id })" class="view-details-btn">Åpne</a>
                         </td>
                         <td class="id-column">@submission.Id</td>
+                        <td class="userid-column">@submission.UserId</td>
                         <td class ="kommentar-column" id="comment" title="@submission.Comment">@submission.Comment</td>
                         <td class="time-column">@submission.Timestamp</td>
                         <td class="figur-column">@submission.GeoJsonData.Features.Count</td>

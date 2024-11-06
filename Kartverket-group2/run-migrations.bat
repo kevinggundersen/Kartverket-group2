@@ -12,6 +12,6 @@ if errorlevel 1 (
 
 REM Run the migrations
 echo Running migrations...
-docker run --rm -it --network dockercompose17884436360883254100_default ^
+docker run --rm -it --network dockercompose12721281635303420820_default ^
     -e ConnectionStrings__DefaultConnection="Server=db;Port=3306;Database=kartverket_db;User=root;Password=Innebandy1999;" ^
     ef-migrations

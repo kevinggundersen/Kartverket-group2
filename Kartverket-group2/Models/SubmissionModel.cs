@@ -21,5 +21,7 @@ namespace Kartverket_group2.Models
 
         [JsonPropertyName("municipalitynr")]
         public string Municipalitynr { get; set; }
+
+        public string? UserId { get; set; }
     }
 }

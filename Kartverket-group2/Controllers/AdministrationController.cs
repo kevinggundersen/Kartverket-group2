@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Kartverket_group2.Services;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Kartverket_group2.Controllers
 {
@@ -71,6 +72,7 @@ namespace Kartverket_group2.Controllers
             query = sortColumn?.ToLower() switch
             {
                 "id" => sortDescending ? query.OrderByDescending(s => s.Id) : query.OrderBy(s => s.Id),
+                "userid" => sortDescending ? query.OrderByDescending(s => s.UserId) : query.OrderBy(s => s.UserId),
                 "comment" => sortDescending ? query.OrderByDescending(s => s.Comment) : query.OrderBy(s => s.Comment),
                 "timestamp" => sortDescending ? query.OrderByDescending(s => s.Timestamp) : query.OrderBy(s => s.Timestamp),
                 "status" => sortDescending ? query.OrderByDescending(s => s.Status) : query.OrderBy(s => s.Status),
@@ -136,6 +138,8 @@ namespace Kartverket_group2.Controllers
                         submission.Municipalitynr = "Unable to determine";
                     }
                 }
+
+                submission.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                 _context.Submissions.Add(submission);
                 await _context.SaveChangesAsync();
