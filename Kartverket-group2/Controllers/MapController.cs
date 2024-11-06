@@ -1,14 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using Kartverket_group2.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Kartverket_group2.Controllers
 {
     public class MapController : Controller
     {
-        [HttpGet]
+        [Authorize]
         public IActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Welcome", "Home");
+            }
+
             return View();
         }
 
