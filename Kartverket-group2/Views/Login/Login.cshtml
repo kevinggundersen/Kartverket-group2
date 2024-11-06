@@ -76,14 +76,14 @@
     @if (Context.User.Identity?.IsAuthenticated == true)
     {
         <div style="background-color: lightgreen; padding: 10px; margin: 10px;">
-            <p>Authenticated as: @Context.User.Identity.Name</p>
-            <p>Roles: @string.Join(", ", Context.User.Claims.Where(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Select(c => c.Value))</p>
+            <p>Autentisert som: @Context.User.Identity.Name</p>
+            <p>Roller: @string.Join(", ", Context.User.Claims.Where(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Select(c => c.Value))</p>
         </div>
     }
     else
     {
         <div style="background-color: lightpink; padding: 10px; margin: 10px;">
-            <p>Not authenticated</p>
+            <p>Ikke autentisert</p>
         </div>
     }
 </body>

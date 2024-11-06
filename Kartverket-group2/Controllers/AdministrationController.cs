@@ -32,8 +32,8 @@ namespace Kartverket_group2.Controllers
             string municipalitySearchType = "single", // Set default value
             int page = 1,
             int pageSize = 25,
-            string sortColumn = "Id",
-            bool sortDescending = false)
+            string sortColumn = "Timestamp",
+            bool sortDescending = true)
         {
             var query = _context.Submissions.AsQueryable();
 
