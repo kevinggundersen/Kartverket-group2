@@ -12,6 +12,11 @@ namespace Kartverket_group2.Controllers
             return View();
         }
 
+        public IActionResult Confirmation()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult SaveShapes(string shapeData)
         {
