@@ -452,6 +452,61 @@ function updateShapesList() {
     document.getElementById('toggle-shapes-list').querySelector('i').className = 'fa-solid fa-chevron-down';
 }
 
+function customPrompt(message, callback) {
+    // Display the modal and set the message
+    const modal = document.getElementById("customPromptModal");
+    const messageElement = document.getElementById("customPromptMessage");
+    messageElement.innerText = message;
+
+    // Clear previous input
+    const input = document.getElementById("customPromptInput");
+    input.value = "";
+
+    // Show the modal
+    modal.style.display = "flex";
+
+    // OK button action
+    document.getElementById("customPromptOkButton").onclick = function () {
+        modal.style.display = "none";
+        callback(input.value);  // Return input to the callback
+    };
+
+    // Cancel button action
+    document.getElementById("customPromptCancelButton").onclick = function () {
+        modal.style.display = "none";
+        callback(null);  // Return null if canceled
+    };
+}
+
+document.getElementById('shapeForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    if (geoJsonData.features.length > 0) {
+        // Use the custom prompt
+        customPrompt("Gi innmeldingen et navn:", function (submissionComment) {
+            if (submissionComment === null) {
+                // User cancelled the prompt
+                return;
+            }
+
+            // Proceed with submission steps
+            var activeTileLayer = getActiveTileLayer();
+            geoJsonData.activeTileLayer = activeTileLayer;
+
+            submission.id = Date.now();
+            submission.comment = submissionComment;
+            submission.timestamp = formatTimestamp(new Date().toISOString());
+            submission.geoJsonData = geoJsonData;
+
+            document.getElementById('shapeData').value = JSON.stringify(submission);
+            document.getElementById('shapeForm').submit();
+        });
+    } else {
+        alert('Ingen figurer å lagre. Legg til en figur før du fortsetter.');
+    }
+});
+
+/** 
 // Add event listener for form submission
 document.getElementById('shapeForm').addEventListener('submit', function (e) {
     e.preventDefault(); // Prevent default form submission
@@ -486,6 +541,7 @@ document.getElementById('shapeForm').addEventListener('submit', function (e) {
     }
 });
 
+*/
 
 // Function to get GeoJSON type from layer
 function getGeoJSONType(layer) {
@@ -511,6 +567,8 @@ var submission = {
         features: []
     }
 };
+
+
 
 // Add event listeners to custom zoom buttons
 document.getElementById('zoom-in').onclick = function () {
