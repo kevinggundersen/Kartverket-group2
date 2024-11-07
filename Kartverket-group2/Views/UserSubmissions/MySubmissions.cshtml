@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Submission>
+
+<h2>My Submissions</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Timestamp</th>
+            <th>Status</th>
+            <th>Municipality</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var submission in Model)
+        {
+            <tr>
+                <td>@submission.Id</td>
+                <td>@submission.Timestamp</td>
+                <td>@submission.Status</td>
+                <td>@submission.Municipalitynr</td>
+                <td>
+                    <form asp-action="Delete" asp-route-id="@submission.Id" method="post"
+                          onsubmit="return confirm('Are you sure you want to delete this submission?');">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
