@@ -74,5 +74,21 @@ namespace Kartverket_group2.Controllers
                 return RedirectToAction(nameof(MySubmissions));
             }
         }
+
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> ViewMySubmissionDetails(long id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var submission = await _context.Submissions
+                .FirstOrDefaultAsync(s => s.Id == id && s.UserId == userId);
+
+            if (submission == null)
+            {
+                return NotFound();
+            }
+
+            return View(submission);
+        }
+
     }
 }

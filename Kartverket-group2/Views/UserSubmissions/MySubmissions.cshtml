@@ -1,43 +1,130 @@
 ﻿@model IEnumerable<Submission>
 
-<h2>My Submissions</h2>
+<style>
+    .card {
+        transition: transform 0.2s ease-in-out;
+        border-radius: 0.5rem;
+    }
 
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success">@TempData["Message"]</div>
-}
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+    }
 
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger">@TempData["Error"]</div>
-}
+    .badge {
+        font-size: 0.675rem;
+    }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Timestamp</th>
-            <th>Status</th>
-            <th>Municipality</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
+    .btn {
+        padding: 0.5rem 1rem;
+    }
+
+    .card-footer {
+        padding: 1rem;
+    }
+
+    .btn-info {
+        color: white;
+        background-color: #28A745;
+    }
+
+    .btn-info:hover {
+        color: white;
+        background-color: #218838;
+    }
+
+    /* Status badge colors */
+    .badge-status-unopen {
+        background-color: gray; /* Gray for 'Ikke påbegynt' status */
+    }
+
+    .badge-status-working {
+        background-color: #ffc107; /* Yellow for 'Under behandling' status */
+    }
+
+    .badge-status-open {
+        background-color: #28a745; /* Blue for 'Behandlet' status */
+    }
+
+    .badge-status-closed {
+        background-color: #007bff; /* Green for 'Ikke tatt til følge' status */
+    }
+
+    
+    /* Ensure consistent card heights while allowing content to wrap */
+    .text-break {
+        word-break: break-word;
+    }
+
+    @@media (max-width: 767.98px) {
+        .container-fluid {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .badge {
+            font-size: 0.875rem;
+        }
+    }
+</style>
+
+<div class="container-fluid px-4">
+    <h2 class="my-4">Mine innmeldinger</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
         @foreach (var submission in Model)
         {
-            <tr>
-                <td>@submission.Id</td>
-                <td>@submission.Timestamp</td>
-                <td>@submission.Status</td>
-                <td>@submission.Municipalitynr</td>
-                <td>
-                    <form asp-action="Delete" asp-route-id="@submission.Id" method="post"
-                          onsubmit="return confirm('Are you sure you want to delete this submission?');">
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                </td>
-            </tr>
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-secondary">ID: @submission.Id</span>
+                            <span class="badge @(submission.Status == "Ikke påbegynt" ? "badge-status-unopen" : submission.Status == "Under behandling" ? "badge-status-working" : submission.Status == "Ikke tatt til følge" ? "badge-status-closed" : submission.Status == "Behandlet" ? "badge-status-open" : "badge-status-pending")">
+                                @submission.Status
+                            </span>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">Tidsstempel:</small>
+                            <div class="text-break">@submission.Timestamp</div>
+                        </div>
+                        <div class="mb-3">
+                            <small class="text-muted">Kommune:</small>
+                            <div class="text-break">@submission.Municipalitynr</div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <div class="d-grid gap-2">
+                            <a asp-action="ViewMySubmissionDetails" asp-route-id="@submission.Id"
+                               class="btn btn-info">
+                                <i class="bi bi-info-circle"></i> Detaljer
+                            </a>
+                            <form asp-action="Delete" asp-route-id="@submission.Id" method="post"
+                                  onsubmit="return confirm('Are you sure you want to delete this submission?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger w-100">
+                                    <i class="bi bi-trash"></i> Slett
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+</div>
+

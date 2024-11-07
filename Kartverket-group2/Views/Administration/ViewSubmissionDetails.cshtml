@@ -3,400 +3,458 @@
     ViewData["Title"] = "Submission Details";
 }
 
+<!DOCTYPE html>
+<html>
 <head>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <style>
-        html {
-            font-size: 13px;
-            overflow: scroll;
-        }
-        .container {
-            display: flex;
-            justify-content: space-between;
+    /* Base styles */
+    .shapes-list {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .shapeData {
+        transition: background-color 0.2s;
+    }
+
+    .shapeData:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+    }
+
+    /* Buttons */
+    .btn-success {
+            background-color: #28A745 !important;
+        border-color: #1e7e34 !important;
+    }
+
+    .btn-danger {
+        background-color: #c82333 !important;
+        border-color: #bd2130 !important;
+    }
+
+    /* Toast notification */
+    .status-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        color: white;
+        z-index: 10000;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    .success-notification {
+        background-color: #198754;
+    }
+
+    .info-notification {
+        background-color: #0d6efd;
+    }
+
+    .card-body #map {
+        /* Adjust the subtraction value based on your footer height */
+        height: calc(500px - 60px);
+        min-height: 400px; /* Ensures map doesn't get too small */
+    }
+
+    /* Adjust spacing between map and admin card */
+    .card.shadow-sm.mb-4 {
+        margin-bottom: 1rem !important; /* Reduced from 1.5rem */
+    }
+
+    /* Map popup styles */
+    .wrapped-popup {
+        max-width: 300px;
+    }
+
+    /* Update button hover state */
+    .btn-success:hover {
+        background-color: #218838 !important; /* Darker shade of green */
+    }
+
+    /* Modal confirm buttons hover states */
+    .modal-footer .btn-primary {
+        background-color: #28A745 !important;
+        border-color: #28A745 !important;
+    }
+
+    .modal-footer .btn-primary:hover {
+        background-color: #218838 !important;
+        border-color: #218838 !important;
+    }
+
+    .modal-footer .btn-secondary:hover {
+        background-color: #5a6268 !important;
+        border-color: #545b62 !important;
+    }
+
+    .btn-danger:hover {
+        background-color: #9e1b28 !important;
+        border-color: #bd2130 !important;
+    }
+
+
+
+
+        /* Shape type badge colors */
+        .badge.shape-type-circle {
+            background-color: #F44336;
         }
 
-        .details {
-            flex: 1;
-            padding-right: 20px;
-        }
-
-        #map {
-            flex: 1;
-            height: 500px;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-    
-        select, button {
-            padding: 5px 10px;
-            margin-right: 10px;
-        }
-    
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-    
-        button:hover {
-            background-color: #45a049;
-        }
-
-        .confirm-dialog {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            border-radius: 5px;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            z-index: 30001;
-        }
-
-        .confirm-dialog button {
-            margin: 5px;
-                border-radius: 5px;
-        }
-
-        #confirmDelete{
-
-            background-color: gray;
-        }
-
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 30000;
-        }
-
-        .shapeData{
-            padding: 5px;
-            border-radius: 5px;
-        }
-
-        .shapeData:hover {
-            background-color: #f0f0f0;
-            cursor: pointer;
-        }
-
-        .shapes-list {
-            max-height: 400px; /* Adjust this value as needed */
-            overflow-y: auto;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 55px;
-        }
-
-        .shapes-list ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .shapes-list li {
-            margin-bottom: 10px;
-            padding: 10px;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .shapes-list li:last-child {
-            border-bottom: none;
-        }
-
-        #emailConfirmDialog {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            z-index: 30001;
-            border-radius: 5px;
-        }
-
-        #emailConfirmDialog button {
-            margin: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .status-notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px;
-            border-radius: 5px;
-            color: white;
-            z-index: 100000;
-            animation: fadeOut 5s forwards;
-        }
-
-        .success-notification {
-            background-color: #4CAF50;
-        }
-
-        .info-notification {
+        .badge.shape-type-polygon {
             background-color: #2196F3;
         }
 
-        
-    </style>
+        .badge.shape-type-marker,
+        .badge.shape-type-point {
+            background-color: #4CAF50;
+        }
+
+        .badge.shape-type-polyline,
+        .badge.shape-type-linestring {
+            background-color: #FFC107;
+        }
+
+    /* Responsive adjustments */
+    @@media (max-width: 991.98px) {
+        .container-fluid {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        #map {
+            height: 400px;
+        }
+    }
+</style>
 </head>
-<div id="submissionBody">
-<a href="@Url.Action("Admin")">Tilbake til Admin</a>
+<body>
+    <div class="container-fluid px-4 py-3">
+        <div class="d-flex align-items-center mb-4">
+            <a href="@Url.Action("Admin")" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Tilbake til Admin
+            </a>
+            <h4 class="mb-0 ms-3">Innmelding ID: @Model.Id</h4>
+        </div>
 
-<div class="container">
-    <div class="details">
-        <h4>Innmelding ID: @Model.Id</h4>
-        <p><strong>BrukerID:</strong> @Model.UserId </p>
-        <p><strong>Tittel:</strong> @Model.Comment</p>
-        <p><strong>Kommunenummer:</strong> @Model.Municipalitynr</p>
-        <p><strong>Tidsstempel:</strong> @Model.Timestamp</p>
-        <p><strong>Kartgrunnlag:</strong> @Model.GeoJsonData.ActiveTileLayer</p> <!-- Display active tile layer -->
-            <form asp-action="UpdateStatus" asp-controller="Administration" method="post" id="updateStatusForm">
-                <input type="hidden" name="id" value="@Model.Id" />
-                <label for="status">Status:</label>
-                <select name="status" id="status">
-                    @foreach (var status in new[] { "Ikke påbegynt", "Under behandling", "Behandlet", "Ikke tatt til følge" })
-                    {
-                        <option value="@status" selected="@(Model.Status == status)">@status</option>
-                    }
-                </select>
-                <div style="margin: 10px 0;">
-                    <input type="checkbox" id="skipEmail" name="skipEmail" value="true" />
-                    <label for="skipEmail">Ikke send e-post varsel</label>
+        <div class="row g-4">
+            <!-- Details and Shapes List Column -->
+            <div class="col-12 col-lg-6">
+                <!-- Details Card -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">Innmelding Detaljer</h5>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4">BrukerID:</dt>
+                            <dd class="col-sm-8">@Model.UserId</dd>
+
+                            <dt class="col-sm-4">Tittel:</dt>
+                            <dd class="col-sm-8">@Model.Comment</dd>
+
+                            <dt class="col-sm-4">Kommunenummer:</dt>
+                            <dd class="col-sm-8">@Model.Municipalitynr</dd>
+
+                            <dt class="col-sm-4">Tidsstempel:</dt>
+                            <dd class="col-sm-8">@Model.Timestamp</dd>
+
+                            <dt class="col-sm-4">Kartgrunnlag:</dt>
+                            <dd class="col-sm-8">@Model.GeoJsonData.ActiveTileLayer</dd>
+                        </dl>
+                    </div>
                 </div>
-                <button type="button" onclick="handleStatusUpdate()">Endre Status</button>
-            </form>
 
-            <div class="confirm-dialog" id="emailConfirmDialog">
-                <p>Vil du sende en e-post om denne statusendringen?</p>
-                <button onclick="confirmStatusUpdate(true)">Ja</button>
-                <button onclick="confirmStatusUpdate(false)">Nei</button>
+                <!-- Shapes List Card -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Figurer</h5>
+                        <span class="badge bg-secondary">@Model.GeoJsonData.Features.Count() totalt</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="shapes-list">
+                            <ul class="list-group list-group-flush">
+                                @foreach (var feature in Model.GeoJsonData.Features)
+                                {
+                                    <li class="list-group-item shapeData" data-feature-id="@feature.Properties.Id">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <span class="badge shape-type-@(feature.Properties.Type.ToLower())">@feature.Properties.Type</span>
+                                            <small class="text-muted">ID: @feature.Properties.Id</small>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Kommentar:</strong> @feature.Properties.Comment
+                                        </div>
+                                        <div class="small text-muted">
+                                            <div>Lagt til: @feature.Properties.AddedAt</div>
+                                            <div>Sist endret: @feature.Properties.LastEdited</div>
+                                        </div>
+                                        <div class="small text-muted mt-2">
+                                            @if (feature.Properties.Type == "circle" && feature.Properties.Radius.HasValue)
+                                            {
+                                                <div>Koordinater: @($"{feature.Geometry.Coordinates}, {{radius: {feature.Properties.Radius}}}")</div>
+                                            }
+                                            else
+                                            {
+                                                <div>Koordinater: @feature.Geometry.Coordinates</div>
+                                            }
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div id="statusNotification" style="display: none;" class="status-notification">
-                <span id="notificationMessage"></span>
-            </div>
+            <!-- Map and Controls Column -->
+            <div class="col-12 col-lg-6">
+                <!-- Map Card -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">Kart</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="map" style="height: 500px; width: 100%;"></div>
+                    </div>
+                </div>
 
-        <h3>Figurer:</h3>
-        <div class="shapes-list">
-            <ul>
-                @foreach (var feature in Model.GeoJsonData.Features)
-                {
-                    <li data-feature-id="@feature.Properties.Id" class="shapeData">
-                        <strong>@feature.Properties.Type</strong> (ID: @feature.Properties.Id)<br />
-                        Kommentar: @feature.Properties.Comment<br />
-                        Lagt til: @feature.Properties.AddedAt<br />
-                        Sist endret: @feature.Properties.LastEdited<br />
-                        @if (feature.Properties.Type == "circle" && feature.Properties.Radius.HasValue)
-                        {
-                            <span>Koordinater: @($"{feature.Geometry.Coordinates}, {{radius: {feature.Properties.Radius}}}")</span>
-                        }
-                        else
-                        {
-                            <span>Koordinater: @feature.Geometry.Coordinates</span>
-                        }
-                    </li>
-                }
-            </ul>
+                <!-- Status Controls Card -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">Administrasjon</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Status Update Form -->
+                        <form asp-action="UpdateStatus" asp-controller="Administration" method="post" id="updateStatusForm" class="mb-3">
+                            <input type="hidden" name="id" value="@Model.Id" />
+
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Status:</label>
+                                <select name="status" id="status" class="form-select">
+                                    @foreach (var status in new[] { "Ikke påbegynt", "Under behandling", "Behandlet", "Ikke tatt til følge" })
+                                    {
+                                        <option value="@status" selected="@(Model.Status == status)">@status</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="form-check mb-3">
+                                <input type="checkbox" id="skipEmail" name="skipEmail" class="form-check-input" value="true" />
+                                <label class="form-check-label" for="skipEmail">Ikke send e-post varsel</label>
+                            </div>
+
+                            <button type="button" onclick="handleStatusUpdate()" class="btn btn-success w-100 mb-2">
+                                <i class="bi bi-save"></i> Oppdater Status
+                            </button>
+                        </form>
+
+                        <form id="deleteForm" asp-action="DeleteSubmission" asp-controller="Administration" method="post">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            @Html.AntiForgeryToken()
+                            <button type="button" onclick="showConfirmDialog()" class="btn btn-danger w-100">
+                                <i class="bi bi-trash"></i> Slett innmelding
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <form id="deleteForm" asp-action="DeleteSubmission" asp-controller="Administration" method="post">
-        <input type="hidden" name="id" value="@Model.Id" />
-        <button type="button" onclick="showConfirmDialog()" style="background-color: #f44336;">Slett innmelding</button>
-    </form>
-    <div class="overlay" id="overlay"></div>
-    
-    <div id="map" style="height: 500px; width: 500px;"></div>
-</div>
-<div class="confirm-dialog" id="confirmDialog">
-    <p>Er du sikker på at du vil slette denne innsendingen?</p>
-    <button id="confirmDelete" onclick="confirmDelete()">Ja</button>
-    <button id="cancelDelete" onclick="hideConfirmDialog()">Nei</button>
-</div>
-</div>
-<script>
-    var map = L.map('map', {
 
-    });
+        <!-- Status Notification -->
+        <div id="statusNotification" class="status-notification" style="display: none;">
+            <span id="notificationMessage"></span>
+        </div>
+    <div>
+        <!-- Modals -->
+        <div class="modal fade" id="confirmDialog" tabindex="-1" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Bekreft sletting</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Er du sikker på at du vil slette denne innsendingen?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nei</button>
+                        <button type="button" class="btn btn-danger" onclick="confirmDelete()">Ja</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+        <div class="modal fade" id="emailConfirmDialog" tabindex="-1" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Bekreft E-post</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Vil du sende en e-post om denne statusendringen?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="confirmStatusUpdate(false)">Nei</button>
+                        <button type="button" class="btn btn-primary" onclick="confirmStatusUpdate(true)">Ja</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    var geoJsonData = @Html.Raw(Json.Serialize(Model.GeoJsonData));
-    console.log("Full GeoJSON data:", geoJsonData);
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Map initialization
+        var map = L.map('map');
 
-    var featureGroup = L.featureGroup().addTo(map);
-    var bounds = L.latLngBounds();
-    var featureLayers = {};
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
 
-    geoJsonData.features.forEach(function (feature) {
-        console.log("Processing feature:", feature);
+        var geoJsonData = @Html.Raw(Json.Serialize(Model.GeoJsonData));
+        var featureGroup = L.featureGroup().addTo(map);
+        var bounds = L.latLngBounds();
+        var featureLayers = {};
 
-        var layer;
-        switch (feature.properties.type.toLowerCase()) {
-            case 'circle':
-                console.log("Creating circle with:", feature.geometry.coordinates, feature.properties.radius);
-                if (feature.geometry.type === "Point" && feature.properties.radius) {
-                    var latlng = L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
-                    layer = L.circle(latlng, { radius: feature.properties.radius });
 
-                    // Extend bounds with a box around the circle
-                    var radiusInDegrees = feature.properties.radius / 111300; // rough approximation
-                    bounds.extend([latlng.lat - radiusInDegrees, latlng.lng - radiusInDegrees]);
-                    bounds.extend([latlng.lat + radiusInDegrees, latlng.lng + radiusInDegrees]);
-                }
-                break;
-            case 'marker':
-            case 'point':
-                layer = L.marker(L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]));
-                bounds.extend(layer.getLatLng());
-                break;
-            case 'polygon':
-                layer = L.polygon(feature.geometry.coordinates[0].map(coord => [coord[1], coord[0]]));
-                bounds.extend(layer.getBounds());
-                break;
-            case 'polyline':
-            case 'linestring':
-                layer = L.polyline(feature.geometry.coordinates.map(coord => [coord[1], coord[0]]));
-                bounds.extend(layer.getBounds());
-                break;
-        }
 
-        if (layer) {
+        geoJsonData.features.forEach(function (feature) {
+            var layer;
+            switch (feature.properties.type.toLowerCase()) {
+                case 'circle':
+                    if (feature.geometry.type === "Point" && feature.properties.radius) {
+                        var latlng = L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
+                        layer = L.circle(latlng, { radius: feature.properties.radius });
+                        var radiusInDegrees = feature.properties.radius / 111300;
+                        bounds.extend([latlng.lat - radiusInDegrees, latlng.lng - radiusInDegrees]);
+                        bounds.extend([latlng.lat + radiusInDegrees, latlng.lng + radiusInDegrees]);
+                    }
+                    break;
+                case 'marker':
+                case 'point':
+                    layer = L.marker(L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]));
+                    bounds.extend(layer.getLatLng());
+                    break;
+                case 'polygon':
+                    layer = L.polygon(feature.geometry.coordinates[0].map(coord => [coord[1], coord[0]]));
+                    bounds.extend(layer.getBounds());
+                    break;
+                case 'polyline':
+                case 'linestring':
+                    layer = L.polyline(feature.geometry.coordinates.map(coord => [coord[1], coord[0]]));
+                    bounds.extend(layer.getBounds());
+                    break;
+            }
 
-            var popupContent = `ID: ${feature.properties.id}<br>${feature.properties.comment}`;
-            layer.bindPopup(popupContent, { className: 'wrapped-popup' });
-            featureGroup.addLayer(layer);
-            featureLayers[feature.properties.id] = layer; // Store the layer with its ID
-        } else {
-            console.log("Failed to create layer for feature:", feature);
-        }
-    });
-
-    if (!bounds.isValid()) {
-        console.log("No valid bounds, setting default view");
-        map.setView([0, 0], 2);
-    } else {
-        console.log("Fitting to bounds:", bounds);
-        map.fitBounds(bounds, { padding: [50, 50] });
-    }
-
-    function showConfirmDialog() {
-        document.getElementById('overlay').style.display = 'block';
-        document.getElementById('confirmDialog').style.display = 'block';
-    }
-
-    function hideConfirmDialog() {
-        document.getElementById('overlay').style.display = 'none';
-        document.getElementById('confirmDialog').style.display = 'none';
-    }
-
-    function confirmDelete() {
-        document.getElementById('deleteForm').submit();
-    }
-
-    document.querySelectorAll('[data-feature-id]').forEach(function (element) {
-        element.addEventListener('click', function () {
-            var featureId = this.getAttribute('data-feature-id');
-            panToFeature(featureId);
+            if (layer) {
+                var popupContent = `ID: ${feature.properties.id}<br>${feature.properties.comment}`;
+                layer.bindPopup(popupContent);
+                featureGroup.addLayer(layer);
+                featureLayers[feature.properties.id] = layer;
+            }
         });
-    });
-    function panToFeature(id) {
-        console.log('Panning to feature:', id);
-        var layer = featureLayers[id];
-        if (layer) {
-            console.log('Layer found:', layer);
-            if (layer.getBounds) {
-                map.fitBounds(layer.getBounds());
-            } else if (layer.getLatLng) {
-                map.setView(layer.getLatLng(), 16);
-            }
-            if (layer.getPopup()) layer.openPopup();
+
+        if (!bounds.isValid()) {
+            map.setView([0, 0], 2);
+        } else {
+            map.fitBounds(bounds, { padding: [50, 50] });
         }
-    }
 
-    function handleStatusUpdate() {
-    var skipEmailCheckbox = document.getElementById('skipEmail');
-    
-    if (skipEmailCheckbox.checked) {
-        // If skip email is checked, submit form directly with skipEmail=true
-        submitForm(true);
-    } else {
-        // If email might be sent, show confirmation dialog
-        document.getElementById('overlay').style.display = 'block';
-        document.getElementById('emailConfirmDialog').style.display = 'block';
-    }
-}
+        // Event Listeners
+        document.querySelectorAll('.shapeData').forEach(function (element) {
+            element.addEventListener('click', function () {
+                var featureId = this.getAttribute('data-feature-id');
+                panToFeature(featureId);
+            });
+        });
 
-function confirmStatusUpdate(sendEmail) {
-    // Hide the dialog
-    document.getElementById('overlay').style.display = 'none';
-    document.getElementById('emailConfirmDialog').style.display = 'none';
-    
-    // Submit with skipEmail=true if user clicked "Nei" (sendEmail=false)
-    submitForm(!sendEmail);
-}
+        // Functions
+        function showConfirmDialog() {
+            const modal = new bootstrap.Modal(document.getElementById('confirmDialog'));
+            modal.show();
+        }
 
-function showNotification(message, isSuccess) {
-    const notification = document.getElementById('statusNotification');
-    const notificationMessage = document.getElementById('notificationMessage');
-    
-    notification.className = 'status-notification ' + 
-        (isSuccess ? 'success-notification' : 'info-notification');
-    notificationMessage.textContent = message;
-    notification.style.display = 'block';
-    
-    // Hide notification after animation
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 5000);
-}
+        function confirmDelete() {
+            document.getElementById('deleteForm').submit();
+        }
 
-function submitForm(skipEmail) {
-    const form = document.getElementById('updateStatusForm');
-    const formData = new FormData(form);
-    
-    // Set the skipEmail value
-    formData.set('skipEmail', skipEmail.toString());
-    
-    // Submit using fetch
-    fetch(form.action, {
-        method: 'POST',
-        body: formData
-    }).then(response => {
-        if (response.ok) {
-            // Show appropriate notification
-            if (skipEmail) {
-                showNotification('Status oppdatert uten e-postvarsling', false);
+        function handleStatusUpdate() {
+            var skipEmailCheckbox = document.getElementById('skipEmail');
+            if (skipEmailCheckbox.checked) {
+                submitForm(true);
             } else {
-                showNotification('Status oppdatert og e-post sendt', true);
+                const modal = new bootstrap.Modal(document.getElementById('emailConfirmDialog'));
+                modal.show();
             }
-            
-            // Redirect after a short delay to show the notification
-            setTimeout(() => {
-                window.location.href = response.url;
-            }, 1000);
         }
-    }).catch(error => {
-        showNotification('Det oppstod en feil under oppdatering', false);
-    });
-}
-</script>
+
+        function confirmStatusUpdate(sendEmail) {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('emailConfirmDialog'));
+            if (modal) {
+                modal.hide();
+            }
+            submitForm(!sendEmail);
+        }
+
+        function showNotification(message, isSuccess) {
+            const notification = document.getElementById('statusNotification');
+            const notificationMessage = document.getElementById('notificationMessage');
+
+            notification.className = 'status-notification ' + 
+                (isSuccess ? 'success-notification' : 'info-notification');
+            notificationMessage.textContent = message;
+            notification.style.display = 'block';
+
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+
+        function submitForm(skipEmail) {
+            const form = document.getElementById('updateStatusForm');
+            const formData = new FormData(form);
+            formData.set('skipEmail', skipEmail.toString());
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    if (skipEmail) {
+                        showNotification('Status oppdatert uten e-postvarsling', false);
+                    } else {
+                        showNotification('Status oppdatert og e-post sendt', true);
+                    }
+
+                    setTimeout(() => {
+                        window.location.href = response.url;
+                    }, 1000);
+                }
+            }).catch(error => {
+                showNotification('Det oppstod en feil under oppdatering', false);
+            });
+        }
+
+        function panToFeature(id) {
+            const layer = featureLayers[id];
+            if (layer) {
+                if (layer.getBounds) {
+                    map.fitBounds(layer.getBounds());
+                } else if (layer.getLatLng) {
+                    map.setView(layer.getLatLng(), 16);
+                }
+                if (layer.getPopup()) {
+                    layer.openPopup();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
