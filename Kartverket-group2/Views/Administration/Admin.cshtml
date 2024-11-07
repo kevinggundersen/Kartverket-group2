@@ -11,12 +11,13 @@
         margin: 0;
         overflow-x: hidden; /* Hide any unexpected horizontal overflow */
         overflow: hidden;
+        font-size: 14px;
     }
     #adminsite {
         font-family: Arial, sans-serif;
 
         margin: 0;
-        padding: 20px;
+        padding: 20px 0;
         background-color: #f0f0f0;
         /* Set a max height for the container */
         height: calc(100vh - 120px); /* Adjust 120px based on your header/footer height */
@@ -24,6 +25,7 @@
     }
 
     .table-container {
+            width: 100%;
         position: relative;
         max-height: calc(100vh - 300px); /* Adjust based on your needs */
         overflow-y: auto;
@@ -37,7 +39,7 @@
         border-collapse: separate;
         border-spacing: 0;
         background-color: white;
-        font-size: 15px;
+        font-size: 12px;
     }
 
     thead {
@@ -146,29 +148,22 @@
 
     .detaljer-column {
         width: 10px;
-
-    }
-    .id-column {
-        width: 30px;
-
     }
 
-
-    .time-column {
-        width: 30px;
-    }
-
-    .figur-column {
-        width: 30px;
-
-    }
-
-    .status-column {
-        width: 30px;
-    }
+    .detaljer-column,
+    .id-column,
+    .userid-column,
+    .time-column,
+    .figur-column,
+    .status-column,
     .kommunenummer-column {
-        width: 30px;
+        width: auto; /* Remove fixed widths */
+    }
 
+    #comment {
+        max-width: none; /* Remove max-width restriction */
+        width: auto; /* Let it take available space */
+        max-width: 300px
     }
 
     th a {
@@ -328,6 +323,21 @@
                             ID @(Model.CurrentSortColumn == "Id" ? (Model.SortDescending ? "▼" : "▲") : "")
                         </a>
                     </th>
+                    <th class ="userid-column">
+                        <a href="@Url.Action("Admin", new {
+                    page = Model.CurrentPage,
+                    pageSize = Model.PageSize,
+                    sortColumn = "UserId",
+                    sortDescending = Model.CurrentSortColumn == "UserId" ? !Model.SortDescending : false,
+                    statusFilter = Model.StatusFilter,
+                    municipalityMin = Model.MunicipalityMin,
+                    municipalityMax = Model.MunicipalityMax,
+                    municipalitySingle = Model.MunicipalitySingle,
+                    municipalitySearchType = Model.MunicipalitySearchType
+                })">
+                            BrukerID @(Model.CurrentSortColumn == "UserId" ? (Model.SortDescending ? "▼" : "▲") : "")
+                        </a>
+                    </th>
                     <th class="kommentar-column">
                         <a href="@Url.Action("Admin", new {
                     page = Model.CurrentPage,
@@ -358,7 +368,6 @@
                             Tidsstempel @(Model.CurrentSortColumn == "Timestamp" ? (Model.SortDescending ? "▼" : "▲") : "")
                         </a>
                     </th>
-                    <th class="figur-column">Antall figurer</th>
                     <th class="status-column">
                         <a href="@Url.Action("Admin", new {
                     page = Model.CurrentPage,
@@ -399,9 +408,9 @@
                             <a href="@Url.Action("ViewSubmissionDetails", new { id = submission.Id })" class="view-details-btn">Åpne</a>
                         </td>
                         <td class="id-column">@submission.Id</td>
+                        <td class="userid-column">@submission.UserId</td>
                         <td class ="kommentar-column" id="comment" title="@submission.Comment">@submission.Comment</td>
                         <td class="time-column">@submission.Timestamp</td>
-                        <td class="figur-column">@submission.GeoJsonData.Features.Count</td>
                         <td class="status-column">@submission.Status</td>
                         <td class="kommunenummer-column">@submission.Municipalitynr</td>
                     </tr>

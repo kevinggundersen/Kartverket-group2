@@ -15,14 +15,15 @@ html {
 html {
     position: relative;
     min-height: 100%;
+    overflow: hidden; /* Prevent container scroll */
 }
 
 #map-container {
     position: fixed;
-    top: 56px; /* Adjust this value to match navbar height */
+    top: 57px; /* Adjust this value to match navbar height */
     left: 0;
     right: 0;
-    bottom: 50px; /* Adjust this value to match footer height */
+    bottom: 60px; /* Adjust this value to match footer height */
     z-index: 1;
 }
 
@@ -563,11 +564,11 @@ html {
 
 /* Button and poput for switching map layers*/
 .custom-layer-control {
-    position: absolute;
-    top: 85px;
-    right: -0px;
+    position: fixed !important;
     z-index: 1000;
-
+    
+    top: 140px;
+    left: 0px;
 }
 
 /* Adjust the size of the control */

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Kartverket_group2.Services;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace Kartverket_group2.Controllers
 {
@@ -14,13 +16,22 @@ namespace Kartverket_group2.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly KartverketApiService _kartverketApiService;
+        private readonly IEmailService _emailService;
         private readonly ILogger<AdministrationController> _logger;
+        private readonly UserManager<ApplicationUserModel> _userManager;
 
-        public AdministrationController(ApplicationDbContext context, KartverketApiService kartverketApiService, ILogger<AdministrationController> logger)
+        public AdministrationController(
+            ApplicationDbContext context, 
+            KartverketApiService kartverketApiService, 
+            ILogger<AdministrationController> logger,
+            IEmailService emailService,
+            UserManager<ApplicationUserModel> userManager)
         {
             _context = context;
             _kartverketApiService = kartverketApiService;
             _logger = logger;
+            _emailService = emailService;
+            _userManager = userManager;
         }
 
         [Authorize(Roles = "Admin")]
@@ -32,8 +43,8 @@ namespace Kartverket_group2.Controllers
             string municipalitySearchType = "single", // Set default value
             int page = 1,
             int pageSize = 25,
-            string sortColumn = "Id",
-            bool sortDescending = false)
+            string sortColumn = "Timestamp",
+            bool sortDescending = true)
         {
             var query = _context.Submissions.AsQueryable();
 
@@ -71,6 +82,7 @@ namespace Kartverket_group2.Controllers
             query = sortColumn?.ToLower() switch
             {
                 "id" => sortDescending ? query.OrderByDescending(s => s.Id) : query.OrderBy(s => s.Id),
+                "userid" => sortDescending ? query.OrderByDescending(s => s.UserId) : query.OrderBy(s => s.UserId),
                 "comment" => sortDescending ? query.OrderByDescending(s => s.Comment) : query.OrderBy(s => s.Comment),
                 "timestamp" => sortDescending ? query.OrderByDescending(s => s.Timestamp) : query.OrderBy(s => s.Timestamp),
                 "status" => sortDescending ? query.OrderByDescending(s => s.Status) : query.OrderBy(s => s.Status),
@@ -137,6 +149,8 @@ namespace Kartverket_group2.Controllers
                     }
                 }
 
+                submission.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
                 _context.Submissions.Add(submission);
                 await _context.SaveChangesAsync();
 
@@ -158,9 +172,10 @@ namespace Kartverket_group2.Controllers
             }
             return View(submission);
         }
+
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> UpdateStatus(long id, string status)
+        public async Task<IActionResult> UpdateStatus(long id, string status, bool skipEmail)
         {
             var submission = await _context.Submissions.FindAsync(id);
             if (submission == null)
@@ -168,10 +183,38 @@ namespace Kartverket_group2.Controllers
                 return NotFound();
             }
 
+            var oldStatus = submission.Status;
             submission.Status = status;
             await _context.SaveChangesAsync();
+
+            if (!skipEmail && oldStatus != status)
+            {
+                var user = await _userManager.FindByIdAsync(submission.UserId);
+                if (user != null)
+                {
+                    try
+                    {
+                        await _emailService.QueueEmailAsync(new EmailQueueMessage
+                        {
+                            UserEmail = user.Email,
+                            SubmissionId = submission.Id.ToString(),
+                            NewStatus = status
+                        });
+
+                        _logger.LogInformation("Email queued for sending to {UserEmail}", user.Email);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Failed to queue email for submission {SubmissionId}", id);
+                    }
+                }
+            }
+
             return RedirectToAction("ViewSubmissionDetails", new { id = id });
         }
+
+
+
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult DeleteSubmission(long id)

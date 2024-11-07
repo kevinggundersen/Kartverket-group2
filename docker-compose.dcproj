@@ -1,5 +1,4 @@
-﻿
-<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+﻿<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
@@ -11,7 +10,6 @@
     <UserSecretsId>ad37cb10-0e67-4952-b8f8-51c8eec71bb9</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="docker-compose.yml.example" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>

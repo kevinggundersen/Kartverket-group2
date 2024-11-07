@@ -1,4 +1,5 @@
 using Kartverket_group2.Data;
+using Kartverket_group2.Extensions;
 using Kartverket_group2.Models;
 using Kartverket_group2.Services;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +14,7 @@ builder.Services.AddLogging();
 builder.Services.AddIdentity<ApplicationUserModel, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 
@@ -33,7 +35,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 
     // User settings
     options.User.AllowedUserNameCharacters =
-    "abcdefghijklmnopqrstuvwxyzæøåABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ0123456789-._@+";
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = false;
 });
 
@@ -51,7 +53,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection")),
         mySqlOptions =>
         {
             mySqlOptions.EnableRetryOnFailure(
@@ -63,6 +66,22 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 );
 
 var app = builder.Build();
+
+try
+{
+    app.MigrateDatabase<ApplicationDbContext>();
+}
+catch (Exception ex)
+{
+    // Log the error and handle it appropriately
+    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occurred while migrating the database");
+
+    // Optionally, you might want to:
+    // 1. Retry the migration after a delay
+    // 2. Exit the application
+    // 3. Continue running but mark the health check as unhealthy
+}
 
 using (var scope = app.Services.CreateScope())
 {

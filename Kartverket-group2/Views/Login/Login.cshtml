@@ -15,6 +15,8 @@
     <div class="background-image-basic"></div>
     
         <div class="login-container">
+            admin@admin.com
+            Admin@1234
             <h2>Logg inn</h2>
             <form asp-controller="Login" asp-action="Login" method="post" id="login-form">
                 <div asp-validation-summary="All" class="text-danger"></div>
@@ -26,21 +28,19 @@
                 <p>Har du ikke bruker? <a href="Register">Registrer deg her</a></p>
             </div>
         </div>
-        @if (Context.User.Identity?.IsAuthenticated == true)
-        {
-            <div class="auth-ok">
-                <p>Authenticated as: @Context.User.Identity.Name</p>
-                <p>Roles: @string.Join(", ", Context.User.Claims.Where(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Select(c => c.Value))</p>
-            </div>
-        }
-        else
-        {
-            <div class="auth-bad">
-                <p>Not authenticated</p>
-            </div>
-        }
     </div>
 
-
-
+    @if (Context.User.Identity?.IsAuthenticated == true)
+    {
+        <div style="background-color: lightgreen; padding: 10px; margin: 10px;">
+            <p>Autentisert som: @Context.User.Identity.Name</p>
+            <p>Roller: @string.Join(", ", Context.User.Claims.Where(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Select(c => c.Value))</p>
+        </div>
+    }
+    else
+    {
+        <div style="background-color: lightpink; padding: 10px; margin: 10px;">
+            <p>Ikke autentisert</p>
+        </div>
+    }
 </body>
