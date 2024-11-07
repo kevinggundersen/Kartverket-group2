@@ -906,3 +906,11 @@ html {
     max-width: 100%;
     height: auto;
 }
+
+
+    /*overider leaflet's sitt icon */
+.leaflet-control-layers-toggle {
+    background-image: url('/Images/layer-group-solid.svg') !important;
+    width: 36px; /* Adjust if your image size is different */
+    height: 36px; /* Adjust if your image size is different */
+}

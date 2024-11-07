@@ -52,9 +52,7 @@ L.DomUtil.addClass(layerControl.getContainer(), 'custom-fa-icon');
 
 // Add the Font Awesome icon
 var toggleButton = layerControl.getContainer().querySelector('.leaflet-control-layers-toggle');
-var icon = document.createElement('i');
-icon.className = 'fa-solid fa-layer-group';
-toggleButton.appendChild(icon);
+
 
 // Add header to list of layers
 var toggleButtons = layerControl.getContainer().querySelector('.custom-layer-control .leaflet-control-layers-list');
