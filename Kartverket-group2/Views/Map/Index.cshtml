@@ -15,6 +15,8 @@
     <button type="submit" id="submit-form-data" class="save-shape-button">Send innmelding</button>
 </form>
 
+
+
 <!-- List of shapes user has drawn -->
 <div id="shapes-list-container">
     <div id="shapes-list-header">
@@ -48,5 +50,15 @@
             <button id="cancel-comment">Kanslerer</button>
             <button id="submit-comment">Lagre</button>
         </div>
+    </div>
+</div>
+
+<!-- Custom Prompt Modal Structure -->
+<div id="customPromptModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <p id="customPromptMessage">Gi innmeldingen et navn:</p>
+        <input type="text" id="customPromptInput" class="form-control" placeholder="Skriv her..." />
+        <button id="customPromptOkButton" class="btn btn-primary">OK</button>
+        <button id="customPromptCancelButton" class="btn btn-secondary">Cancel</button>
     </div>
 </div>
