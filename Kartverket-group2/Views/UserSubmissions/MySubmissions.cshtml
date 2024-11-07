@@ -65,10 +65,14 @@
         .badge {
             font-size: 0.875rem;
         }
+
+        .card-container {
+            padding-bottom: 60px;
+        }
     }
 </style>
 
-<div class="container-fluid px-4">
+<div class="container-fluid px-4 card-container">
     <h2 class="my-4">Mine innmeldinger</h2>
 
     @if (TempData["Message"] != null)
