@@ -36,7 +36,7 @@ namespace Kartverket_group2.Data
                 Id = i,
                 Comment = $"Test submission {i}",
                 Timestamp = DateTime.UtcNow.AddDays(-i).ToString("o"),
-                Status = i % 3 == 0 ? "Akseptert" : (i % 2 == 0 ? "Under arbeid" : "Uåpnet"),
+                Status = i % 3 == 0 ? "Behandlet" : (i % 2 == 0 ? "Under behandling" : "Ikke påbegynt"),
                 Municipalitynr = $"{3000 + i}",
                 GeoJsonData = new GeoJsonFeatureCollection
                 {

@@ -100,24 +100,24 @@
 
 
 
-        /* Shape type badge colors */
-        .badge.shape-type-circle {
-            background-color: #F44336;
-        }
+    /* Shape type badge colors */
+    .badge.shape-type-circle {
+        background-color: #F44336;
+    }
 
-        .badge.shape-type-polygon {
-            background-color: #2196F3;
-        }
+    .badge.shape-type-polygon {
+        background-color: #2196F3;
+    }
 
-        .badge.shape-type-marker,
-        .badge.shape-type-point {
-            background-color: #4CAF50;
-        }
+    .badge.shape-type-marker,
+    .badge.shape-type-point {
+        background-color: #4CAF50;
+    }
 
-        .badge.shape-type-polyline,
-        .badge.shape-type-linestring {
-            background-color: #FFC107;
-        }
+    .badge.shape-type-polyline,
+    .badge.shape-type-linestring {
+        background-color: #FFC107;
+    }
 
     /* Responsive adjustments */
     @@media (max-width: 991.98px) {
@@ -128,6 +128,10 @@
 
         #map {
             height: 400px;
+        }
+
+            .status-card {
+            padding-bottom: 40px;
         }
     }
 </style>
@@ -211,7 +215,7 @@
             </div>
 
             <!-- Map and Controls Column -->
-            <div class="col-12 col-lg-6">
+            <div class="col-12 col-lg-6 status-card">
                 <!-- Map Card -->
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-light">

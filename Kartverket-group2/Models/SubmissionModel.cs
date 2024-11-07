@@ -17,7 +17,7 @@ namespace Kartverket_group2.Models
         public GeoJsonFeatureCollection GeoJsonData { get; set; }
 
         [JsonPropertyName("status")]
-        public string Status { get; set; } = "Uåpnet"; // Default status
+        public string Status { get; set; } = "Ikke påbegynt"; // Default status
 
         [JsonPropertyName("municipalitynr")]
         public string Municipalitynr { get; set; }

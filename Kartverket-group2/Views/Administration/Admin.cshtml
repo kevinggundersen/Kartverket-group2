@@ -10,8 +10,8 @@
     html, body {
         margin: 0;
         overflow-x: hidden; /* Hide any unexpected horizontal overflow */
-        overflow: hidden;
-        font-size: 14px;
+
+        font-size: 16px;
     }
     #adminsite {
         font-family: Arial, sans-serif;
@@ -20,14 +20,14 @@
         padding: 20px 0;
         background-color: #f0f0f0;
         /* Set a max height for the container */
-        height: calc(100vh - 120px); /* Adjust 120px based on your header/footer height */
+        height: calc(100vh - 120px); 
         overflow: hidden; /* Prevent body scroll */
     }
 
     .table-container {
-            width: 100%;
+        width: 100%;
         position: relative;
-        max-height: calc(100vh - 300px); /* Adjust based on your needs */
+        max-height: calc(100vh - 300px);
         overflow-y: auto;
         border-radius: 5px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -39,7 +39,7 @@
         border-collapse: separate;
         border-spacing: 0;
         background-color: white;
-        font-size: 14px;
+        font-size: 16px;
     }
 
     thead {
@@ -241,21 +241,21 @@
     <form method="get" action="@Url.Action("Admin", "Administration")" id="filterForm">
         <div class="status-filters">
             <label for="statusFilter"><strong>Status:</strong></label>
-            <input type="checkbox" id="statusFilter_Uapnet" name="statusFilter" value="Uåpnet"
-            @(Model.StatusFilter?.Contains("Uåpnet") == true ? "checked" : "") />
-            <label for="statusFilter_Uapnet">Uåpnet</label>
+            <input type="checkbox" id="statusFilter_Uapnet" name="statusFilter" value="Ikke påbegynt"
+            @(Model.StatusFilter?.Contains("Ikke påbegynt") == true ? "checked" : "") />
+            <label for="statusFilter_Uapnet">Ikke påbegynt</label>
 
-            <input type="checkbox" id="statusFilter_Avpavist" name="statusFilter" value="Avvist"
-            @(Model.StatusFilter?.Contains("Avvist") == true ? "checked" : "") />
-            <label for="statusFilter_Avpavist">Avvist</label>
+            <input type="checkbox" id="statusFilter_Avpavist" name="statusFilter" value="Ikke tatt til følge"
+            @(Model.StatusFilter?.Contains("Ikke tatt til følge") == true ? "checked" : "") />
+            <label for="statusFilter_Avpavist">Ikke tatt til følge</label>
 
-            <input type="checkbox" id="statusFilter_UnderArb" name="statusFilter" value="Under arbeid"
-            @(Model.StatusFilter?.Contains("Under arbeid") == true ? "checked" : "") />
-            <label for="statusFilter_UnderArb">Under arbeid</label>
+            <input type="checkbox" id="statusFilter_UnderArb" name="statusFilter" value="Under behandling"
+            @(Model.StatusFilter?.Contains("Under behandling") == true ? "checked" : "") />
+            <label for="statusFilter_UnderArb">Under behandling</label>
 
-            <input type="checkbox" id="statusFilter_Akseptert" name="statusFilter" value="Akseptert"
-            @(Model.StatusFilter?.Contains("Akseptert") == true ? "checked" : "") />
-            <label for="statusFilter_Akseptert">Akseptert</label>
+            <input type="checkbox" id="statusFilter_Akseptert" name="statusFilter" value="Behandlet"
+            @(Model.StatusFilter?.Contains("Behandlet") == true ? "checked" : "") />
+            <label for="statusFilter_Akseptert">Behandlet</label>
         </div>
 
         <div class="municipality-filters">
