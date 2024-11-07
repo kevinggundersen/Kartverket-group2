@@ -1,14 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using System.Collections.Generic;
-using Kartverket_group2.Models;  
+using Kartverket_group2.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Kartverket_group2.Controllers
 {
     public class MapController : Controller
-    {   
-        [HttpGet]
+    {
+        [Authorize]
         public IActionResult Index()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Welcome", "Home");
+            }
+
+            return View();
+        }
+
+        public IActionResult Confirmation()
         {
             return View();
         }
@@ -16,35 +26,48 @@ namespace Kartverket_group2.Controllers
         [HttpPost]
         public ActionResult SaveShapes(string shapeData)
         {
+            if (string.IsNullOrEmpty(shapeData))
+            {
+                return RedirectToAction("Index", new { message = "No shape data received." });
+            }
 
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
-            
-            List<Shape> shapes = JsonSerializer.Deserialize<List<Shape>>(shapeData, options);
 
-            // Store the shape data in TempData for now (or in a database in the future)
-            TempData["ShapeData"] = shapeData;
+            try
+            {
+                GeoJsonFeatureCollection? geoJsonData = JsonSerializer.Deserialize<GeoJsonFeatureCollection>(shapeData, options);
 
-            return RedirectToAction("ViewShapes");
+                // Store the GeoJSON data in TempData for now (or in a database in the future)
+                TempData["GeoJsonData"] = shapeData;
+
+                return RedirectToAction("ViewShapes");
+            }
+            catch (JsonException ex)
+            {
+                Console.WriteLine($"Error deserializing GeoJSON data: {ex.Message}");
+                return RedirectToAction("Index", new { message = "Error processing shape data." });
+            }
         }
 
         public ActionResult ViewShapes()
         {
-            // Get the shape data from TempData
-            var shapeData = TempData["ShapeData"] as string;
-     
-
+            var geoJsonData = TempData["GeoJsonData"] as string;
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
 
-            List<Shape> shapes = JsonSerializer.Deserialize<List<Shape>>(shapeData, options);
+            if (string.IsNullOrEmpty(geoJsonData))
+            {
+                return View("ViewShapes", new GeoJsonFeatureCollection());
+            }
 
-            // Pass the shapes list to the view
-            return View(shapes);
+            GeoJsonFeatureCollection? featureCollection = JsonSerializer.Deserialize<GeoJsonFeatureCollection>(geoJsonData, options);
+
+            return View(featureCollection);
         }
     }
 }
