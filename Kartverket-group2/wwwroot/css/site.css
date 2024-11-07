@@ -901,3 +901,8 @@ html {
         flex-direction: column;
         align-items: center;
     }
+
+.confirmation-box img {
+    max-width: 100%;
+    height: auto;
+}
