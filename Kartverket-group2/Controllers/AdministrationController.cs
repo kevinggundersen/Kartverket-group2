@@ -154,7 +154,7 @@ namespace Kartverket_group2.Controllers
                 _context.Submissions.Add(submission);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Index", "Map");
+                return RedirectToAction("Confirmation", "Map");
             }
             catch (JsonException ex)
             {
