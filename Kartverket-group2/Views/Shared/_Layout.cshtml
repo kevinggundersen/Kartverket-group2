@@ -32,12 +32,8 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <!-- Left aligned links -->
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Map" asp-action="Index">Kart</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area"" asp-controller="Home" asp-action="Welcome">Velkommen</a>
-                        </li>
+                        
+                       
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
@@ -48,6 +44,9 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="UserSubmissions" asp-action="MySubmissions">Profil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Map" asp-action="Index">Kart</a>
                             </li>
                         }
                     </ul>
@@ -65,15 +64,7 @@
                                 </form>
                             </li>
                         }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Login">Logg inn</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Register">Registrer</a>
-                            </li>
-                        }
+                      
                     </ul>
                 </div>
             </div>
