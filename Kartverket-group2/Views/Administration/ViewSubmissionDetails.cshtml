@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <style>
+        html {
+            font-size: 13px;
+            overflow: scroll;
+        }
         .container {
             display: flex;
             justify-content: space-between;
@@ -92,7 +96,7 @@
             border: 1px solid #e0e0e0;
             border-radius: 5px;
             padding: 10px;
-            margin-bottom: 50px;
+            margin-bottom: 55px;
         }
 
         .shapes-list ul {
@@ -110,6 +114,47 @@
         .shapes-list li:last-child {
             border-bottom: none;
         }
+
+        #emailConfirmDialog {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 30001;
+            border-radius: 5px;
+        }
+
+        #emailConfirmDialog button {
+            margin: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .status-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            color: white;
+            z-index: 100000;
+            animation: fadeOut 5s forwards;
+        }
+
+        .success-notification {
+            background-color: #4CAF50;
+        }
+
+        .info-notification {
+            background-color: #2196F3;
+        }
+
+        
     </style>
 </head>
 <div id="submissionBody">
@@ -123,17 +168,31 @@
         <p><strong>Kommunenummer:</strong> @Model.Municipalitynr</p>
         <p><strong>Tidsstempel:</strong> @Model.Timestamp</p>
         <p><strong>Kartgrunnlag:</strong> @Model.GeoJsonData.ActiveTileLayer</p> <!-- Display active tile layer -->
-        <form asp-action="UpdateStatus" asp-controller="Administration" method="post">
-            <input type="hidden" name="id" value="@Model.Id" />
-            <label for="status">Status:</label>
-            <select name="status" id="status">
-                @foreach (var status in new[] { "Uåpnet", "Under arbeid", "Akseptert", "Avvist" })
-                {
-                    <option value="@status" selected="@(Model.Status == status)">@status</option>
-                }
-            </select>
-            <button type="submit">Endre Status</button>
-        </form>
+            <form asp-action="UpdateStatus" asp-controller="Administration" method="post" id="updateStatusForm">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <label for="status">Status:</label>
+                <select name="status" id="status">
+                    @foreach (var status in new[] { "Ikke påbegynt", "Under behandling", "Behandlet", "Ikke tatt til følge" })
+                    {
+                        <option value="@status" selected="@(Model.Status == status)">@status</option>
+                    }
+                </select>
+                <div style="margin: 10px 0;">
+                    <input type="checkbox" id="skipEmail" name="skipEmail" value="true" />
+                    <label for="skipEmail">Ikke send e-post varsel</label>
+                </div>
+                <button type="button" onclick="handleStatusUpdate()">Endre Status</button>
+            </form>
+
+            <div class="confirm-dialog" id="emailConfirmDialog">
+                <p>Vil du sende en e-post om denne statusendringen?</p>
+                <button onclick="confirmStatusUpdate(true)">Ja</button>
+                <button onclick="confirmStatusUpdate(false)">Nei</button>
+            </div>
+
+            <div id="statusNotification" style="display: none;" class="status-notification">
+                <span id="notificationMessage"></span>
+            </div>
 
         <h3>Figurer:</h3>
         <div class="shapes-list">
@@ -273,4 +332,71 @@
             if (layer.getPopup()) layer.openPopup();
         }
     }
+
+    function handleStatusUpdate() {
+    var skipEmailCheckbox = document.getElementById('skipEmail');
+    
+    if (skipEmailCheckbox.checked) {
+        // If skip email is checked, submit form directly with skipEmail=true
+        submitForm(true);
+    } else {
+        // If email might be sent, show confirmation dialog
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('emailConfirmDialog').style.display = 'block';
+    }
+}
+
+function confirmStatusUpdate(sendEmail) {
+    // Hide the dialog
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('emailConfirmDialog').style.display = 'none';
+    
+    // Submit with skipEmail=true if user clicked "Nei" (sendEmail=false)
+    submitForm(!sendEmail);
+}
+
+function showNotification(message, isSuccess) {
+    const notification = document.getElementById('statusNotification');
+    const notificationMessage = document.getElementById('notificationMessage');
+    
+    notification.className = 'status-notification ' + 
+        (isSuccess ? 'success-notification' : 'info-notification');
+    notificationMessage.textContent = message;
+    notification.style.display = 'block';
+    
+    // Hide notification after animation
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 5000);
+}
+
+function submitForm(skipEmail) {
+    const form = document.getElementById('updateStatusForm');
+    const formData = new FormData(form);
+    
+    // Set the skipEmail value
+    formData.set('skipEmail', skipEmail.toString());
+    
+    // Submit using fetch
+    fetch(form.action, {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        if (response.ok) {
+            // Show appropriate notification
+            if (skipEmail) {
+                showNotification('Status oppdatert uten e-postvarsling', false);
+            } else {
+                showNotification('Status oppdatert og e-post sendt', true);
+            }
+            
+            // Redirect after a short delay to show the notification
+            setTimeout(() => {
+                window.location.href = response.url;
+            }, 1000);
+        }
+    }).catch(error => {
+        showNotification('Det oppstod en feil under oppdatering', false);
+    });
+}
 </script>

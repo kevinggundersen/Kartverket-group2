@@ -14,6 +14,7 @@ builder.Services.AddLogging();
 builder.Services.AddIdentity<ApplicationUserModel, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 
@@ -34,7 +35,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 
     // User settings
     options.User.AllowedUserNameCharacters =
-    "abcdefghijklmnopqrstuvwxyzæøåABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ0123456789-._@+";
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = false;
 });
 
