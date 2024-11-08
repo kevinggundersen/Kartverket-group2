@@ -32,7 +32,7 @@
 
 If you want to update your environment variables in the `.env` file. Follow these steps:
 
-1. If you have containers/volumes asociated with the project alreade. Remove those.
+1. If you have containers/volumes asociated with the project. Remove those (Easiest way is through the docker desktop app).
 
 2. Open `.env` and update the information with your local database details:
    ```ps1
