@@ -18,6 +18,8 @@ html {
    
 }
 
+
+
 #map-container {
     position: fixed;
     top: 57px; /* Adjust this value to match navbar height */
