@@ -36,7 +36,7 @@ public class EmailService : IEmailService
         _logger.LogInformation("Email queued for sending to {UserEmail}", email.UserEmail);
     }
 
-    public async Task SendStatusUpdateEmailAsync(string userEmail, string submissionId, string newStatus)
+    public async Task SendStatusUpdateEmailAsync(string userEmail, string submissionId, string newStatus, string adminComment)
     {
         try
         {
@@ -59,6 +59,8 @@ public class EmailService : IEmailService
 Din innmelding (ID: {submissionId}) har fått oppdatert sin status til: {newStatus}
 
 Du kan følge status for dine innmeldinger på profilsiden din.
+
+Kommentar fra behandler: {adminComment}
 
 Med vennlig hilsen,
 Kartverket",
@@ -85,7 +87,8 @@ Kartverket",
                 await SendStatusUpdateEmailAsync(
                     email.UserEmail,
                     email.SubmissionId,
-                    email.NewStatus);
+                    email.NewStatus,
+                    email.AdminComment);
             }
             catch (Exception ex)
             {

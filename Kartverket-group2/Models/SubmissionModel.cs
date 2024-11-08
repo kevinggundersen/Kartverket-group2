@@ -23,5 +23,7 @@ namespace Kartverket_group2.Models
         public string Municipalitynr { get; set; }
 
         public string? UserId { get; set; }
+
+        public string? AdminComment { get; set; } 
     }
 }
