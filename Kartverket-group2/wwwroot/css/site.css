@@ -965,6 +965,12 @@ html {
     .auth-bad {
         width: 90%;
     }
+
+    .confirmation-container {
+        width: 100%;
+    }
+
+    
 }
 
     /*Register page*/
@@ -987,22 +993,32 @@ html {
         justify-content: center;
         flex-direction: column;
         align-items: center;
+        text-align: center;
     }
 
     .confirmation-container {
         background-color: white;
-        padding: 2rem;
+        padding: 1rem;
         border-radius: 5px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        width: 40%;
+        width: 60vh;
         display: flex;
         flex-direction: column;
-        align-items: center;
     }
 
 .confirmation-box img {
     max-width: 100%;
-    height: auto;
+    height:20vh;
+    
+
+}
+
+@media (max-width: 990px) {
+
+    .confirmation-container {
+        width: 100%;
+        margin-top: 20vh;
+    }
 }
 
 
