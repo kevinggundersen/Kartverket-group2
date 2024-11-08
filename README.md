@@ -21,9 +21,10 @@
    EMAIL_SMTP_SERVER=EMAIL_SMTP_SERVER (If gmail: smtp.gmail.com)
    EMAIL_PORT=EMAIL_PORT (If gmail: 587)
    EMAIL_USERNAME=EMAIL_ADDRESS
-   EMAIL_PASSWORD=APP_PASSWORD
+   EMAIL_PASSWORD=APP_PASSWORD (see below)
    EMAIL_FROM_ADDRESS=EMAIL_ADDRESS
    ```
+   If using gmail for email service, you need to generate an app password in your Google account [Found here](https://myaccount.google.com/apppasswords).
 
 4. Build and run the project.
 
