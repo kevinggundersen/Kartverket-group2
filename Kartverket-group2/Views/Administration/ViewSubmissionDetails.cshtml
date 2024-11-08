@@ -246,9 +246,14 @@
                                 </select>
                             </div>
 
+                            <div class="mb-3">
+                                <label for="adminComment" class="form-label">Kommentar til innsender:</label>
+                                <textarea name="adminComment" id="comment" class="form-control">@Model.AdminComment</textarea> <!-- Display the comment -->
+                            </div>
+
                             <div class="form-check mb-3">
                                 <input type="checkbox" id="skipEmail" name="skipEmail" class="form-check-input" value="true" />
-                                <label class="form-check-label" for="skipEmail">Ikke send e-post varsel</label>
+                                <label type for="skipEmail" class="form-check-label">Skip Email Notification</label>
                             </div>
 
                             <button type="button" onclick="handleStatusUpdate()" class="btn btn-success w-100 mb-2">

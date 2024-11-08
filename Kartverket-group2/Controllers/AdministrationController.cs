@@ -175,7 +175,7 @@ namespace Kartverket_group2.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> UpdateStatus(long id, string status, bool skipEmail)
+        public async Task<IActionResult> UpdateStatus(long id, string status, string comment, bool skipEmail, string adminComment)
         {
             var submission = await _context.Submissions.FindAsync(id);
             if (submission == null)
@@ -185,6 +185,7 @@ namespace Kartverket_group2.Controllers
 
             var oldStatus = submission.Status;
             submission.Status = status;
+            submission.AdminComment = adminComment; // Save the comment
             await _context.SaveChangesAsync();
 
             if (!skipEmail && oldStatus != status)
@@ -198,7 +199,8 @@ namespace Kartverket_group2.Controllers
                         {
                             UserEmail = user.Email,
                             SubmissionId = submission.Id.ToString(),
-                            NewStatus = status
+                            NewStatus = status,
+                            AdminComment = adminComment // Include the comment in the email
                         });
 
                         _logger.LogInformation("Email queued for sending to {UserEmail}", user.Email);

@@ -1,6 +1,8 @@
 ﻿using Kartverket_group2.Models;
+using Kartverket_group2.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace Kartverket_group2.Controllers
@@ -10,15 +12,18 @@ namespace Kartverket_group2.Controllers
         private readonly SignInManager<ApplicationUserModel> _signInManager;
         private readonly UserManager<ApplicationUserModel> _userManager;
         private readonly ILogger<LoginController> _logger;
+        private readonly IEmailService _emailService;
 
         public LoginController(
             SignInManager<ApplicationUserModel> signInManager,
             UserManager<ApplicationUserModel> userManager,
-            ILogger<LoginController> logger)
+            ILogger<LoginController> logger,
+            IEmailService emailService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -149,6 +154,92 @@ namespace Kartverket_group2.Controllers
             };
 
             return Json(status);
+        }
+// Password Reset
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    // Don't reveal that the user does not exist
+                    return RedirectToAction("ForgotPasswordConfirmation");
+                }
+
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action("ResetPassword", "Login", new { token, email = user.Email }, protocol: HttpContext.Request.Scheme);
+
+                var emailMessage = new EmailQueueMessage
+                {
+                    UserEmail = model.Email,
+                    SubmissionId = "N/A",
+                    NewStatus = "N/A",
+                    AdminComment = $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>"
+                };
+
+                await _emailService.QueueEmailAsync(emailMessage);
+
+                return RedirectToAction("ForgotPasswordConfirmation");
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            if (token == null || email == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            var model = new ResetPasswordViewModel { Token = token, Email = email };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return RedirectToAction("ResetPasswordConfirmation");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View(model);
+        }
+
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
         }
     }
 

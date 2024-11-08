@@ -25,7 +25,7 @@ html {
     top: 57px; /* Adjust this value to match navbar height */
     left: 0;
     right: 0;
-    bottom: 60px; /* Adjust this value to match footer height */
+    bottom: 40px; /* Adjust this value to match footer height */
     z-index: 1;
 }
 
@@ -39,8 +39,8 @@ html {
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 60px; /* Adjust to match your footer height */
-    line-height: 60px; /* Vertically center the text there */
+    height: 40px; /* Adjust to match your footer height */
+    line-height: 40px; /* Vertically center the text there */
     background-color: #f5f5f5;
 }
 
@@ -53,6 +53,12 @@ html {
 
 .navbar {
     z-index: 4000;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 40px; /* Adjust to match your navbar height */
+    line-height: 40px; /* Vertically center the text there */
+    background-color: #f5f5f5;
 }
 
 /*Zoom buttons*/
@@ -65,7 +71,7 @@ html {
     background: white;
     border-radius: 4px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    top: 66px;
+    top: 68px;
     left: 10px;
 
 }
@@ -771,7 +777,7 @@ html {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    margin-top: 2rem;
+    margin-top: 10vh;
     width: 100%;
 }
 
@@ -907,6 +913,7 @@ html {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 10vh;
 }
 @media (max-width: 990px) {
     .login-container {
@@ -967,6 +974,12 @@ html {
     .auth-bad {
         width: 90%;
     }
+
+    .confirmation-container {
+        width: 100%;
+    }
+
+    
 }
 
     /*Register page*/
@@ -989,22 +1002,32 @@ html {
         justify-content: center;
         flex-direction: column;
         align-items: center;
+        text-align: center;
     }
 
     .confirmation-container {
         background-color: white;
-        padding: 2rem;
+        padding: 1rem;
         border-radius: 5px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        width: 40%;
+        width: 60vh;
         display: flex;
         flex-direction: column;
-        align-items: center;
     }
 
 .confirmation-box img {
     max-width: 100%;
-    height: auto;
+    height:20vh;
+    
+
+}
+
+@media (max-width: 990px) {
+
+    .confirmation-container {
+        width: 100%;
+        margin-top: 20vh;
+    }
 }
 
 

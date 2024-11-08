@@ -4,6 +4,7 @@ using Kartverket_group2.Models;
 using Kartverket_group2.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,21 @@ builder.Services.AddIdentity<ApplicationUserModel, IdentityRole>()
     .AddDefaultTokenProviders();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
-
+// Register the SmtpClient configuration
+builder.Services.AddSingleton<SmtpClient>(sp =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    return new SmtpClient
+    {
+        Host = configuration["Email:SmtpServer"],
+        Port = int.Parse(configuration["Email:Port"]),
+        Credentials = new System.Net.NetworkCredential(
+            configuration["Email:Username"],
+            configuration["Email:Password"]
+        ),
+        EnableSsl = true
+    };
+});
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
