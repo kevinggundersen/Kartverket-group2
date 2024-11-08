@@ -1,5 +1,15 @@
 ﻿@model IEnumerable<Submission>
 
+@{
+    ViewData["Title"] = "Mine Innmeldinger";
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilen Din</title>
+    <link rel="stylesheet" type="text/css" href="~/css/site.css" />
+</head>
+
 <style>
     .card {
         transition: transform 0.2s ease-in-out;
@@ -75,9 +85,15 @@
             padding-bottom: 60px;
         }
     }
-</style>
 
-<div class="container-fluid px-4 card-container">
+    .padding-bottom {
+        padding-bottom: 60px;
+    }
+</style>
+<body>
+    <div class="background-image-basic"></div>
+
+<div class="container-fluid px-4 card-container padding-bottom">
     <h2 class="my-4">Mine innmeldinger</h2>
 
     @if (TempData["Message"] != null)
@@ -140,4 +156,5 @@
         }
     </div>
 </div>
+</body>
 
