@@ -6,27 +6,53 @@
    ```
    git clone https://github.com/your-username/kartverket-group2.git
    ```
-
-2. Copy `appsettings.json.example` to `appsettings.json` and update the connection string with your local database details:
-   ```json
-   "DefaultConnection": "Server=localhost;Port=3306;Database=your_database_name;User=your_username;Password=your_password;"
-   ```
    
-3. Change name of `.env.example` to `.env` and update the information with your local database details:
+3. Open `.env` and update the information with your local database details:
    ```ps1
-   DB_PASSWORD=******* #Replace with your database password
-   DB_USER=******* #Replace with your database user (Probably "root")
-   DB_NAME=******* #Replace with your database name
-   DB_PORT=******* #Replace with your database port (likely 3306 if using mariadb)
-
+   DB_PASSWORD=YOUR_PASSWORD
+   DB_NAME=YOUR_DATABASE
+   DB_PORT=_DB_PORT (3006 if using mariaDB)
+   DB_USER=USER (probably 'root')
+   
    SCRIPT_PATH=./Kartverket-group2/run-migrations.bat
-
+   
    DB_SERVICE_NAME=db
+   
+   EMAIL_SMTP_SERVER=EMAIL_SMTP_SERVER (If gmail: smtp.gmail.com)
+   EMAIL_PORT=EMAIL_PORT (If gmail: 587)
+   EMAIL_USERNAME=EMAIL_ADDRESS
+   EMAIL_PASSWORD=APP_PASSWORD (see below)
+   EMAIL_FROM_ADDRESS=EMAIL_ADDRESS
    ```
+   If using gmail for email service, you need to generate an app password in your Google account [Found here](https://myaccount.google.com/apppasswords).
 
 4. Build and run the project.
-   
-5. Run the file `run-migrations.bat` to update the newly created database
 
+
+## Update instructions
+
+If you want to update your environment variables in the `.env` file. Follow these steps:
+
+1. If you have containers/volumes asociated with the project. Remove those (Easiest way is through the docker desktop app).
+
+2. Open `.env` and update the information with your local database details:
+   ```ps1
+   DB_PASSWORD=YOUR_PASSWORD
+   DB_NAME=YOUR_DATABASE
+   DB_PORT=_DB_PORT (3006 if using mariaDB)
+   DB_USER=USER (probably 'root')
+   
+   SCRIPT_PATH=./Kartverket-group2/run-migrations.bat
+   
+   DB_SERVICE_NAME=db
+   
+   EMAIL_SMTP_SERVER=EMAIL_SMTP_SERVER (If gmail: smtp.gmail.com)
+   EMAIL_PORT=EMAIL_PORT (If gmail: 587)
+   EMAIL_USERNAME=EMAIL_ADDRESS
+   EMAIL_PASSWORD=APP_PASSWORD
+   EMAIL_FROM_ADDRESS=EMAIL_ADDRESS
+   ```
+
+3. Build and run the project.
 
 
