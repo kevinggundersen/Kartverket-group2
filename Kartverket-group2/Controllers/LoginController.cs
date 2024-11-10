@@ -83,7 +83,7 @@ namespace Kartverket_group2.Controllers
                     _logger.LogWarning("User not found");
                 }
 
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                ModelState.AddModelError(string.Empty, "Feil brukernavn eller passord.");
             }
             else
             {
