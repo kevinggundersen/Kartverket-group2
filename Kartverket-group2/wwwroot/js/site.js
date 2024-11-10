@@ -104,13 +104,7 @@ var currentLayer;
 
 
 
-// Function to format timestamps
-function formatTimestamp(isoString) {
-    const date = new Date(isoString);
-    const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
-    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-    return `${date.toLocaleDateString('nb-NO', dateOptions)} ${date.toLocaleTimeString('nb-NO', timeOptions)}`;
-}
+
 
 // Function to show the comment modal
 function showCommentModal(layer, existingComment = null) {
@@ -267,8 +261,8 @@ map.on(L.Draw.Event.CREATED, function (event) {
     feature.properties = {
         id: shapeId,
         type: type,
-        addedAt: getCurrentTimestamp(),
-        lastEdited: getCurrentTimestamp()
+        addedAt: getCurrentFormattedTimestamp(),
+        lastEdited: getCurrentFormattedTimestamp()
     };
 
     // Handle specific shape types
@@ -663,6 +657,38 @@ geocoder.on('markgeocode', function (e) {
 
 function getCurrentTimestamp() {
     const now = new Date();
+    console.log("Fetched current datetime:", now);
     // Format the date as ISO 8601 format which C# can parse
     return now.toISOString();
+}
+
+// Format a date for display
+function formatTimestamp(isoString) {
+    if (!isoString) {
+        const now = new Date();
+        return now.toLocaleString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        }).replace(/(\d+)\/(\d+)\/(\d+)/, '$2/$1/$3'); // Convert from MM/DD/YYYY to DD/MM/YYYY
+    }
+    const date = new Date(isoString);
+    return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    }).replace(/(\d+)\/(\d+)\/(\d+)/, '$2/$1/$3'); // Convert from MM/DD/YYYY to DD/MM/YYYY
+}
+
+// Get formatted current timestamp for display
+function getCurrentFormattedTimestamp() {
+    return formatTimestamp(new Date().toISOString());
 }
