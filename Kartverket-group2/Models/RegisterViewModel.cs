@@ -10,7 +10,7 @@ public class RegisterViewModel
     public string Username { get; set; }
 
     [Required(ErrorMessage = "Passord er påkrevd")]
-    [StringLength(100, ErrorMessage = "{0} må være minst {2} tegn langt.", MinimumLength = 6)]
+    [StringLength(100, ErrorMessage = "Passord må være minst {2} tegn langt.", MinimumLength = 6)]
     [DataType(DataType.Password)]
     public string Password { get; set; }
 
