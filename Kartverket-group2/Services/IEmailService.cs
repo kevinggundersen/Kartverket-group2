@@ -4,7 +4,7 @@ namespace Kartverket_group2.Services
 {
     public interface IEmailService
     {
-        Task SendStatusUpdateEmailAsync(string userEmail, string submissionId, string newStatus, string adminComment);
         ValueTask QueueEmailAsync(EmailQueueMessage email);
+        Task SendEmailAsync(EmailQueueMessage email);
     }
 }

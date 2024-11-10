@@ -174,21 +174,20 @@ namespace Kartverket_group2.Controllers
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user == null)
                 {
-                    // Don't reveal that the user does not exist
                     return RedirectToAction("ForgotPasswordConfirmation");
                 }
 
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.Action("ResetPassword", "Login", new { token, email = user.Email }, protocol: HttpContext.Request.Scheme);
+                var callbackUrl = Url.Action("ResetPassword", "Login",
+                    new { token, email = user.Email },
+                    protocol: HttpContext.Request.Scheme);
 
-                var emailMessage = new EmailQueueMessage
+                await _emailService.QueueEmailAsync(new EmailQueueMessage
                 {
+                    EmailType = EmailType.PasswordReset,
                     UserEmail = model.Email,
-
-                    AdminComment = $"Tilbakestill ditt passord ved å følge linken: <a href='{callbackUrl}'>link</a>"
-                };
-
-                await _emailService.QueueEmailAsync(emailMessage);
+                    ResetLink = callbackUrl
+                });
 
                 return RedirectToAction("ForgotPasswordConfirmation");
             }

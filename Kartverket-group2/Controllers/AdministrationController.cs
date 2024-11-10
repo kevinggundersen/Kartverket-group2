@@ -197,10 +197,11 @@ namespace Kartverket_group2.Controllers
                     {
                         await _emailService.QueueEmailAsync(new EmailQueueMessage
                         {
+                            EmailType = EmailType.StatusUpdate,
                             UserEmail = user.Email,
                             SubmissionId = submission.Id.ToString(),
                             NewStatus = status,
-                            AdminComment = adminComment // Include the comment in the email
+                            AdminComment = adminComment
                         });
 
                         _logger.LogInformation("Email queued for sending to {UserEmail}", user.Email);
