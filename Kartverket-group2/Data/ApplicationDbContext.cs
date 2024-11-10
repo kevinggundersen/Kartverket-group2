@@ -29,7 +29,7 @@ namespace Kartverket_group2.Data
 
             // Seed data
             var submissions = new List<Submission>();
-            var cultureInfo = new CultureInfo("nb-NO");
+
 
             for (int i = 1; i <= 100; i++)
             {
@@ -37,7 +37,8 @@ namespace Kartverket_group2.Data
                 {
                     Id = i,
                     Comment = $"Test submission {i}",
-                    Timestamp = DateTime.UtcNow.AddDays(-i).ToString("dd. MMM yyyy HH:mm:ss", cultureInfo),
+
+                    Timestamp = DateTime.Parse(DateTime.UtcNow.AddDays(-i).ToString("yyyy-MM-ddTHH:mm:ss"), CultureInfo.InvariantCulture), // Use DateTime.Parse with InvariantCulture
                     Status = i % 3 == 0 ? "Behandlet" : (i % 2 == 0 ? "Under behandling" : "Ikke påbegynt"),
                     Municipalitynr = $"{3000 + i}",
                     GeoJsonData = new GeoJsonFeatureCollection
@@ -45,26 +46,24 @@ namespace Kartverket_group2.Data
                         Type = "FeatureCollection",
                         ActiveTileLayer = i % 3 == 0 ? "Standard" : (i % 2 == 0 ? "Turkart" : "Sattelitt"),
                         Features = new List<GeoJsonFeature>
-                        {
-                            new GeoJsonFeature
                             {
-                                Type = "Feature",
-                                Geometry = new GeoJsonGeometry
+                                new GeoJsonFeature
                                 {
-                                    Type = "Point",
-                                    Coordinates = new double[] { 8.0 + (i * 0.11234), 58.0 + (i * 0.11757) }
-                                },
-                                Properties = new GeoJsonProperties
-                                {
-                                    Id = i,
-                                    Type = "Markør",
-                                    Comment = $"Feature comment {i}",
-                                    AddedAt = DateTime.UtcNow.AddDays(-i).ToString("dd. MMM yyyy HH:mm:ss", cultureInfo),
-                                    LastEdited = DateTime.UtcNow.AddHours(-i).ToString("dd. MMM yyyy HH:mm:ss", cultureInfo),
-                                    Radius = i * 10.5
+                                    Type = "Feature",
+                                    Geometry = new GeoJsonGeometry
+                                    {
+                                        Type = "Point",
+                                        Coordinates = new double[] { 8.0 + (i * 0.11234), 58.0 + (i * 0.11757) }
+                                    },
+                                    Properties = new GeoJsonProperties
+                                    {
+                                        Id = i,
+                                        Type = "Markør",
+                                        Comment = $"Feature comment {i}",
+                                        Radius = i * 10.5
+                                    }
                                 }
                             }
-                        }
                     }
                 });
             }

@@ -410,7 +410,7 @@
                         <td class="id-column">@submission.Id</td>
                         <td class="userid-column">@submission.UserId</td>
                         <td class ="kommentar-column" id="comment" title="@submission.Comment">@submission.Comment</td>
-                        <td class="time-column">@submission.Timestamp</td>
+                        <td class="time-column">@submission.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
                         <td class="status-column">@submission.Status</td>
                         <td class="kommunenummer-column">@submission.Municipalitynr</td>
                     </tr>

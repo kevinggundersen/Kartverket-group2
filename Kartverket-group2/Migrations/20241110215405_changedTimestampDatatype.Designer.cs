@@ -4,6 +4,7 @@ using Kartverket_group2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kartverket_group2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241110215405_changedTimestampDatatype")]
+    partial class changedTimestampDatatype
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,7 +140,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[8.11234,58.11757]},\"properties\":{\"id\":1,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 1\",\"addedAt\":null,\"lastEdited\":null,\"radius\":10.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3001",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 11, 9, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 11, 9, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -146,7 +149,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[8.22468,58.23514]},\"properties\":{\"id\":2,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 2\",\"addedAt\":null,\"lastEdited\":null,\"radius\":21}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3002",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 11, 8, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 11, 8, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -155,7 +158,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[8.33702,58.35271]},\"properties\":{\"id\":3,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 3\",\"addedAt\":null,\"lastEdited\":null,\"radius\":31.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3003",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 11, 7, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 11, 7, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -164,7 +167,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[8.44936,58.47028]},\"properties\":{\"id\":4,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 4\",\"addedAt\":null,\"lastEdited\":null,\"radius\":42}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3004",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 11, 6, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 11, 6, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -173,7 +176,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[8.5617,58.58785]},\"properties\":{\"id\":5,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 5\",\"addedAt\":null,\"lastEdited\":null,\"radius\":52.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3005",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 11, 5, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 11, 5, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -182,7 +185,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[8.67404,58.70542]},\"properties\":{\"id\":6,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 6\",\"addedAt\":null,\"lastEdited\":null,\"radius\":63}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3006",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 11, 4, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 11, 4, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -191,7 +194,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[8.78638,58.82299]},\"properties\":{\"id\":7,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 7\",\"addedAt\":null,\"lastEdited\":null,\"radius\":73.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3007",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 11, 3, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 11, 3, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -200,7 +203,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[8.89872,58.94056]},\"properties\":{\"id\":8,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 8\",\"addedAt\":null,\"lastEdited\":null,\"radius\":84}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3008",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 11, 2, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 11, 2, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -209,7 +212,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[9.01106,59.05813]},\"properties\":{\"id\":9,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 9\",\"addedAt\":null,\"lastEdited\":null,\"radius\":94.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3009",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 11, 1, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 11, 1, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -218,7 +221,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[9.1234,59.1757]},\"properties\":{\"id\":10,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 10\",\"addedAt\":null,\"lastEdited\":null,\"radius\":105}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3010",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 10, 31, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 31, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -227,7 +230,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[9.23574,59.29327]},\"properties\":{\"id\":11,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 11\",\"addedAt\":null,\"lastEdited\":null,\"radius\":115.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3011",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 10, 30, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 30, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -236,7 +239,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[9.34808,59.41084]},\"properties\":{\"id\":12,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 12\",\"addedAt\":null,\"lastEdited\":null,\"radius\":126}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3012",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 10, 29, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 29, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -245,7 +248,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[9.46042,59.52841]},\"properties\":{\"id\":13,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 13\",\"addedAt\":null,\"lastEdited\":null,\"radius\":136.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3013",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 10, 28, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 28, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -254,7 +257,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[9.57276,59.64598]},\"properties\":{\"id\":14,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 14\",\"addedAt\":null,\"lastEdited\":null,\"radius\":147}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3014",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 10, 27, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 27, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -263,7 +266,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[9.6851,59.76355]},\"properties\":{\"id\":15,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 15\",\"addedAt\":null,\"lastEdited\":null,\"radius\":157.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3015",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 10, 26, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 26, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -272,7 +275,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[9.79744,59.88112]},\"properties\":{\"id\":16,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 16\",\"addedAt\":null,\"lastEdited\":null,\"radius\":168}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3016",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 10, 25, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 25, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -281,7 +284,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[9.90978,59.998689999999996]},\"properties\":{\"id\":17,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 17\",\"addedAt\":null,\"lastEdited\":null,\"radius\":178.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3017",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 10, 24, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 24, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -290,7 +293,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[10.022120000000001,60.11626]},\"properties\":{\"id\":18,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 18\",\"addedAt\":null,\"lastEdited\":null,\"radius\":189}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3018",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 10, 23, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 23, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -299,7 +302,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[10.13446,60.23383]},\"properties\":{\"id\":19,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 19\",\"addedAt\":null,\"lastEdited\":null,\"radius\":199.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3019",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 10, 22, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 22, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -308,7 +311,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[10.2468,60.3514]},\"properties\":{\"id\":20,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 20\",\"addedAt\":null,\"lastEdited\":null,\"radius\":210}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3020",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 10, 21, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 21, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -317,7 +320,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[10.35914,60.46897]},\"properties\":{\"id\":21,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 21\",\"addedAt\":null,\"lastEdited\":null,\"radius\":220.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3021",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 10, 20, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 20, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -326,7 +329,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[10.47148,60.58654]},\"properties\":{\"id\":22,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 22\",\"addedAt\":null,\"lastEdited\":null,\"radius\":231}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3022",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 10, 19, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 19, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -335,7 +338,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[10.58382,60.70411]},\"properties\":{\"id\":23,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 23\",\"addedAt\":null,\"lastEdited\":null,\"radius\":241.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3023",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 10, 18, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 18, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -344,7 +347,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[10.696159999999999,60.82168]},\"properties\":{\"id\":24,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 24\",\"addedAt\":null,\"lastEdited\":null,\"radius\":252}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3024",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 10, 17, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 17, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -353,7 +356,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[10.8085,60.93925]},\"properties\":{\"id\":25,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 25\",\"addedAt\":null,\"lastEdited\":null,\"radius\":262.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3025",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 10, 16, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 16, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -362,7 +365,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[10.92084,61.05682]},\"properties\":{\"id\":26,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 26\",\"addedAt\":null,\"lastEdited\":null,\"radius\":273}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3026",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 10, 15, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 15, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -371,7 +374,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[11.03318,61.17439]},\"properties\":{\"id\":27,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 27\",\"addedAt\":null,\"lastEdited\":null,\"radius\":283.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3027",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 10, 14, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 14, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -380,7 +383,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[11.14552,61.29196]},\"properties\":{\"id\":28,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 28\",\"addedAt\":null,\"lastEdited\":null,\"radius\":294}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3028",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 10, 13, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 13, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -389,7 +392,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[11.25786,61.40953]},\"properties\":{\"id\":29,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 29\",\"addedAt\":null,\"lastEdited\":null,\"radius\":304.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3029",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 10, 12, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 12, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -398,7 +401,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[11.3702,61.5271]},\"properties\":{\"id\":30,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 30\",\"addedAt\":null,\"lastEdited\":null,\"radius\":315}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3030",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 10, 11, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 11, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -407,7 +410,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[11.48254,61.64467]},\"properties\":{\"id\":31,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 31\",\"addedAt\":null,\"lastEdited\":null,\"radius\":325.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3031",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 10, 10, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 10, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -416,7 +419,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[11.59488,61.76224]},\"properties\":{\"id\":32,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 32\",\"addedAt\":null,\"lastEdited\":null,\"radius\":336}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3032",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 10, 9, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 9, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -425,7 +428,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[11.70722,61.87981]},\"properties\":{\"id\":33,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 33\",\"addedAt\":null,\"lastEdited\":null,\"radius\":346.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3033",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 10, 8, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 8, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -434,7 +437,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[11.81956,61.99738]},\"properties\":{\"id\":34,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 34\",\"addedAt\":null,\"lastEdited\":null,\"radius\":357}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3034",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 10, 7, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 7, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -443,7 +446,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[11.931899999999999,62.11495]},\"properties\":{\"id\":35,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 35\",\"addedAt\":null,\"lastEdited\":null,\"radius\":367.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3035",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 10, 6, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 6, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -452,7 +455,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[12.04424,62.23252]},\"properties\":{\"id\":36,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 36\",\"addedAt\":null,\"lastEdited\":null,\"radius\":378}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3036",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 10, 5, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 5, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -461,7 +464,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[12.15658,62.35009]},\"properties\":{\"id\":37,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 37\",\"addedAt\":null,\"lastEdited\":null,\"radius\":388.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3037",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 10, 4, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 4, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -470,7 +473,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[12.26892,62.46766]},\"properties\":{\"id\":38,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 38\",\"addedAt\":null,\"lastEdited\":null,\"radius\":399}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3038",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 10, 3, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 3, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -479,7 +482,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[12.381260000000001,62.58523]},\"properties\":{\"id\":39,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 39\",\"addedAt\":null,\"lastEdited\":null,\"radius\":409.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3039",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 10, 2, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 2, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -488,7 +491,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[12.4936,62.702799999999996]},\"properties\":{\"id\":40,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 40\",\"addedAt\":null,\"lastEdited\":null,\"radius\":420}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3040",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 10, 1, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 10, 1, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -497,7 +500,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[12.60594,62.82037]},\"properties\":{\"id\":41,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 41\",\"addedAt\":null,\"lastEdited\":null,\"radius\":430.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3041",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 9, 30, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 30, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -506,7 +509,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[12.71828,62.93794]},\"properties\":{\"id\":42,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 42\",\"addedAt\":null,\"lastEdited\":null,\"radius\":441}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3042",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 9, 29, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 29, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -515,7 +518,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[12.83062,63.05551]},\"properties\":{\"id\":43,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 43\",\"addedAt\":null,\"lastEdited\":null,\"radius\":451.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3043",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 9, 28, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 28, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -524,7 +527,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[12.94296,63.17308]},\"properties\":{\"id\":44,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 44\",\"addedAt\":null,\"lastEdited\":null,\"radius\":462}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3044",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 9, 27, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 27, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -533,7 +536,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[13.055299999999999,63.29065]},\"properties\":{\"id\":45,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 45\",\"addedAt\":null,\"lastEdited\":null,\"radius\":472.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3045",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 9, 26, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 26, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -542,7 +545,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[13.167639999999999,63.40822]},\"properties\":{\"id\":46,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 46\",\"addedAt\":null,\"lastEdited\":null,\"radius\":483}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3046",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 9, 25, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 25, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -551,7 +554,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[13.27998,63.52579]},\"properties\":{\"id\":47,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 47\",\"addedAt\":null,\"lastEdited\":null,\"radius\":493.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3047",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 9, 24, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 24, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -560,7 +563,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[13.39232,63.64336]},\"properties\":{\"id\":48,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 48\",\"addedAt\":null,\"lastEdited\":null,\"radius\":504}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3048",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 9, 23, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 23, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -569,7 +572,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[13.50466,63.76093]},\"properties\":{\"id\":49,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 49\",\"addedAt\":null,\"lastEdited\":null,\"radius\":514.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3049",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 9, 22, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 22, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -578,7 +581,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[13.617,63.8785]},\"properties\":{\"id\":50,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 50\",\"addedAt\":null,\"lastEdited\":null,\"radius\":525}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3050",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 9, 21, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 21, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -587,7 +590,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[13.72934,63.99607]},\"properties\":{\"id\":51,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 51\",\"addedAt\":null,\"lastEdited\":null,\"radius\":535.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3051",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 9, 20, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 20, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -596,7 +599,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[13.84168,64.11364]},\"properties\":{\"id\":52,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 52\",\"addedAt\":null,\"lastEdited\":null,\"radius\":546}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3052",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 9, 19, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 19, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -605,7 +608,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[13.95402,64.23121]},\"properties\":{\"id\":53,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 53\",\"addedAt\":null,\"lastEdited\":null,\"radius\":556.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3053",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 9, 18, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 18, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -614,7 +617,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[14.06636,64.34878]},\"properties\":{\"id\":54,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 54\",\"addedAt\":null,\"lastEdited\":null,\"radius\":567}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3054",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 9, 17, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 17, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -623,7 +626,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[14.1787,64.46635]},\"properties\":{\"id\":55,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 55\",\"addedAt\":null,\"lastEdited\":null,\"radius\":577.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3055",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 9, 16, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 16, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -632,7 +635,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[14.291039999999999,64.58392]},\"properties\":{\"id\":56,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 56\",\"addedAt\":null,\"lastEdited\":null,\"radius\":588}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3056",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 9, 15, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 15, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -641,7 +644,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[14.403379999999999,64.70149]},\"properties\":{\"id\":57,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 57\",\"addedAt\":null,\"lastEdited\":null,\"radius\":598.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3057",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 9, 14, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 14, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -650,7 +653,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[14.51572,64.81906]},\"properties\":{\"id\":58,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 58\",\"addedAt\":null,\"lastEdited\":null,\"radius\":609}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3058",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 9, 13, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 13, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -659,7 +662,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[14.62806,64.93663]},\"properties\":{\"id\":59,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 59\",\"addedAt\":null,\"lastEdited\":null,\"radius\":619.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3059",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 9, 12, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 12, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -668,7 +671,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[14.7404,65.0542]},\"properties\":{\"id\":60,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 60\",\"addedAt\":null,\"lastEdited\":null,\"radius\":630}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3060",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 9, 11, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 11, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -677,7 +680,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[14.85274,65.17177]},\"properties\":{\"id\":61,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 61\",\"addedAt\":null,\"lastEdited\":null,\"radius\":640.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3061",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 9, 10, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 10, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -686,7 +689,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[14.96508,65.28934]},\"properties\":{\"id\":62,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 62\",\"addedAt\":null,\"lastEdited\":null,\"radius\":651}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3062",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 9, 9, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 9, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -695,7 +698,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[15.07742,65.40691]},\"properties\":{\"id\":63,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 63\",\"addedAt\":null,\"lastEdited\":null,\"radius\":661.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3063",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 9, 8, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 8, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -704,7 +707,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[15.18976,65.52448]},\"properties\":{\"id\":64,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 64\",\"addedAt\":null,\"lastEdited\":null,\"radius\":672}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3064",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 9, 7, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 7, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -713,7 +716,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[15.3021,65.64205]},\"properties\":{\"id\":65,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 65\",\"addedAt\":null,\"lastEdited\":null,\"radius\":682.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3065",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 9, 6, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 6, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -722,7 +725,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[15.414439999999999,65.75962]},\"properties\":{\"id\":66,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 66\",\"addedAt\":null,\"lastEdited\":null,\"radius\":693}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3066",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 9, 5, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 5, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -731,7 +734,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[15.526779999999999,65.87719]},\"properties\":{\"id\":67,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 67\",\"addedAt\":null,\"lastEdited\":null,\"radius\":703.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3067",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 9, 4, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 4, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -740,7 +743,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[15.63912,65.99476]},\"properties\":{\"id\":68,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 68\",\"addedAt\":null,\"lastEdited\":null,\"radius\":714}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3068",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 9, 3, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 3, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -749,7 +752,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[15.75146,66.11233]},\"properties\":{\"id\":69,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 69\",\"addedAt\":null,\"lastEdited\":null,\"radius\":724.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3069",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 9, 2, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 2, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -758,7 +761,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[15.8638,66.2299]},\"properties\":{\"id\":70,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 70\",\"addedAt\":null,\"lastEdited\":null,\"radius\":735}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3070",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 9, 1, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 9, 1, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -767,7 +770,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[15.976140000000001,66.34747]},\"properties\":{\"id\":71,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 71\",\"addedAt\":null,\"lastEdited\":null,\"radius\":745.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3071",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 8, 31, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 31, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -776,7 +779,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[16.08848,66.46504]},\"properties\":{\"id\":72,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 72\",\"addedAt\":null,\"lastEdited\":null,\"radius\":756}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3072",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 8, 30, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 30, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -785,7 +788,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[16.20082,66.58261]},\"properties\":{\"id\":73,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 73\",\"addedAt\":null,\"lastEdited\":null,\"radius\":766.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3073",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 8, 29, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 29, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -794,7 +797,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[16.31316,66.70018]},\"properties\":{\"id\":74,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 74\",\"addedAt\":null,\"lastEdited\":null,\"radius\":777}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3074",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 8, 28, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 28, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -803,7 +806,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[16.4255,66.81775]},\"properties\":{\"id\":75,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 75\",\"addedAt\":null,\"lastEdited\":null,\"radius\":787.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3075",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 8, 27, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 27, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -812,7 +815,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[16.53784,66.93532]},\"properties\":{\"id\":76,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 76\",\"addedAt\":null,\"lastEdited\":null,\"radius\":798}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3076",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 8, 26, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 26, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -821,7 +824,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[16.65018,67.05289]},\"properties\":{\"id\":77,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 77\",\"addedAt\":null,\"lastEdited\":null,\"radius\":808.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3077",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 8, 25, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 25, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -830,7 +833,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[16.762520000000002,67.17046]},\"properties\":{\"id\":78,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 78\",\"addedAt\":null,\"lastEdited\":null,\"radius\":819}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3078",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 8, 24, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 24, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -839,7 +842,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[16.874859999999998,67.28802999999999]},\"properties\":{\"id\":79,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 79\",\"addedAt\":null,\"lastEdited\":null,\"radius\":829.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3079",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 8, 23, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 23, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -848,7 +851,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[16.9872,67.40559999999999]},\"properties\":{\"id\":80,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 80\",\"addedAt\":null,\"lastEdited\":null,\"radius\":840}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3080",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 8, 22, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 22, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -857,7 +860,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[17.099539999999998,67.52317]},\"properties\":{\"id\":81,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 81\",\"addedAt\":null,\"lastEdited\":null,\"radius\":850.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3081",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 8, 21, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 21, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -866,7 +869,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[17.21188,67.64074]},\"properties\":{\"id\":82,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 82\",\"addedAt\":null,\"lastEdited\":null,\"radius\":861}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3082",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 8, 20, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 20, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -875,7 +878,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[17.32422,67.75831]},\"properties\":{\"id\":83,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 83\",\"addedAt\":null,\"lastEdited\":null,\"radius\":871.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3083",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 8, 19, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 19, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -884,7 +887,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[17.43656,67.87588]},\"properties\":{\"id\":84,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 84\",\"addedAt\":null,\"lastEdited\":null,\"radius\":882}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3084",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 8, 18, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 18, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -893,7 +896,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[17.5489,67.99345]},\"properties\":{\"id\":85,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 85\",\"addedAt\":null,\"lastEdited\":null,\"radius\":892.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3085",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 8, 17, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 17, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -902,7 +905,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[17.66124,68.11102]},\"properties\":{\"id\":86,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 86\",\"addedAt\":null,\"lastEdited\":null,\"radius\":903}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3086",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 8, 16, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 16, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -911,7 +914,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[17.77358,68.22859]},\"properties\":{\"id\":87,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 87\",\"addedAt\":null,\"lastEdited\":null,\"radius\":913.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3087",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 8, 15, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 15, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -920,7 +923,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[17.88592,68.34616]},\"properties\":{\"id\":88,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 88\",\"addedAt\":null,\"lastEdited\":null,\"radius\":924}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3088",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 8, 14, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 14, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -929,7 +932,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[17.998260000000002,68.46373]},\"properties\":{\"id\":89,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 89\",\"addedAt\":null,\"lastEdited\":null,\"radius\":934.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3089",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 8, 13, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 13, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -938,7 +941,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[18.110599999999998,68.5813]},\"properties\":{\"id\":90,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 90\",\"addedAt\":null,\"lastEdited\":null,\"radius\":945}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3090",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 8, 12, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 12, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -947,7 +950,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[18.22294,68.69887]},\"properties\":{\"id\":91,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 91\",\"addedAt\":null,\"lastEdited\":null,\"radius\":955.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3091",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 8, 11, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 11, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -956,7 +959,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[18.335279999999997,68.81644]},\"properties\":{\"id\":92,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 92\",\"addedAt\":null,\"lastEdited\":null,\"radius\":966}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3092",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 8, 10, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 10, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -965,7 +968,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[18.44762,68.93401]},\"properties\":{\"id\":93,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 93\",\"addedAt\":null,\"lastEdited\":null,\"radius\":976.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3093",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 8, 9, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 9, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -974,7 +977,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[18.55996,69.05158]},\"properties\":{\"id\":94,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 94\",\"addedAt\":null,\"lastEdited\":null,\"radius\":987}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3094",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 8, 8, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 8, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -983,7 +986,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[18.6723,69.16915]},\"properties\":{\"id\":95,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 95\",\"addedAt\":null,\"lastEdited\":null,\"radius\":997.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3095",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 8, 7, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 7, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -992,7 +995,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[18.78464,69.28672]},\"properties\":{\"id\":96,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 96\",\"addedAt\":null,\"lastEdited\":null,\"radius\":1008}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3096",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 8, 6, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 6, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -1001,7 +1004,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[18.89698,69.40429]},\"properties\":{\"id\":97,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 97\",\"addedAt\":null,\"lastEdited\":null,\"radius\":1018.5}}],\"activeTileLayer\":\"Sattelitt\"}",
                             Municipalitynr = "3097",
                             Status = "Ikke påbegynt",
-                            Timestamp = new DateTime(2024, 8, 5, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 5, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -1010,7 +1013,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[19.00932,69.52186]},\"properties\":{\"id\":98,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 98\",\"addedAt\":null,\"lastEdited\":null,\"radius\":1029}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3098",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 8, 4, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 4, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -1019,7 +1022,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[19.12166,69.63943]},\"properties\":{\"id\":99,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 99\",\"addedAt\":null,\"lastEdited\":null,\"radius\":1039.5}}],\"activeTileLayer\":\"Standard\"}",
                             Municipalitynr = "3099",
                             Status = "Behandlet",
-                            Timestamp = new DateTime(2024, 8, 3, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 3, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -1028,7 +1031,7 @@ namespace Kartverket_group2.Migrations
                             GeoJsonData = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[19.234,69.757]},\"properties\":{\"id\":100,\"type\":\"Mark\\u00F8r\",\"comment\":\"Feature comment 100\",\"addedAt\":null,\"lastEdited\":null,\"radius\":1050}}],\"activeTileLayer\":\"Turkart\"}",
                             Municipalitynr = "3100",
                             Status = "Under behandling",
-                            Timestamp = new DateTime(2024, 8, 2, 22, 21, 19, 0, DateTimeKind.Unspecified)
+                            Timestamp = new DateTime(2024, 8, 2, 21, 54, 4, 0, DateTimeKind.Unspecified)
                         });
                 });
 

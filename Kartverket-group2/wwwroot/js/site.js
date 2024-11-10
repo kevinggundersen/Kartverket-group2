@@ -102,10 +102,7 @@ document.getElementById('toggle-shapes-list').addEventListener('click', toggleSh
 var commentModal = document.getElementById('comment-modal');
 var currentLayer;
 
-// Function to get current timestamp
-function getCurrentTimestamp() {
-    return new Date().toISOString();
-}
+
 
 // Function to format timestamps
 function formatTimestamp(isoString) {
@@ -176,14 +173,14 @@ document.getElementById('submit-comment').addEventListener('click', function () 
     var comment = document.getElementById('comment-input').value.trim();
     if (comment) {
         var timestamp = getCurrentTimestamp();
-        var formattedTimestamp = formatTimestamp(timestamp);
+
 
         if (isEditing) {
             // Update existing feature
             var feature = geoJsonData.features.find(f => f.properties.id === L.stamp(currentLayer));
             if (feature) {
                 feature.properties.comment = comment;
-                feature.properties.lastEdited = formattedTimestamp;
+                feature.properties.lastEdited = timestamp;
             }
         } else {
             // Update the comment for the new feature
@@ -193,7 +190,7 @@ document.getElementById('submit-comment').addEventListener('click', function () 
             }
         }
 
-        var popupContent = `<strong>ID: ${L.stamp(currentLayer)}</strong><br>${comment}<br><small>Sist endret: ${formattedTimestamp}</small>`;
+        var popupContent = `<strong>ID: ${L.stamp(currentLayer)}</strong><br>${comment}<br><small>Sist endret: ${timestamp}</small>`;
         currentLayer.bindPopup(popupContent, { className: 'wrapped-popup' });
 
         updateShapesList(); // Refresh the shapes list
@@ -270,8 +267,8 @@ map.on(L.Draw.Event.CREATED, function (event) {
     feature.properties = {
         id: shapeId,
         type: type,
-        addedAt: formatTimestamp(getCurrentTimestamp()),
-        lastEdited: formatTimestamp(getCurrentTimestamp())
+        addedAt: getCurrentTimestamp(),
+        lastEdited: getCurrentTimestamp()
     };
 
     // Handle specific shape types
@@ -333,7 +330,7 @@ map.on(L.Draw.Event.EDITED, function (e) {
             var newComment = prompt("Oppdater kommentar for denne formen:", feature.properties.comment);
             if (newComment) {
                 feature.properties.comment = newComment;
-                feature.properties.lastEdited = formatTimestamp(getCurrentTimestamp());
+                feature.properties.lastEdited = getCurrentTimestamp();
                 // Update popup
                 var popupContent = `<strong>ID: ${id}</strong><br>${newComment}<br><small>Sist endret: ${feature.properties.lastEdited}</small>`;
                 layer.bindPopup(popupContent, { className: 'wrapped-popup' });
@@ -495,7 +492,7 @@ document.getElementById('shapeForm').addEventListener('submit', function (e) {
 
             submission.id = Date.now();
             submission.comment = submissionComment;
-            submission.timestamp = formatTimestamp(new Date().toISOString());
+            submission.timestamp = getCurrentTimestamp();
             submission.geoJsonData = geoJsonData;
 
             document.getElementById('shapeData').value = JSON.stringify(submission);
@@ -662,3 +659,10 @@ geocoder.on('markgeocode', function (e) {
         .bindPopup(e.geocode.name)
         .openPopup();
 });
+
+
+function getCurrentTimestamp() {
+    const now = new Date();
+    // Format the date as ISO 8601 format which C# can parse
+    return now.toISOString();
+}

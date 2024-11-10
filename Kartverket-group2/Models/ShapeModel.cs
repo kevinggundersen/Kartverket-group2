@@ -47,10 +47,10 @@ namespace Kartverket_group2.Models
         public string Comment { get; set; }
 
         [JsonPropertyName("addedAt")]
-        public string AddedAt { get; set; }
+        public string? AddedAt { get; set; }
 
         [JsonPropertyName("lastEdited")]
-        public string LastEdited { get; set; }
+        public string? LastEdited { get; set; }
 
         [JsonPropertyName("radius")]
         public double? Radius { get; set; }

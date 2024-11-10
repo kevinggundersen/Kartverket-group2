@@ -5,6 +5,6 @@
         public string UserEmail { get; set; }
         public string SubmissionId { get; set; }
         public string NewStatus { get; set; }
-        public string AdminComment { get; set; } // Add this property
+        public string AdminComment { get; set; }
     }
 }
