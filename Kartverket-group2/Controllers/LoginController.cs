@@ -184,9 +184,8 @@ namespace Kartverket_group2.Controllers
                 var emailMessage = new EmailQueueMessage
                 {
                     UserEmail = model.Email,
-                    SubmissionId = "N/A",
-                    NewStatus = "N/A",
-                    AdminComment = $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>"
+
+                    AdminComment = $"Tilbakestill ditt passord ved å følge linken: <a href='{callbackUrl}'>link</a>"
                 };
 
                 await _emailService.QueueEmailAsync(emailMessage);

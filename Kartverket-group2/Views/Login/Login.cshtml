@@ -15,8 +15,8 @@
     <div class="background-image-basic"></div>
     
         <div class="login-container">
-            admin@admin.com
-            Admin@1234
+            @*admin@admin.com
+            Admin@1234*@
             <h2>Logg inn</h2>
             <form asp-controller="Login" asp-action="Login" method="post" id="login-form">
                 <div asp-validation-summary="All" class="text-danger"></div>
@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    @if (Context.User.Identity?.IsAuthenticated == true)
+    @*if (Context.User.Identity?.IsAuthenticated == true)
     {
         <div style="background-color: lightgreen; padding: 10px; margin: 10px;">
             <p>Autentisert som: @Context.User.Identity.Name</p>
@@ -43,5 +43,6 @@
         <div style="background-color: lightpink; padding: 10px; margin: 10px;">
             <p>Ikke autentisert</p>
         </div>
-    }
+    }*@
+
 </body>

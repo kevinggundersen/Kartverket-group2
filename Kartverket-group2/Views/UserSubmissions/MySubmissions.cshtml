@@ -71,6 +71,10 @@
         margin-bottom: 100px;
     }
 
+    #mysubmissionsheader {
+        color: white;
+    }
+
     @@media (max-width: 767.98px) {
         .container-fluid {
             padding-left: 1rem;
@@ -94,7 +98,7 @@
     <div class="background-image-basic"></div>
 
 <div class="container-fluid px-4 card-container padding-bottom">
-    <h2 class="my-4">Mine innmeldinger</h2>
+    <h2 id="mysubmissionsheader" class="my-4">Mine innmeldinger</h2>
 
     @if (TempData["Message"] != null)
     {
