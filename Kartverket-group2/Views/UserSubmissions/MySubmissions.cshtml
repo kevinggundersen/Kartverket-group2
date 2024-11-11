@@ -72,7 +72,10 @@
     }
 
     #mysubmissionsheader {
-        color: white;
+        color: black;
+        background-color: white;
+        padding: 1rem;
+        border-radius: 0.5rem;
     }
 
     @@media (max-width: 767.98px) {
@@ -97,9 +100,10 @@
 <body>
     <div class="background-image-basic"></div>
 
-<div class="container-fluid px-4 card-container padding-bottom">
-    <h2 id="mysubmissionsheader" class="my-4">Mine innmeldinger</h2>
-
+    <div class="container-fluid px-4 card-container padding-bottom">
+        <div class="mb-4">
+            <h2 id="mysubmissionsheader" class="my-4">Mine innmeldinger</h2>
+        </div>
     @if (TempData["Message"] != null)
     {
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -131,6 +135,10 @@
                             <small class="text-muted">Tidsstempel:</small>
                             <div class="text-break">@submission.Timestamp</div>
                         </div>
+                            <div class="mb-2">
+                                <small class="text-muted">Tittel:</small>
+                                <div class="text-break">@submission.Comment</div>
+                            </div>
                         <div class="mb-3">
                             <small class="text-muted">Kommune:</small>
                             <div class="text-break">@submission.Municipalitynr</div>
