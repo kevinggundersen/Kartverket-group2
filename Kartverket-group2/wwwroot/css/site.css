@@ -59,573 +59,460 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    height: 40px; /* Adjust to match your navbar height */
-    line-height: 40px; /* Vertically center the text there */
+    height: 50px; /* Adjust to match your navbar height */
     background-color: #f5f5f5;
 }
 
-/*Zoom buttons*/
-.custom-zoom-control {
-    position: fixed;
-
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    background: white;
-    border-radius: 4px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    top: 68px;
-    left: 10px;
-
+.navbar-collapse {
+    background-color: white;
+    padding: 10px;
+    line-height: 1.0;
 }
 
-.custom-zoom-control button {
-    background: #fff;
-    color: #28A745;
-    border: none;
-    padding: 5px;
-    padding-left: 16.33px;
-    padding-right: 16.33px;
-    cursor: pointer;
-    font-size: 18px;
-}
+    /*Zoom buttons*/
+    .custom-zoom-control {
+        position: fixed;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        background: white;
+        border-radius: 4px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        top: 68px;
+        left: 10px;
+    }
 
-#zoom-in {
-    border-radius: 5px 5px 0px 0px;
-    border-bottom: 1px solid black;
-    border-top: 2px solid rgba(0,0,0,0.2);
-}
-#zoom-out {
-    border-radius: 0px 0px 5px 5px;
-    border-bottom: 2px solid rgba(0,0,0,0.2);
-}
+        .custom-zoom-control button {
+            background: #fff;
+            color: #28A745;
+            border: none;
+            padding: 5px;
+            padding-left: 16.33px;
+            padding-right: 16.33px;
+            cursor: pointer;
+            font-size: 18px;
+        }
 
-.custom-zoom-control button:hover {
-    background: #f0f0f0;
-}
+    #zoom-in {
+        border-radius: 5px 5px 0px 0px;
+        border-bottom: 1px solid black;
+        border-top: 2px solid rgba(0,0,0,0.2);
+    }
 
-/*Overlay on page load*/
-#startupoverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-}
+    #zoom-out {
+        border-radius: 0px 0px 5px 5px;
+        border-bottom: 2px solid rgba(0,0,0,0.2);
+    }
 
-#welcometext {
-    color: white;
-    text-align: center;
-    padding: 20px;
-    background-color: rgb(26, 131, 59);
-    border-radius: 10px;
-}
+    .custom-zoom-control button:hover {
+        background: #f0f0f0;
+    }
 
-/*Close overlay button*/
-#overlaybutton {
-    width: 100px;
-    height: 35px;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 2.5px;
-    font-weight: 500;
-    color: #000;
-    background-color: #fff;
-    border: none;
-    border-radius: 45px;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease 0s;
-    cursor: pointer;
-    outline: none;
-}
+    /*Overlay on page load*/
+    #startupoverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+    }
 
-    #overlaybutton:hover {
-        background-color: #107026;
+    #welcometext {
         color: white;
+        text-align: center;
+        padding: 20px;
+        background-color: rgb(26, 131, 59);
+        border-radius: 10px;
     }
 
-/*List of shapes*/
-#shapes-list-container {
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    left: 10px;
-    background: white;
-    padding: 10px;
-    border-radius: 4px;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.65);
-    z-index: 1000;
-    min-width: 270px;
-    max-width: 270px;
-    overflow-y: auto;
-    bottom: 70px; /* Adjust this value to position above the footer */
-    max-height: calc(80vh - 126px); /* Subtract navbar and footer heights */
-}
-
-#shapes-list {
-    padding: 10px 0;
-}
-
-#shapes-list li:hover {
-    background-color: #f0f0f0;
-    cursor: pointer;
-}
-
-
-#shapes-list-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border-bottom: 1px solid #ddd;
-}
-
-#shapes-list-header h4 {
-    margin: 0;
-}
-
-#toggle-shapes-list {
-    background: none;
-    border: none;
-    font-size: 1.2em;
-    cursor: pointer;
-    padding: 5px;
-    color: #28A745;
-}
-
-#shapes-list-scroll {
-    max-height: 500px;
-    overflow-y: auto;
-    transition: max-height 0.3s ease-out;
-}
-
-#shapes-list-scroll.collapsed {
-    max-height: 0;
-    overflow: hidden;
-}
-
-.shapes-list-item {
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.shapes-list-comment {
-    word-wrap: break-word;
-    white-space: pre-wrap;
-    margin: 5px 0;
-}
-
-.shapes-list-button {
-    margin-right: 5px;
-}
-
-/* Responsive styles for smaller screens */
-@media screen and (max-width: 768px) {
-    .shapes-list-ul {
-        font-size: 16px; /* Increase base font size */
+    /*Close overlay button*/
+    #overlaybutton {
+        width: 100px;
+        height: 35px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 2.5px;
+        font-weight: 500;
+        color: #000;
+        background-color: #fff;
+        border: none;
+        border-radius: 45px;
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease 0s;
+        cursor: pointer;
+        outline: none;
     }
+
+        #overlaybutton:hover {
+            background-color: #107026;
+            color: white;
+        }
+
+    /*List of shapes*/
+    #shapes-list-container {
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        left: 10px;
+        background: white;
+        padding: 10px;
+        border-radius: 4px;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+        z-index: 1000;
+        min-width: 270px;
+        max-width: 270px;
+        overflow-y: auto;
+        bottom: 70px; /* Adjust this value to position above the footer */
+        max-height: calc(80vh - 126px); /* Subtract navbar and footer heights */
+    }
+
+    #shapes-list {
+        padding: 10px 0;
+    }
+
+        #shapes-list li:hover {
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+
+
+    #shapes-list-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border-bottom: 1px solid #ddd;
+    }
+
+        #shapes-list-header h4 {
+            margin: 0;
+        }
+
+    #toggle-shapes-list {
+        background: none;
+        border: none;
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 5px;
+        color: #28A745;
+    }
+
+    #shapes-list-scroll {
+        max-height: 500px;
+        overflow-y: auto;
+        transition: max-height 0.3s ease-out;
+    }
+
+        #shapes-list-scroll.collapsed {
+            max-height: 0;
+            overflow: hidden;
+        }
 
     .shapes-list-item {
-        padding: 15px;
-        margin-bottom: 15px;
-    }
-
-    .shapes-list-type {
-        font-size: 18px;
         margin-bottom: 10px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 5px;
     }
 
     .shapes-list-comment {
-        font-size: 16px;
-        line-height: 1.4;
-        margin: 10px 0;
-    }
-
-    .shapes-list-timestamp {
-        font-size: 16px;
-    }
-
-    .shapes-list-buttons {
-        margin-top: 10px;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        margin: 5px 0;
     }
 
     .shapes-list-button {
-        font-size: 16px;
-        padding: 8px 12px;
-        margin-right: 10px;
+        margin-right: 5px;
     }
 
-    .shapes-list-empty {
-        font-size: 18px;
-        padding: 15px;
-    }
-}
+    /* Responsive styles for smaller screens */
+    @media screen and (max-width: 768px) {
+        .shapes-list-ul {
+            font-size: 16px; /* Increase base font size */
+        }
 
-/*Button when choosing shape to draw*/
-.shape-button {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 2.5px;
-    font-weight: 500;
-    color: #fff;
-    border: none;
-    border-radius: 45px;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease 0s;
-    cursor: pointer;
-    outline: none;
-    text-align: left;
-    height: 20px;
-}
+        .shapes-list-item {
+            padding: 15px;
+            margin-bottom: 15px;
+        }
 
-#markershapebutton {
-    background-color: rgb(255, 131, 59);
-}
+        .shapes-list-type {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
 
-#circleshapebutton {
-    background-color: rgb(200, 50, 59);
-}
+        .shapes-list-comment {
+            font-size: 16px;
+            line-height: 1.4;
+            margin: 10px 0;
+        }
 
-#polylineshapebutton {
-    background-color: blue;
-}
+        .shapes-list-timestamp {
+            font-size: 16px;
+        }
 
-#polygonshapebutton {
-    background-color: green;
-}
+        .shapes-list-buttons {
+            margin-top: 10px;
+        }
 
+        .shapes-list-button {
+            font-size: 16px;
+            padding: 8px 12px;
+            margin-right: 10px;
+        }
 
-
-/*Icons*/
-.icon::before {
-    display: inline-block;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-}
-
-
-/*Custom comment window*/
-.comment-modal {
-    display: none;
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-}
-
-.modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    width: 300px;
-}
-
-.modal-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    
-}
-
-.modal-buttons button {
-    padding: 10px 20px;
-    
-    border-radius: 5px;
-    border: none;
-}
-#submit-comment {
-    background-color: #28A745;
-    color: white;
-}
-#cancel-comment {
-    background-color: red;
-    color: white;
-}
-
-#comment-input {
-    border-radius: 5px;
-}
-
-.userLocIcon {
-    text-align: center;
-    line-height: 20px;
-    text-shadow: 0 0 5px #000;
-}
-
-/*custom prompt window*/
-
-/* Modal overlay background */
-.modal {
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Modal content styling */
-.modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
-}
-
-    .modal-content p {
-        font-size: 16px;
-        margin-bottom: 15px;
+        .shapes-list-empty {
+            font-size: 18px;
+            padding: 15px;
+        }
     }
 
-    .modal-content .form-control {
+    /*Button when choosing shape to draw*/
+    .shape-button {
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 2.5px;
+        font-weight: 500;
+        color: #fff;
+        border: none;
+        border-radius: 45px;
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease 0s;
+        cursor: pointer;
+        outline: none;
+        text-align: left;
+        height: 20px;
+    }
+
+    #markershapebutton {
+        background-color: rgb(255, 131, 59);
+    }
+
+    #circleshapebutton {
+        background-color: rgb(200, 50, 59);
+    }
+
+    #polylineshapebutton {
+        background-color: blue;
+    }
+
+    #polygonshapebutton {
+        background-color: green;
+    }
+
+
+
+    /*Icons*/
+    .icon::before {
+        display: inline-block;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+    }
+
+
+    /*Custom comment window*/
+    .comment-modal {
+        display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
         width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
     }
 
-    .modal-content .btn {
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        width: 300px;
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+        .modal-buttons button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+        }
+
+    #submit-comment {
+        background-color: #28A745;
+        color: white;
+    }
+
+    #cancel-comment {
+        background-color: red;
+        color: white;
+    }
+
+    #comment-input {
+        border-radius: 5px;
+    }
+
+    .userLocIcon {
+        text-align: center;
+        line-height: 20px;
+        text-shadow: 0 0 5px #000;
+    }
+
+    /*custom prompt window*/
+
+    /* Modal overlay background */
+    .modal {
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Modal content styling */
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        width: 100%;
+        text-align: center;
+    }
+
+        .modal-content p {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .modal-content .form-control {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .modal-content .btn {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+    /* Style for the OK button */
+    #customPromptOkButton {
+        background-color: rgb(40,167,69); /* Green */
+        color: white;
+        border: none;
         padding: 10px 20px;
-        margin: 5px;
+        border-radius: 4px;
         cursor: pointer;
     }
 
-/* Style for the OK button */
-#customPromptOkButton {
-    background-color: rgb(40,167,69); /* Green */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-}
+        #customPromptOkButton:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
 
-    #customPromptOkButton:hover {
-        background-color: #218838; /* Darker green on hover */
+    /* Style for the Cancel button */
+    #customPromptCancelButton {
+        background-color: #fa1313; /* Red */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
     }
 
-/* Style for the Cancel button */
-#customPromptCancelButton {
-    background-color: #fa1313; /* Red */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-    #customPromptCancelButton:hover {
-        background-color: #871010; /* Darker red on hover */
-    }
+        #customPromptCancelButton:hover {
+            background-color: #871010; /* Darker red on hover */
+        }
 
 
-/*Styling for the search icon*/
-.leaflet-control-geocoder {
-    position: fixed !important;
-    top: 60px;
-    right: 10px;
-    z-index: 1000;
-}
-
-/*Loading icon when searching user location*/
-.leaflet-control-locate {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    z-index: 1000;
-}
-.leaflet-bar a, .leaflet-bar a:hover {
-    color: #28A745 !important;
-}
-
-.locate-button {
-    width: 34px;
-    height: 34px;
-    background-color: #fff;
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
-
-.locate-button:hover {
-    background-color: #f4f4f4;
-}
-
-.loading-indicator {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff;
-    border-radius: 4px;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.65);
-}
-
-.loading-indicator i {
-    font-size: 16px;
-    color: #555;
-}
-
-.leaflet-control-locate a {
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.leaflet-touch .leaflet-control-locate a {
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-}
-#submit-form-data {
-    position: fixed;
-    display: block;
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    z-index: 9000;
-    bottom: 70px; /* Adjust to position above footer */
-    left: 290px;
-}
-
-#submit-form-data:hover {
-    background-color: #23923d;
-}
-
-.wrapped-popup .leaflet-popup-content {
-    max-width: 200px;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-}
-
-/*Line between left and right aligned items in navbar when collapsed for smaller screens*/
-@media (max-width: 575.98px) {
-    .navbar-divider {
-        border-top: 1px solid #dee2e6;
-        width: 100%;
-    }
-}
-
-.save-shape-button {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    z-index: 1000;
-    padding: 10px 15px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-}
-.save-shape-button:hover {
-    background-color: #45a049;
-}
-
-/* Responsive styles for smaller screens */
-@media screen and (max-width: 768px) {
-    .save-shape-button {
-        bottom: 70px; /* Move the button up to avoid overlap */
-        left: 10px;
-        margin-right: 10px;
-        padding: 12px 18px; /* Slightly larger touch target */
-        font-size: 16px; /* Larger font size for better readability */
-    }
-
-    #map-container {
-        margin-top: -8px; /* Use all availible space, as navbar is smaller */
-    }
-}
-@media screen and (max-width: 516px) {
-    .leaflet-control-locate {
-        bottom: 50px; /* Move above the save button */
+    /*Styling for the search icon*/
+    .leaflet-control-geocoder {
+        position: fixed !important;
+        top: 60px;
         right: 10px;
+        z-index: 1000;
+    }
+
+    /*Loading icon when searching user location*/
+    .leaflet-control-locate {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        z-index: 1000;
+    }
+
+    .leaflet-bar a, .leaflet-bar a:hover {
+        color: #28A745 !important;
     }
 
     .locate-button {
-        width: 40px;
-        height: 40px;
-    }
-}
-@media screen and (max-width: 468px) {
-    .leaflet-control-locate {
-        bottom: 70px; /* Move above the save button */
-        right: 10px;
-    }
-}
-@media screen and (max-width: 432px) {
-    .leaflet-control-locate {
-        bottom: 90px; /* Move above the save button */
-        right: 10px;
+        width: 34px;
+        height: 34px;
+        background-color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
     }
 
-}
-@media screen and (max-width: 392px) {
+        .locate-button:hover {
+            background-color: #f4f4f4;
+        }
 
-    #shapes-list-container {
-        left: 0;
-        right: 0;
-        width: 100%;
-        min-width: 1px;
-        max-width: 100%;
-        bottom: 70px; /* Adjust if needed to fit above the footer */
-    }
-
-    .save-shape-button {
-        left: 0;
-        right: 0;
-        width: 100%;
-        bottom: 70px; /* Position it just above the footer */
-        margin: 0;
-        border-radius: 0;
-    }
-
-    .leaflet-control-locate {
-        bottom: calc(75px + 50px); /* Adjust based on the height of the save button plus some spacing */
-        right: 10px;
-    }
-
-    #submit-form-data {
+    .loading-indicator {
+        position: absolute;
+        top: 0;
         left: 0;
         width: 100%;
-        bottom: 70px; /* Position it just above the footer */
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        border-radius: 4px;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.65);
     }
+
+        .loading-indicator i {
+            font-size: 16px;
+            color: #555;
+        }
+
+    .leaflet-control-locate a {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .leaflet-touch .leaflet-control-locate a {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+    }
+
     #submit-form-data {
         position: fixed;
         display: block;
@@ -638,291 +525,414 @@ body {
         cursor: pointer;
         z-index: 9000;
         bottom: 70px; /* Adjust to position above footer */
-        left: 10px; /* Align with the shapes list container */
-        right: 10px; /* Extend to the right edge */
-        width: calc(100% - 20px); /* Full width minus left and right padding */
+        left: 290px;
     }
-    #shapes-list-container {
-        bottom: calc(70px + 50px); /* Adjust based on the height of the save button plus some spacing */
+
+        #submit-form-data:hover {
+            background-color: #23923d;
+        }
+
+    .wrapped-popup .leaflet-popup-content {
+        max-width: 200px;
+        word-wrap: break-word;
+        white-space: pre-wrap;
     }
-}
 
+    /*Line between left and right aligned items in navbar when collapsed for smaller screens*/
+    @media (max-width: 575.98px) {
+        .navbar-divider {
+            border-top: 1px solid #dee2e6;
+            width: 100%;
+        }
+    }
 
-/* Button and poput for switching map layers*/
-.custom-layer-control {
-    position: fixed !important;
-    z-index: 1000;
-    
-    top: 140px;
-    left: 0px;
-}
-
-/* Adjust the size of the control */
-.custom-layer-control.leaflet-control-layers {
-    width: 45px;
-    height: 45px;
-    border-radius: 4px;
-    background-color: white;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.65);
-    border: none !important;
-    overflow: hidden;
-}
-
-.custom-fa-icon .leaflet-control-layers-toggle {
-    width: 45px;
-    height: 45px;
-    background-image: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none !important;
-}
-
-.custom-fa-icon .leaflet-control-layers-toggle i {
-    font-size: 25px;
-    color: #28a745;
-}
-
-
-/* Style the expanded layer control */
-.custom-layer-control.leaflet-control-layers-expanded {
-    width: auto;
-    height: auto;
-    padding: 10px;
-    background-color: white;
-    border-radius: 4px;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
-}
-
-/* Style the list of layers */
-.custom-layer-control .leaflet-control-layers-list {
-    margin: 0;
-    padding: 0;
-}
-
-/* Remove list circles and style list items */
-.custom-layer-control .leaflet-control-layers-base label,
-.custom-layer-control .leaflet-control-layers-overlays label {
-    display: block;
-    padding: 8px 10px;
-    margin: 0;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-/* Hide the default radio buttons and checkboxes */
-.custom-layer-control input[type="radio"],
-.custom-layer-control input[type="checkbox"] {
-    display: none;
-}
-
-/* Hover effect for list items */
-.custom-layer-control .leaflet-control-layers-base label:hover,
-.custom-layer-control .leaflet-control-layers-overlays label:hover {
-    background-color: #f0f0f0; /* Light gray background on hover */
-}
-
-/* Style for selected item */
-.custom-layer-control input:checked + span {
-    font-weight: bold;
-}
-
-/* Background color for selected item */
-.custom-layer-control input:checked + span {
-    border-radius: 5px;
-    background-color: #28A745; /* Light blue background for selected item */
-    color: white;
-    display: block;
-    padding: 8px 10px;
-    margin: -8px -10px; /* Compensate for parent padding */
-}
-
-/* Remove separator */
-.custom-layer-control .leaflet-control-layers-separator {
-    display: none;
-}
-
-.Kartgrunnlagheader {
-    font-size: 20px;
-}
-/*Welcome page*/
-
-.background-image-welcome {
-    position: fixed;
-    display: flex;
-    height: 95%;
-    width: 100%;
-    right: 0;
-    left: 0;
-    top: 0;
-    bottom: 5%;
-    z-index: -2;
-    background-image: url('/Images/KV_background.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-/*Overlay to background image*/
-.background-image-welcome-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 5%;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    z-index: -1;
-}
-
-.welcome-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 10vh;
-    width: 100%;
-}
-
-.box-container {
-    display: flex;
-    gap: 1rem;
-    width: 50%;
-
-}
-
-.box {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 75%;
-    text-align: center;
-}
-
-    .box a {
-        display: block;
-        margin-top: 1rem;
-        padding: 0.5rem;
-        background-color: green;
+    .save-shape-button {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        z-index: 1000;
+        padding: 10px 15px;
+        background-color: #4CAF50;
         color: white;
-        text-decoration: none;
-        border-radius: 5px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
     }
 
-.description-box {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 50%;
-    text-align: center;
-}
+        .save-shape-button:hover {
+            background-color: #45a049;
+        }
+
+    /* Responsive styles for smaller screens */
+    @media screen and (max-width: 768px) {
+        .save-shape-button {
+            bottom: 70px; /* Move the button up to avoid overlap */
+            left: 10px;
+            margin-right: 10px;
+            padding: 12px 18px; /* Slightly larger touch target */
+            font-size: 16px; /* Larger font size for better readability */
+        }
+
+        #map-container {
+            margin-top: -8px; /* Use all availible space, as navbar is smaller */
+        }
+    }
+
+    @media screen and (max-width: 516px) {
+        .leaflet-control-locate {
+            bottom: 50px; /* Move above the save button */
+            right: 10px;
+        }
+
+        .locate-button {
+            width: 40px;
+            height: 40px;
+        }
+    }
+
+    @media screen and (max-width: 468px) {
+        .leaflet-control-locate {
+            bottom: 70px; /* Move above the save button */
+            right: 10px;
+        }
+    }
+
+    @media screen and (max-width: 432px) {
+        .leaflet-control-locate {
+            bottom: 90px; /* Move above the save button */
+            right: 10px;
+        }
+    }
+
+    @media screen and (max-width: 392px) {
+
+        #shapes-list-container {
+            left: 0;
+            right: 0;
+            width: 100%;
+            min-width: 1px;
+            max-width: 100%;
+            bottom: 70px; /* Adjust if needed to fit above the footer */
+        }
+
+        .save-shape-button {
+            left: 0;
+            right: 0;
+            width: 100%;
+            bottom: 70px; /* Position it just above the footer */
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .leaflet-control-locate {
+            bottom: calc(75px + 50px); /* Adjust based on the height of the save button plus some spacing */
+            right: 10px;
+        }
+
+        #submit-form-data {
+            left: 0;
+            width: 100%;
+            bottom: 70px; /* Position it just above the footer */
+        }
+
+        #submit-form-data {
+            position: fixed;
+            display: block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 9000;
+            bottom: 70px; /* Adjust to position above footer */
+            left: 10px; /* Align with the shapes list container */
+            right: 10px; /* Extend to the right edge */
+            width: calc(100% - 20px); /* Full width minus left and right padding */
+        }
+
+        #shapes-list-container {
+            bottom: calc(70px + 50px); /* Adjust based on the height of the save button plus some spacing */
+        }
+    }
 
 
-@media (max-width: 990px) {
+    /* Button and poput for switching map layers*/
+    .custom-layer-control {
+        position: fixed !important;
+        z-index: 1000;
+        top: 140px;
+        left: 0px;
+    }
+
+        /* Adjust the size of the control */
+        .custom-layer-control.leaflet-control-layers {
+            width: 45px;
+            height: 45px;
+            border-radius: 4px;
+            background-color: white;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+            border: none !important;
+            overflow: hidden;
+        }
+
+    .custom-fa-icon .leaflet-control-layers-toggle {
+        width: 45px;
+        height: 45px;
+        background-image: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none !important;
+    }
+
+        .custom-fa-icon .leaflet-control-layers-toggle i {
+            font-size: 25px;
+            color: #28a745;
+        }
+
+
+    /* Style the expanded layer control */
+    .custom-layer-control.leaflet-control-layers-expanded {
+        width: auto;
+        height: auto;
+        padding: 10px;
+        background-color: white;
+        border-radius: 4px;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+    }
+
+    /* Style the list of layers */
+    .custom-layer-control .leaflet-control-layers-list {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Remove list circles and style list items */
+    .custom-layer-control .leaflet-control-layers-base label,
+    .custom-layer-control .leaflet-control-layers-overlays label {
+        display: block;
+        padding: 8px 10px;
+        margin: 0;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Hide the default radio buttons and checkboxes */
+    .custom-layer-control input[type="radio"],
+    .custom-layer-control input[type="checkbox"] {
+        display: none;
+    }
+
+    /* Hover effect for list items */
+    .custom-layer-control .leaflet-control-layers-base label:hover,
+    .custom-layer-control .leaflet-control-layers-overlays label:hover {
+        background-color: #f0f0f0; /* Light gray background on hover */
+    }
+
+    /* Style for selected item */
+    .custom-layer-control input:checked + span {
+        font-weight: bold;
+    }
+
+    /* Background color for selected item */
+    .custom-layer-control input:checked + span {
+        border-radius: 5px;
+        background-color: #28A745; /* Light blue background for selected item */
+        color: white;
+        display: block;
+        padding: 8px 10px;
+        margin: -8px -10px; /* Compensate for parent padding */
+    }
+
+    /* Remove separator */
+    .custom-layer-control .leaflet-control-layers-separator {
+        display: none;
+    }
+
+    .Kartgrunnlagheader {
+        font-size: 20px;
+    }
+    /*Welcome page*/
+
+    .background-image-welcome {
+        position: fixed;
+        display: flex;
+        height: 95%;
+        width: 100%;
+        right: 0;
+        left: 0;
+        top: 0;
+        bottom: 5%;
+        z-index: -2;
+        background-image: url('/Images/KV_background.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    /*Overlay to background image*/
+    .background-image-welcome-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 5%;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+        z-index: -1;
+    }
+
+    .welcome-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 10vh;
+        width: 100%;
+    }
+
     .box-container {
+        display: flex;
+        gap: 1rem;
+        width: 50%;
+    }
+
+    .box {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 75%;
+        text-align: center;
+    }
+
+        .box a {
+            display: block;
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background-color: green;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+    .description-box {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 50%;
+        text-align: center;
+    }
+
+
+    @media (max-width: 990px) {
+        .box-container {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .description-box {
+            width: 90%;
+        }
+
+        .box {
+            width: 90%;
+        }
+    }
+
+    /*Background image*/
+
+    .background-image-basic {
+        position: fixed;
+        display: flex;
+        height: 95%;
+        width: 100%;
+        right: 0;
+        left: 0;
+        top: 0;
+        bottom: 5%;
+        z-index: -2;
+        background-image: url('/Images/kart-bakgrunn.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+        /*Overlay to backgroun image*/
+        .background-image-basic::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity as needed */
+            z-index: 1;
+        }
+
+    /*Profile page*/
+
+    .profile-main {
+        display: flex;
+        justify-content: center;
         flex-direction: column;
         align-items: center;
     }
 
-    .description-box {
-        width: 90%;
-    }
-
-    .box {
-        width: 90%;
-    }
-}
-
-/*Background image*/
-
-.background-image-basic {
-    position: fixed;
-    display: flex;
-    height: 95%;
-    width: 100%;
-    right: 0;
-    left: 0;
-    top: 0;
-    bottom: 5%;
-    z-index: -2;
-    background-image: url('/Images/kart-bakgrunn.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-/*Overlay to backgroun image*/
-    .background-image-basic::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity as needed */
-        z-index: 1;
-    }
-
-/*Profile page*/
-
-.profile-main {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-}
-
-.profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 2rem;
-    width: 75%;
-}
-@media (max-width: 990px) {
     .profile-container {
-        width: 90%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2rem;
+        width: 75%;
     }
-}
 
-.profile-box {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    align-items: center;
-    text-align: center;
-    width: 100%;
-}
+    @media (max-width: 990px) {
+        .profile-container {
+            width: 90%;
+        }
+    }
 
-/*Login page*/
+    .profile-box {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
 
-.login-main {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
+    /*Login page*/
 
-}
+    .login-main {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
 
-.login-container {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10vh;
-}
-@media (max-width: 990px) {
     .login-container {
-        width: 90%;
+        background-color: white;
+        padding: 2rem;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 40%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10vh;
     }
-}
+
+    @media (max-width: 990px) {
+        .login-container {
+            width: 90%;
+        }
+    }
 
     #login-form {
         display: flex;
@@ -956,34 +966,35 @@ body {
         text-align: center;
     }
 
-.auth-ok {
-    background-color: lightgreen;
-    padding: 10px;
-    margin: 10px;
-    width: 40%;
-}
-@media (max-width: 990px) {
     .auth-ok {
-        width: 90%;
+        background-color: lightgreen;
+        padding: 10px;
+        margin: 10px;
+        width: 40%;
     }
-}
-.auth-bad {
-    background-color: lightpink;
-    padding: 10px;
-    margin: 10px;
-    width: 40%;
-}
-@media (max-width: 990px) {
+
+    @media (max-width: 990px) {
+        .auth-ok {
+            width: 90%;
+        }
+    }
+
     .auth-bad {
-        width: 90%;
+        background-color: lightpink;
+        padding: 10px;
+        margin: 10px;
+        width: 40%;
     }
 
-    .confirmation-container {
-        width: 100%;
-    }
+    @media (max-width: 990px) {
+        .auth-bad {
+            width: 90%;
+        }
 
-    
-}
+        .confirmation-container {
+            width: 100%;
+        }
+    }
 
     /*Register page*/
 
@@ -1019,60 +1030,59 @@ body {
         flex-direction: column;
     }
 
-.confirmation-box img {
-    max-width: 100%;
-    height:20vh;
-    
-
-}
-
-@media (max-width: 990px) {
-
-    .confirmation-container {
-        width: 100%;
-        margin-top: 20vh;
+    .confirmation-box img {
+        max-width: 100%;
+        height: 20vh;
     }
-}
+
+    @media (max-width: 990px) {
+
+        .confirmation-container {
+            width: 100%;
+            margin-top: 20vh;
+        }
+    }
 
 
     /*overider leaflet's sitt icon */
-.leaflet-control-layers-toggle {
-    background-image: url('/Images/layer-group-solid.svg') !important;
-    width: 36px; /* Adjust if your image size is different */
-    height: 36px; /* Adjust if your image size is different */
-}
-
-/*Forgot password pages*/
-
-.password-container {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10vh;
-}
-
-.password-container form {
-    width: 100%;
-}
-    .password-container input,
-    .password-container button {
-        width: 100%;
-        margin-bottom: 10px;
+    .leaflet-control-layers-toggle {
+        background-image: url('/Images/layer-group-solid.svg') !important;
+        width: 36px; /* Adjust if your image size is different */
+        height: 36px; /* Adjust if your image size is different */
     }
 
-@media (max-width: 990px) {
+    /*Forgot password pages*/
+
     .password-container {
-        width: 90%;
+        background-color: white;
+        padding: 2rem;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10vh;
     }
-}
 
-#form-group {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
+        .password-container form {
+            width: 100%;
+        }
+
+        .password-container input,
+        .password-container button {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+    @media (max-width: 990px) {
+        .password-container {
+            width: 90%;
+        }
+    }
+
+    #form-group {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
