@@ -143,10 +143,10 @@ body {
     outline: none;
 }
 
-#overlaybutton:hover {
-    background-color: #2EE59D;
-    color: white;
-}
+    #overlaybutton:hover {
+        background-color: #107026;
+        color: white;
+    }
 
 /*List of shapes*/
 #shapes-list-container {
