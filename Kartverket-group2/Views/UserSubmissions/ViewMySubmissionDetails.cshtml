@@ -22,6 +22,10 @@
         cursor: pointer;
     }
 
+        .details-map-container {
+            margin-bottom: 20px;
+        }
+
     /* Toast notification */
     .status-notification {
         position: fixed;
@@ -156,7 +160,7 @@
             </div>
 
             <!-- Map Column -->
-            <div class="col-12 col-lg-6 card-container">
+            <div class="col-12 col-lg-6 card-container details-map-container">
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h5 class="card-title mb-0">Kart</h5>
@@ -192,13 +196,35 @@
 
 
     <script>
-        var map = L.map('map', {
+        // Map initialization
+        var map = L.map('map', { zoomControl: false }).setView([58.1599, 8.0182], 13);
 
+        var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        });
+        var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        });
+        var topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data: © OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap (CC-BY-SA)'
+        });
+        var turLayer = L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/toporaster/default/webmercator/{z}/{y}/{x}.png', {
+            attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>'
+        });
+        var sjoLayer = L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', {
+            attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>'
         });
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
+        var baseLayers = {
+            "Standard": osmLayer,
+            "Satellittbilde": satelliteLayer,
+            "Topografisk": topoLayer,
+            "Turkart": turLayer,
+            "Sjøkart": sjoLayer
+        };
+
+        var activeTileLayer = baseLayers["@Model.GeoJsonData.ActiveTileLayer"] || osmLayer; // Default to osmLayer if TileLayer is not set
+        activeTileLayer.addTo(map);
 
         var geoJsonData = @Html.Raw(Json.Serialize(Model.GeoJsonData));
         console.log("Full GeoJSON data:", geoJsonData);
