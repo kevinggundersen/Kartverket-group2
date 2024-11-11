@@ -24,11 +24,12 @@ body {
 
 #map-container {
     position: fixed;
-    top: 57px; /* Adjust this value to match navbar height */
+    top: 40px; /* Adjust this value to match navbar height */
     left: 0;
     right: 0;
     bottom: 40px; /* Adjust this value to match footer height */
     z-index: 1;
+   
 }
 
 #map {
