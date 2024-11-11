@@ -104,6 +104,10 @@
                             <dd class="col-sm-8">@Model.GeoJsonData.ActiveTileLayer</dd>
                         </dl>
                     </div>
+                    <div class="mb-3" style="padding: 15px;">
+                        <label for="adminComment" class="form-label"><strong>Kommentar fra behandler:</strong></label>
+                        <label name="adminComment" id="comment" class="form-control">@Model.AdminComment</label> <!-- Display the comment -->
+                    </div>
                 </div>
 
                 <!-- Shapes List -->
