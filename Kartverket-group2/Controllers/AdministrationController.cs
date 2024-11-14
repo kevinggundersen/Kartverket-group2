@@ -291,5 +291,83 @@ namespace Kartverket_group2.Controllers
                 return ExtractPointCoordinates(coordArray.First());
             }
         }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> MapView()
+        {
+            var submissions = await _context.Submissions.ToListAsync();
+            return View(submissions);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetSubmissionsGeoJson()
+        {
+            try
+            {
+                var submissions = await _context.Submissions.ToListAsync();
+                _logger.LogInformation($"Found {submissions.Count} submissions");
+
+                var features = new List<object>();
+
+                foreach (var submission in submissions)
+                {
+                    _logger.LogInformation($"Processing submission {submission.Id}");
+
+                    if (submission.GeoJsonData?.Features == null)
+                    {
+                        _logger.LogWarning($"Submission {submission.Id} has no features");
+                        continue;
+                    }
+
+                    foreach (var feature in submission.GeoJsonData.Features)
+                    {
+                        try
+                        {
+                            // Extract first coordinate for the marker
+                            var (longitude, latitude) = GeoJsonCoordinateExtractor.ExtractFirstCoordinates(feature.Geometry);
+
+                            _logger.LogInformation($"Extracted coordinates for submission {submission.Id}: ({longitude}, {latitude})");
+
+                            features.Add(new
+                            {
+                                type = "Feature",
+                                geometry = new
+                                {
+                                    type = "Point",
+                                    coordinates = new[] { longitude, latitude }
+                                },
+                                properties = new
+                                {
+                                    submissionId = submission.Id,
+                                    comment = submission.Comment ?? "",
+                                    timestamp = submission.Timestamp,
+                                    status = submission.Status ?? "Unknown",
+                                    municipalityNr = submission.Municipalitynr ?? "Unknown",
+                                    geometryType = feature.Geometry.Type
+                                }
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, $"Error processing feature for submission {submission.Id}");
+                        }
+                    }
+                }
+
+                var geoJson = new
+                {
+                    type = "FeatureCollection",
+                    features = features
+                };
+
+                _logger.LogInformation($"Returning GeoJSON with {features.Count} features");
+                return Json(geoJson);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error generating GeoJSON");
+                return StatusCode(500, new { error = "Error generating GeoJSON" });
+            }
+        }
     }
 }

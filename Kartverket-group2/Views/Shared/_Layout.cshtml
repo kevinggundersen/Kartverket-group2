@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://kit.fontawesome.com/0dae9f11ff.js" crossorigin="anonymous"></script>
 
+    @RenderSection("Styles", required: false)
+
 </head>
 <body>
     <header>
@@ -40,6 +42,10 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="Admin">Admin</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Administration" asp-action="MapView">Kartvisning</a>
                             </li>
                         }
                         @if (User.IsInRole("User"))
@@ -82,6 +88,7 @@
 
     <!-- Leaflet scripts-->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <!-- Leaflet Draw plugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
     <!-- Leaflet Control Geocoder plugin -->
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>

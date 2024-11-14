@@ -1,0 +1,155 @@
+﻿@model IEnumerable<Kartverket_group2.Models.Submission>
+
+@{
+    ViewData["Title"] = "Kartvisning";
+}
+
+<!-- Map container -->
+<div id="map-container">
+    <!-- Custom Zoom Control -->
+    <div class="custom-zoom-control">
+        <button id="zoom-in">+</button>
+        <button id="zoom-out">-</button>
+    </div>
+    <!-- The map itself -->
+    <div id="map"></div>
+</div>
+
+<!-- Load Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<!-- Load MarkerCluster CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+
+<style>
+    .custom-marker {
+        border-radius: 50%;
+        border: 2px solid white;
+    }
+
+    #map-container {
+        position: fixed;
+        top: 40px; /* Adjust this value to match navbar height */
+        left: 0;
+        right: 0;
+        bottom: 40px; /* Adjust this value to match footer height */
+        z-index: 1;
+    }
+
+    #map {
+        background-color: #f8f9fa;
+        height: 80%;
+    }
+
+    .detaljer-btn {
+        background-color: #28A745;
+        color: white !important;
+        border: none;
+    }
+
+    .detaljer-btn:hover {
+        background-color: #218838;
+        color: white !important;
+    }
+</style>
+
+<!-- Load Leaflet first -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Load marker cluster script -->
+<script>
+    // Function to load MarkerCluster script
+    function loadMarkerCluster(callback) {
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js';
+        script.onload = callback;
+        document.head.appendChild(script);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize the map
+        const map = L.map('map', {
+            center: [65.4, 17.3],
+            zoom: 4,
+            zoomControl: false
+        });
+
+        // Add tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19
+        }).addTo(map);
+
+        function getStatusColor(status) {
+            switch (status) {
+                case 'Ikke påbegynt': return 'gray';
+                case 'Under behandling': return 'blue';
+                case 'Behandlet': return 'green';
+                case 'Ikke tatt til følge': return 'red';
+                default: return 'purple';
+            }
+        }
+
+        // Load MarkerCluster and initialize markers
+        loadMarkerCluster(function () {
+            console.log('MarkerCluster loaded');
+
+            // Create marker cluster group after script is loaded
+            const markerCluster = new L.MarkerClusterGroup({
+                maxClusterRadius: 50,
+                spiderfyOnMaxZoom: true,
+                showCoverageOnHover: true,
+                zoomToBoundsOnClick: true
+            });
+
+            // Fetch submissions
+            fetch('/Administration/GetSubmissionsGeoJson')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Data received:', data);
+
+                    data.features.forEach(feature => {
+                        const coords = feature.geometry.coordinates;
+                        const props = feature.properties;
+
+                        const icon = L.divIcon({
+                            className: 'custom-marker',
+                            html: `<div style="background-color: ${getStatusColor(props.status)};
+                                            width: 12px;
+                                            height: 12px;
+                                            border-radius: 50%;
+                                            border: 2px solid white;"></div>`,
+                            iconSize: [12, 12],
+                            iconAnchor: [6, 6]
+                        });
+
+                        const marker = L.marker([coords[1], coords[0]], { icon: icon })
+                            .bindPopup(`
+                                    <strong>Innmelding ID:</strong> ${props.submissionId}<br>
+                                    <strong>Tittel:</strong> ${props.comment || 'Ingen tittel'}<br>
+                                    <strong>Status:</strong> ${props.status}<br>
+                                    <strong>Kommune:</strong> ${props.municipalityNr}<br>
+                                    <strong>Geometri Type:</strong> ${props.geometryType}<br>
+                                    <strong>Tidsstempel:</strong> ${props.timestamp.toLocaleString()}<br>
+                                    <a href="/Administration/ViewSubmissionDetails/${props.submissionId}"
+                                       class="btn btn-sm btn-primary mt-2 detaljer-btn">Detaljer</a>
+                                `);
+
+                        markerCluster.addLayer(marker);
+                    });
+
+                    map.addLayer(markerCluster);
+
+                    if (data.features.length > 0) {
+                        map.fitBounds(markerCluster.getBounds());
+                    }
+
+                    console.log('Markers added to cluster:', markerCluster.getLayers().length);
+                })
+                .catch(error => {
+                    console.error('Error loading submissions:', error);
+                });
+        });
+    });
+</script>
