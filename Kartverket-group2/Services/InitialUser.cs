@@ -23,18 +23,26 @@ public static class SeedData
             }
         }
 
+        // Get admin credentials from environment variables
+        var adminEmail = Environment.GetEnvironmentVariable("ADMIN_EMAIL");
+        var adminPassword = Environment.GetEnvironmentVariable("ADMIN_PASSWORD");
+
+        if (string.IsNullOrEmpty(adminEmail) || string.IsNullOrEmpty(adminPassword))
+        {
+            throw new Exception("Admin credentials are not set in environment variables.");
+        }
+
         // Find or create admin user
-        var user = await userManager.FindByEmailAsync("admin@admin.com");
+        var user = await userManager.FindByEmailAsync(adminEmail);
 
         if (user == null)
         {
             // Create new admin user if doesn't exist
             var adminUser = new ApplicationUserModel
             {
-                UserName = "admin@admin.com",
-                Email = "admin@admin.com"
+                UserName = adminEmail,
+                Email = adminEmail
             };
-            string adminPassword = "Admin@1234";
 
             var createAdminUser = await userManager.CreateAsync(adminUser, adminPassword);
             if (createAdminUser.Succeeded)

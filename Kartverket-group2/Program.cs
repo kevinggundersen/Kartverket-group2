@@ -1,3 +1,4 @@
+
 using Kartverket_group2.Data;
 using Kartverket_group2.Extensions;
 using Kartverket_group2.Models;
@@ -7,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

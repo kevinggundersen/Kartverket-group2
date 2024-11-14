@@ -13,11 +13,20 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=db;Port=${DB_PORT};Database=${DB_NAME};User=${DB_USER};Password=${DB_PASSWORD}
+      - DB_HOST=db  # Note: This should be the service name of your database
+      - DB_PORT=3306
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - Email__SmtpServer=${EMAIL_SMTP_SERVER}
       - Email__Port=${EMAIL_PORT}
       - Email__Username=${EMAIL_USERNAME}
       - Email__Password=${EMAIL_PASSWORD}
       - Email__FromAddress=${EMAIL_FROM_ADDRESS}
+    env_file:
+      - .env
     healthcheck:
       test: ["CMD", "dotnet", "Kartverket-group2.dll", "--health-check"]
       interval: 30s
