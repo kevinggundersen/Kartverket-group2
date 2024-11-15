@@ -3,12 +3,22 @@ using Kartverket_group2.Services;
 using System.Net.Mail;
 using System.Threading.Channels;
 
+/// <summary>
+/// Service for handling email operations including queueing and sending emails.
+/// Implements a producer-consumer pattern using channels for email queue management.
+/// </summary>
 public class EmailService : IEmailService
 {
     private readonly IConfiguration _configuration;
     private readonly ILogger<EmailService> _logger;
     private readonly Channel<EmailQueueMessage> _emailQueue;
 
+    /// <summary>
+    /// Initializes the email service with configuration and logging capabilities.
+    /// Sets up a bounded channel for email queue with a capacity of 100 messages.
+    /// </summary>
+    /// <param name="configuration">Application configuration for email settings.</param>
+    /// <param name="logger">Logger for email operations.</param>
     public EmailService(IConfiguration configuration, ILogger<EmailService> logger)
     {
         _configuration = configuration;
@@ -21,6 +31,11 @@ public class EmailService : IEmailService
         _ = ProcessEmailQueueAsync();
     }
 
+    /// <summary>
+    /// Queues an email message for asynchronous processing.
+    /// </summary>
+    /// <param name="email">Email message to be queued.</param>
+    /// <exception cref="ArgumentNullException">Thrown when email is null.</exception>
     public async ValueTask QueueEmailAsync(EmailQueueMessage email)
     {
         if (email == null)
@@ -31,6 +46,11 @@ public class EmailService : IEmailService
         _logger.LogInformation("Email queued for sending to {UserEmail}", email.UserEmail);
     }
 
+    /// <summary>
+    /// Sends an email using configured SMTP settings.
+    /// </summary>
+    /// <param name="email">Email message to be sent.</param>
+    /// <exception cref="ArgumentException">Thrown for unsupported email types.</exception>
     public async Task SendEmailAsync(EmailQueueMessage email)
     {
         try
@@ -79,6 +99,11 @@ public class EmailService : IEmailService
         }
     }
 
+    /// <summary>
+    /// Generates HTML body for status update emails.
+    /// </summary>
+    /// <param name="email">Email message containing status update information.</param>
+    /// <returns>HTML formatted email body.</returns>
     private string GenerateStatusUpdateEmailBody(EmailQueueMessage email)
     {
         return $@"
@@ -94,6 +119,11 @@ public class EmailService : IEmailService
         </html>";
     }
 
+    /// <summary>
+    /// Generates HTML body for password reset emails.
+    /// </summary>
+    /// <param name="email">Email message containing password reset information.</param>
+    /// <returns>HTML formatted email body.</returns>
     private string GeneratePasswordResetEmailBody(EmailQueueMessage email)
     {
         return $@"
@@ -110,6 +140,10 @@ public class EmailService : IEmailService
         </html>";
     }
 
+    /// <summary>
+    /// Continuously processes the email queue in a background task.
+    /// Attempts to send each queued email and handles any failures.
+    /// </summary>
     private async Task ProcessEmailQueueAsync()
     {
         while (true)

@@ -5,8 +5,20 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Static class for seeding initial application data including roles and admin user.
+/// </summary>
 public static class SeedData
 {
+    /// <summary>
+    /// Initializes the application with required roles and admin user.
+    /// Reads admin credentials from environment variables.
+    /// </summary>
+    /// <param name="serviceProvider">The application's service provider for dependency injection.</param>
+    /// <exception cref="Exception">
+    /// Thrown when admin credentials are missing from environment variables,
+    /// admin user creation fails, or role assignment fails.
+    /// </exception>
     public static async Task Initialize(IServiceProvider serviceProvider)
     {
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
