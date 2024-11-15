@@ -1,9 +1,9 @@
-﻿// Initialize the map
+﻿// Initialize the Leaflet map centered on coordinates [58.1599, 8.0182] with zoom level 13
+// Disable default zoom control as we'll add custom controls later
 var map = L.map('map', { zoomControl: false }).setView([58.1599, 8.0182], 13);
 
-
-
-// Add map tilelayers (Map images)
+// Define different map tile layers with their respective URLs and attribution
+// These provide different visual styles for the map (standard, satellite, topographic, etc.)
 var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
 });
@@ -22,7 +22,7 @@ var sjoLayer = L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartras
 })
 
 
-// Create a layer control object
+// Create an object to store all available base layers for the layer control
 var baseLayers = {
     "Standard": osmLayer,
     "Satellittbilde": satelliteLayer,
@@ -31,56 +31,55 @@ var baseLayers = {
     "Sjøkart": sjoLayer
 };
 
+// Track which tile layer is currently active, default to "Standard"
 var activeTileLayer = "Standard"; // Default layer
 
-// Add event listener to track the active tile layer
+// Event listener to update the active tile layer when user switches layers
 map.on('baselayerchange', function (event) {
     activeTileLayer = event.name;
 });
 
-// Function to get the active tile layer
+// Getter function to retrieve the currently active tile layer
 function getActiveTileLayer() {
     return activeTileLayer;
 }
 
-// Add the layer control to the map with a custom position
+// Add layer control to the map in top-left position
 var layerControl = L.control.layers(baseLayers, null, { position: 'topleft' }).addTo(map);
 
-// Add a custom CSS class to the layer control
+// Apply custom CSS classes to the layer control for styling
 L.DomUtil.addClass(layerControl.getContainer(), 'custom-layer-control');
 L.DomUtil.addClass(layerControl.getContainer(), 'custom-fa-icon');
 
-// Add the Font Awesome icon
+// Get the toggle button from the layer control
 var toggleButton = layerControl.getContainer().querySelector('.leaflet-control-layers-toggle');
 
 
-// Add header to list of layers
+// Add a header to the layers list
 var toggleButtons = layerControl.getContainer().querySelector('.custom-layer-control .leaflet-control-layers-list');
 var header = document.createElement('h4');
 header.classList.add("Kartgrunnlagheader");
 header.innerHTML = 'Kartgrunnlag';
 toggleButtons.prepend(header);
 
-// Set the default layer
+// Set the default map layer
 map.addLayer(osmLayer);
 
-// Initialize the FeatureGroup to store editable layers
+// Initialize a FeatureGroup to store all editable layers (shapes, markers, etc.)
 var drawnItems = new L.FeatureGroup();
 map.addLayer(drawnItems);
 
-// Variable to track whether user is editing or creating a new shape
+// Flags to track editing state and current drawing mode
 var isEditing = false;
-
-// Variable to store the current drawing mode
 var currentMode = null;
 
-// Initialize GeoJSON object to store shape information
+// Initialize GeoJSON object to store all shape data
 var geoJsonData = {
     type: "FeatureCollection",
     features: []
 };
 
-// Function to toggle the shapes list
+// Function to toggle the visibility of the shapes list panel
 function toggleShapesList() {
     var shapesList = document.getElementById('shapes-list-scroll');
     var toggleButton = document.getElementById('toggle-shapes-list');
@@ -95,18 +94,14 @@ function toggleShapesList() {
     }
 }
 
-// Event listener for the toggle button
+// Add click event listener for the shapes list toggle button
 document.getElementById('toggle-shapes-list').addEventListener('click', toggleShapesList);
 
-// Create a modal dialog for comments
+// Get reference to the comment modal
 var commentModal = document.getElementById('comment-modal');
 var currentLayer;
 
-
-
-
-
-// Function to show the comment modal
+// Function to display the comment modal for adding/editing shape comments
 function showCommentModal(layer, existingComment = null) {
     currentLayer = layer;
     commentModal.style.display = 'flex'; // Show the modal
@@ -135,17 +130,17 @@ function hideCommentModal(removeLayer = false) {
     isEditing = false; // Reset editing state
 }
 
-// Attach event listeners to modal buttons
+// Event handlers for the comment modal buttons
 document.getElementById('cancel-comment').addEventListener('click', function () {
     hideCommentModal(true); // Pass true to remove the layer on cancel
 });
 
-// Function to show the modal for editing a comment
+// Function to show the modal for editing an existing comment
 function showEditCommentModal(layer, existingComment) {
     showCommentModal(layer, existingComment);
 }
 
-// Edit the existing marker's comment
+// Function to handle editing an existing correction
 function editCorrection(id) {
     var feature = geoJsonData.features.find(f => f.properties.id === id);
     if (feature) {
@@ -162,7 +157,7 @@ document.getElementById('cancel-comment').addEventListener('click', function () 
     hideCommentModal(!isEditing); // Only remove layer if not editing
 });
 
-// Creation of the GeoJSON feature
+// Add event listener for comment submission
 document.getElementById('submit-comment').addEventListener('click', function () {
     var comment = document.getElementById('comment-input').value.trim();
     if (comment) {
@@ -177,13 +172,14 @@ document.getElementById('submit-comment').addEventListener('click', function () 
                 feature.properties.lastEdited = timestamp;
             }
         } else {
-            // Update the comment for the new feature
+            // Create new feature
             var feature = geoJsonData.features.find(f => f.properties.id === L.stamp(currentLayer));
             if (feature) {
                 feature.properties.comment = comment;
             }
         }
 
+        // Update the popup content for the layer
         var popupContent = `<strong>ID: ${L.stamp(currentLayer)}</strong><br>${comment}<br><small>Sist endret: ${timestamp}</small>`;
         currentLayer.bindPopup(popupContent, { className: 'wrapped-popup' });
 
@@ -192,9 +188,10 @@ document.getElementById('submit-comment').addEventListener('click', function () 
     }
 });
 
-// Function to show shape selection popup
+// Function to display the shape selection popup when user clicks on map
 function showShapeSelectionPopup(latlng) {
     var popupContent = L.DomUtil.create('div', 'shape-selection-popup');
+    // Create buttons for different shape types with icons and tooltips
     popupContent.innerHTML = `
         <button class="shape-button" id="markershapebutton"   data-shape="Marker" title="Best for å vise nøyaktig punkt">      <i class="fa-solid fa-location-dot"></i> Markør  </button>
         <button class="shape-button" id="circleshapebutton"   data-shape="Circle" title="Best for å vise ngenerelt område">      <i class="fa-regular fa-circle"></i>     Sirkel  </button>
@@ -202,7 +199,7 @@ function showShapeSelectionPopup(latlng) {
         <button class="shape-button" id="polygonshapebutton"  data-shape="Polygon" title="Best for å markere grensene for feilen">     <i class="fa-solid fa-diamond"></i>      Polygon </button>
     `;
 
-    // Add click event listeners to buttons
+    // Add click event listeners to each shape button
     var buttons = popupContent.querySelectorAll('.shape-button');
     buttons.forEach(function (button) {
         L.DomEvent.on(button, 'click', function (e) {
@@ -211,16 +208,18 @@ function showShapeSelectionPopup(latlng) {
         });
     });
 
+    // Show the popup at the clicked location
     var popup = L.popup()
         .setLatLng(latlng)
         .setContent(popupContent)
         .openOn(map);
 }
 
-// Function to select shape and start drawing
+// Function to initialize drawing mode for the selected shape type
 function selectShape(shapeType, latlng) {
     map.closePopup();
 
+    // Configure drawing options based on shape type
     var drawOptions = {
         marker: shapeType === 'Marker' ? { startingPoint: latlng } : false,
         circle: shapeType === 'Circle',
@@ -230,12 +229,13 @@ function selectShape(shapeType, latlng) {
         circlemarker: false
     };
 
+    // Enable drawing mode for the selected shape type
     var shape = new L.Draw[shapeType](map, drawOptions[shapeType.toLowerCase()]);
     shape.enable();
 
     currentMode = shapeType;
 
-    // Add timeout to reset currentMode if drawing doesn't start
+    // Reset currentMode if drawing doesn't start within 500ms
     setTimeout(function () {
         if (currentMode === shapeType) {
             currentMode = null;
@@ -243,21 +243,21 @@ function selectShape(shapeType, latlng) {
     }, 500);
 }
 
-// Event handler for map clicks
+// Show shape selection popup when clicking on the map (if not already drawing)
 map.on('click', function (e) {
     if (!currentMode) {
         showShapeSelectionPopup(e.latlng);
     }
 });
 
-// Event handler for when a shape is created
+// Handle newly created shapes
 map.on(L.Draw.Event.CREATED, function (event) {
     var layer = event.layer;
     var type = event.layerType;
     var feature = layer.toGeoJSON();
     var shapeId = L.stamp(layer);
 
-    // Set common properties
+    // Set common properties for the new feature
     feature.properties = {
         id: shapeId,
         type: type,
@@ -265,7 +265,7 @@ map.on(L.Draw.Event.CREATED, function (event) {
         lastEdited: getCurrentFormattedTimestamp()
     };
 
-    // Handle specific shape types
+    // Handle specific properties for different shape types
     switch (type) {
         case 'circle':
             feature.properties.radius = layer.getRadius();
@@ -275,30 +275,30 @@ map.on(L.Draw.Event.CREATED, function (event) {
         case 'marker':
             feature.properties.type = 'point';
             break;
-        // Add cases for other shape types if needed
     }
 
+    // Add the new shape to the drawing layer and GeoJSON data
     drawnItems.addLayer(layer);
     geoJsonData.features.push(feature);
 
-    // Show the custom comment modal
+    // Prompt for comment
     showCommentModal(layer);
 
-    // Reset the drawing mode
+    // Reset drawing mode
     currentMode = null;
 });
 
-// Event handler when drawing starts
+// Reset drawing mode when drawing starts
 map.on(L.Draw.Event.DRAWSTART, function (event) {
-    // No need to store the draw control
+    // Drawing started - no specific action needed
 });
 
-// Event handler when drawing stops
+// Reset drawing mode when drawing stops
 map.on('draw:drawstop', function () {
     currentMode = null;
 });
 
-// Function to delete a correction
+// Function to remove a shape and its data
 function deleteCorrection(id) {
     var featureIndex = geoJsonData.features.findIndex(f => f.properties.id === id);
     if (featureIndex !== -1) {
@@ -311,21 +311,21 @@ function deleteCorrection(id) {
     }
 }
 
-// Add event listener for editingshapes
+// Handle edited shapes
 map.on(L.Draw.Event.EDITED, function (e) {
     var layers = e.layers;
     layers.eachLayer(function (layer) {
         var id = L.stamp(layer);
         var feature = geoJsonData.features.find(f => f.properties.id === id);
         if (feature) {
-            // Update the geometry of the feature
+            // Update the geometry
             feature.geometry = layer.toGeoJSON().geometry;
-            // Prompt for comment update
+            // Prompt for updated comment
             var newComment = prompt("Oppdater kommentar for denne formen:", feature.properties.comment);
             if (newComment) {
                 feature.properties.comment = newComment;
                 feature.properties.lastEdited = getCurrentTimestamp();
-                // Update popup
+                // Update the popup
                 var popupContent = `<strong>ID: ${id}</strong><br>${newComment}<br><small>Sist endret: ${feature.properties.lastEdited}</small>`;
                 layer.bindPopup(popupContent, { className: 'wrapped-popup' });
             }
@@ -334,17 +334,20 @@ map.on(L.Draw.Event.EDITED, function (e) {
     updateShapesList();
 });
 
+// Handle deleted shapes
 map.on(L.Draw.Event.DELETED, function (e) {
     var layers = e.layers;
     layers.eachLayer(function (layer) {
         var id = L.stamp(layer);
+        // Remove the feature from GeoJSON data
         geoJsonData.features = geoJsonData.features.filter(f => f.properties.id !== id);
     });
     updateShapesList();
 });
 
-// Remove overlay when button pressed
+// Initialize the page when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
+    // Remove welcome overlay when button is clicked
     const button = document.querySelector('#welcometext button');
     button.addEventListener('click', function () {
         const overlay = document.getElementById('startupoverlay');
@@ -354,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize the shapes list
     updateShapesList();
 
-    // Initially hide the shapes list and set the correct icon
+    // Set initial state of shapes list (hidden) and toggle button
     var shapesList = document.getElementById('shapes-list-scroll');
     var toggleButton = document.getElementById('toggle-shapes-list');
     var icon = toggleButton.querySelector('i');
@@ -363,19 +366,21 @@ document.addEventListener('DOMContentLoaded', function () {
     icon.className = 'fa-solid fa-chevron-up';
 });
 
+// Add click event listener for shapes list toggle
 document.getElementById('toggle-shapes-list').addEventListener('click', toggleShapesList);
 
-
-
-// Function to update the shapes list display
+// Function to update the list of shapes displayed in the UI
 function updateShapesList() {
     var listContainer = document.getElementById('shapes-list');
     var toggleButton = document.getElementById('toggle-shapes-list');
     var icon = toggleButton.querySelector('i');
     listContainer.innerHTML = '';
+
+    // Show message if no shapes exist
     if (geoJsonData.features.length === 0) {
         listContainer.innerHTML = '<p class="shapes-list-empty">Ingen kommentarer enda. <br> Trykk på kartet for å starte</p>';
     } else {
+        // Create list of shapes with their properties
         var ul = document.createElement('ul');
         ul.className = 'shapes-list-ul';
         ul.style.listStyleType = 'none';
@@ -386,6 +391,7 @@ function updateShapesList() {
             var shapeType = feature.properties.type;
             var shapeInfo = '';
 
+            // Translate shape types to Norwegian
             switch (shapeType) {
                 case 'circle':
                     shapeType = 'Sirkel';
@@ -403,6 +409,7 @@ function updateShapesList() {
                     break;
             }
 
+            // Create HTML for shape list item
             li.innerHTML = `
             <div class="shapes-list-type"><strong>${shapeType}</strong> (ID: ${feature.properties.id})</div>
             <div class="shapes-list-comment">${feature.properties.comment || 'No comment'}</div>
@@ -414,7 +421,7 @@ function updateShapesList() {
                 <button class="shapes-list-button" onclick="deleteCorrection(${feature.properties.id})">Slett</button>
             </div>
         `;
-            // Pan to shape when clicked in list
+            // Add click handler to pan to shape location
             li.onclick = function (e) {
                 if (e.target.tagName !== 'BUTTON') {
                     var layer = drawnItems.getLayer(feature.properties.id);
@@ -433,16 +440,18 @@ function updateShapesList() {
         listContainer.appendChild(ul);
     }
 
-    // Update the hidden input field with the current shape data
+    // Update hidden input with current shape data
     document.getElementById('shapeData').value = JSON.stringify(geoJsonData);
 
+    // Log updated data for debugging
     console.log("Updated GeoJSON data:", geoJsonData);
 
-    // Show the shapes list after updating
+    // Show shapes list and update toggle button
     document.getElementById('shapes-list-scroll').style.display = 'block';
     document.getElementById('toggle-shapes-list').querySelector('i').className = 'fa-solid fa-chevron-down';
 }
 
+// Custom prompt modal function for better user experience
 function customPrompt(message, callback) {
     // Display the modal and set the message
     const modal = document.getElementById("customPromptModal");
@@ -456,31 +465,32 @@ function customPrompt(message, callback) {
     // Show the modal
     modal.style.display = "flex";
 
-    // OK button action
+    // Handle OK button click
     document.getElementById("customPromptOkButton").onclick = function () {
         modal.style.display = "none";
-        callback(input.value);  // Return input to the callback
+        callback(input.value);
     };
 
-    // Cancel button action
+    // Handle Cancel button click
     document.getElementById("customPromptCancelButton").onclick = function () {
         modal.style.display = "none";
-        callback(null);  // Return null if canceled
+        callback(null);
     };
 }
 
+// Handle form submission for saving shapes
 document.getElementById('shapeForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
     if (geoJsonData.features.length > 0) {
-        // Use the custom prompt
+        // Prompt for submission name
         customPrompt("Gi innmeldingen et navn:", function (submissionComment) {
             if (submissionComment === null) {
-                // User cancelled the prompt
+                // User cancelled
                 return;
             }
 
-            // Proceed with submission steps
+            // Get active tile layer and prepare submission data
             var activeTileLayer = getActiveTileLayer();
             geoJsonData.activeTileLayer = activeTileLayer;
 
@@ -489,6 +499,7 @@ document.getElementById('shapeForm').addEventListener('submit', function (e) {
             submission.timestamp = getCurrentTimestamp();
             submission.geoJsonData = geoJsonData;
 
+            // Update form data and submit
             document.getElementById('shapeData').value = JSON.stringify(submission);
             document.getElementById('shapeForm').submit();
         });
@@ -534,12 +545,12 @@ document.getElementById('shapeForm').addEventListener('submit', function (e) {
 
 */
 
-// Function to get GeoJSON type from layer
+// Helper function to get GeoJSON type from layer
 function getGeoJSONType(layer) {
     if (layer instanceof L.Marker) {
         return "Point";
     } else if (layer instanceof L.Circle) {
-        return "Point"; // We'll treat circles as points with a radius property
+        return "Point"; // Circles are treated as points with radius
     } else if (layer instanceof L.Polygon) {
         return "Polygon";
     } else if (layer instanceof L.Polyline) {
@@ -548,7 +559,7 @@ function getGeoJSONType(layer) {
     return "Unknown";
 }
 
-
+// Initialize submission object structure
 var submission = {
     id: null,
     comment: '',
@@ -561,7 +572,7 @@ var submission = {
 
 
 
-// Add event listeners to custom zoom buttons
+// Add custom zoom control buttons
 document.getElementById('zoom-in').onclick = function () {
     map.zoomIn();
 };
@@ -571,7 +582,7 @@ document.getElementById('zoom-out').onclick = function () {
 };
 document.getElementById('zoom-out').title = "Zoom ut";
 
-// Add a button to center on user's location
+// Custom locate control for finding user's location
 L.Control.LocateButton = L.Control.extend({
     options: {
         position: 'bottomright'
@@ -585,38 +596,43 @@ L.Control.LocateButton = L.Control.extend({
         this._button.href = '#';
         this._button.title = 'Sentrer på min plassering';
 
+        // Add loading indicator
         this._loadingIndicator = L.DomUtil.create('div', 'loading-indicator', container);
         this._loadingIndicator.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; // Font Awesome spinner icon
         this._loadingIndicator.style.display = 'none'; // Hide by default
 
+        // Handle locate button click
         L.DomEvent.on(this._button, 'click', function (e) {
-            L.DomEvent.stop(e);  // This stops propagation and prevents default behavior
-            self._button.style.display = 'none'; // Hide the button
-            self._loadingIndicator.style.display = 'flex'; // Show the loading indicator
+            L.DomEvent.stop(e);  // Stops propagation to prevent clicking map
+            self._button.style.display = 'none';
+            self._loadingIndicator.style.display = 'flex';
             map.locate({ setView: true, maxZoom: 16 });
         });
 
-        // Event handlers for location found and error
+        // Handle successful location found
         map.on('locationfound', function (e) {
-            self._button.style.display = 'flex'; // Show the button again
-            self._loadingIndicator.style.display = 'none'; // Hide the loading indicator
+            self._button.style.display = 'flex';
+            self._loadingIndicator.style.display = 'none';
 
-            // Create or update the location marker and circle
+            // Update location marker and accuracy circle
             if (userLocMarker) {
                 map.removeLayer(userLocMarker);
             }
             if (userLocCircle) {
                 map.removeLayer(userLocCircle);
             }
+
+            // Calculate accuracy radius and add location marker with circle
             var radius = e.accuracy / 2;
             userLocMarker = L.marker(e.latlng, { icon: userLocIcon }).addTo(map)
                 .bindPopup("Du er innen " + radius + " meter fra dette punktet").openPopup();
             userLocCircle = L.circle(e.latlng, radius).addTo(map);
         });
 
+        // Handle location error
         map.on('locationerror', function (e) {
-            self._button.style.display = 'flex'; // Show the button again
-            self._loadingIndicator.style.display = 'none'; // Hide the loading indicator
+            self._button.style.display = 'flex';
+            self._loadingIndicator.style.display = 'none';
             alert("Lokasjon tillatelser nektet, eller ikke tilgjengelige.");
         });
 
@@ -624,13 +640,14 @@ L.Control.LocateButton = L.Control.extend({
     }
 });
 
+// Add the location control to the map
 map.addControl(new L.Control.LocateButton());
 
-// Add a button to center on user's location
+// Variables to store user location marker and accuracy circle
 var userLocMarker;
 var userLocCircle;
 
-//Custom icon to distinguish user location from other markers
+// Custom icon for user location marker
 const userLocIcon = L.divIcon({
     html: '<i class="fa-solid fa-location-dot fa-2xl" style="color: #28a745;"></i>',
     className: 'userLocIcon',
@@ -638,32 +655,35 @@ const userLocIcon = L.divIcon({
     popupAnchor: [0, -20],
 });
 
-// Add the geocoder control (Search function)
+// Add geocoder control for location search functionality
 var geocoder = L.Control.geocoder({
-    defaultMarkGeocode: false, // Prevent default marker to allow custom behavior
+    defaultMarkGeocode: false, // Disable default marker
     placeholder: "Søk..."
 }).addTo(map);
 
-geocoder.getContainer().setAttribute('title', 'Søk etter steder'); // Add text when hovering over button
+// Add tooltip to geocoder control
+geocoder.getContainer().setAttribute('title', 'Søk etter steder');
 
+// Handle geocoding results
 geocoder.on('markgeocode', function (e) {
     var latlng = e.geocode.center;
-    map.setView(latlng, 16); // Set the map view to the selected location
-    L.marker(latlng).addTo(map) // Add a marker at the selected location
+    map.setView(latlng, 16); // Zoom to location
+    L.marker(latlng).addTo(map) // Add marker
         .bindPopup(e.geocode.name)
         .openPopup();
 });
 
 
+// Function to get current timestamp in ISO format
 function getCurrentTimestamp() {
     const now = new Date();
     console.log("Fetched current datetime:", now);
-    // Format the date as ISO 8601 format which C# can parse
     return now.toISOString();
 }
 
-// Format a date for display
+// Function to format timestamps for display
 function formatTimestamp(isoString) {
+    // If no timestamp provided, use current time
     if (!isoString) {
         const now = new Date();
         return now.toLocaleString('en-US', {
@@ -676,6 +696,8 @@ function formatTimestamp(isoString) {
             hour12: false
         }).replace(/(\d+)\/(\d+)\/(\d+)/, '$2/$1/$3'); // Convert from MM/DD/YYYY to DD/MM/YYYY
     }
+
+    // Format provided timestamp
     const date = new Date(isoString);
     return date.toLocaleString('en-US', {
         year: 'numeric',
@@ -688,7 +710,7 @@ function formatTimestamp(isoString) {
     }).replace(/(\d+)\/(\d+)\/(\d+)/, '$2/$1/$3'); // Convert from MM/DD/YYYY to DD/MM/YYYY
 }
 
-// Get formatted current timestamp for display
+// Helper function to get current formatted timestamp
 function getCurrentFormattedTimestamp() {
     return formatTimestamp(new Date().toISOString());
 }

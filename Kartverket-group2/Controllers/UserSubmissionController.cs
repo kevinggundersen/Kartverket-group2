@@ -7,12 +7,18 @@ using Kartverket_group2.Data;
 
 namespace Kartverket_group2.Controllers
 {
-
+    /// <summary>
+    /// Controller for managing user-specific submissions. Handles viewing, deleting,
+    /// and managing details of a user's own submissions.
+    /// </summary>
     public class UserSubmissionsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<UserSubmissionsController> _logger;
 
+        /// <summary>
+        /// Initializes controller with database context and logging service.
+        /// </summary>
         public UserSubmissionsController(
             ApplicationDbContext context,
             ILogger<UserSubmissionsController> logger)
@@ -21,7 +27,11 @@ namespace Kartverket_group2.Controllers
             _logger = logger;
         }
 
-        // GET: UserSubmissions
+        /// <summary>
+        /// Displays paginated list of submissions for the currently authenticated user.
+        /// </summary>
+        /// <param name="page">Page number, starting from 1</param>
+        /// <param name="pageSize">Number of items per page</param>
         [Authorize(Roles = "User")]
         public async Task<IActionResult> MySubmissions(int page = 1, int pageSize = 10)
         {
@@ -37,7 +47,11 @@ namespace Kartverket_group2.Controllers
             return View(submissions);
         }
 
-        // POST: UserSubmissions/Delete/5
+        /// <summary>
+        /// Handles deletion of a user's submission. Validates that the submission
+        /// belongs to the requesting user before deletion.
+        /// </summary>
+        /// <param name="id">ID of the submission to delete</param>
         [Authorize(Roles = "User")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -75,6 +89,11 @@ namespace Kartverket_group2.Controllers
             }
         }
 
+        /// <summary>
+        /// Displays detailed view of a specific submission. Ensures the submission
+        /// belongs to the requesting user.
+        /// </summary>
+        /// <param name="id">ID of the submission to view</param>
         [Authorize(Roles = "User")]
         public async Task<IActionResult> ViewMySubmissionDetails(long id)
         {

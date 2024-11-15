@@ -5,8 +5,15 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Kartverket_group2.Controllers
 {
+    /// <summary>
+    /// Controller responsible for handling map-related functionality and shape data management.
+    /// </summary>
     public class MapController : Controller
     {
+        /// <summary>
+        /// Displays the main map interface. Requires authenticated user.
+        /// Redirects to welcome page if user is not authenticated.
+        /// </summary>
         [Authorize]
         public IActionResult Index()
         {
@@ -18,11 +25,19 @@ namespace Kartverket_group2.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Displays confirmation page after successful shape submission.
+        /// </summary>
         public IActionResult Confirmation()
         {
             return View();
         }
 
+        /// <summary>
+        /// Handles saving of shape data submitted from the map interface.
+        /// Deserializes GeoJSON data and temporarily stores it.
+        /// </summary>
+        /// <param name="shapeData">GeoJSON string containing shape information</param>
         [HttpPost]
         public ActionResult SaveShapes(string shapeData)
         {
@@ -31,6 +46,7 @@ namespace Kartverket_group2.Controllers
                 return RedirectToAction("Index", new { message = "No shape data received." });
             }
 
+            // Configure JSON deserialization options for case-insensitive property matching
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
@@ -38,9 +54,10 @@ namespace Kartverket_group2.Controllers
 
             try
             {
+                // Attempt to deserialize the GeoJSON data
                 GeoJsonFeatureCollection? geoJsonData = JsonSerializer.Deserialize<GeoJsonFeatureCollection>(shapeData, options);
 
-                // Store the GeoJSON data in TempData for now (or in a database in the future)
+                // Store data temporarily for the next request
                 TempData["GeoJsonData"] = shapeData;
 
                 return RedirectToAction("ViewShapes");
@@ -52,6 +69,10 @@ namespace Kartverket_group2.Controllers
             }
         }
 
+        /// <summary>
+        /// Displays the shapes previously saved in TempData.
+        /// Returns empty collection if no data is found.
+        /// </summary>
         public ActionResult ViewShapes()
         {
             var geoJsonData = TempData["GeoJsonData"] as string;
@@ -65,8 +86,8 @@ namespace Kartverket_group2.Controllers
                 return View("ViewShapes", new GeoJsonFeatureCollection());
             }
 
+            // Deserialize and display the saved GeoJSON data
             GeoJsonFeatureCollection? featureCollection = JsonSerializer.Deserialize<GeoJsonFeatureCollection>(geoJsonData, options);
-
             return View(featureCollection);
         }
     }
