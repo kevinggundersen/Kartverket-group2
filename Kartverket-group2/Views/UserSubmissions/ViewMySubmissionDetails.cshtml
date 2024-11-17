@@ -1,0 +1,326 @@
+﻿@model Kartverket_group2.Models.Submission
+@{
+    ViewData["Title"] = "My Submission Details";
+}
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+    /* Base styles */
+    .shapes-list {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .shapeData {
+        transition: background-color 0.2s;
+    }
+
+    .shapeData:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+    }
+
+        .details-map-container {
+            margin-bottom: 20px;
+        }
+
+    /* Toast notification */
+    .status-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        color: white;
+        z-index: 1060;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        animation: fadeOut 5s forwards;
+    }
+
+    .success-notification {
+        background-color: #198754;
+    }
+
+    .info-notification {
+        background-color: #0d6efd;
+    }
+
+    /* Map popup styles */
+    .wrapped-popup {
+        max-width: 300px;
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 991.98px) {
+        .container-fluid {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        #map {
+            height: 400px;
+            margin-bottom: 1rem;
+        }
+
+        .card-container {
+            padding-bottom: 40px;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="container-fluid px-4 py-3">
+        <div class="d-flex align-items-center mb-4">
+            <a href="@Url.Action("MySubmissions")" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Tilbake til Profil
+            </a>
+            <h4 class="mb-0 ms-3">Innmelding ID: @Model.Id</h4>
+        </div>
+
+        <div class="row g-4">
+            <!-- Details Column -->
+            <div class="col-12 col-lg-6">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">Innmelding Detaljer</h5>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4">BrukerID:</dt>
+                            <dd class="col-sm-8">@Model.UserId</dd>
+
+                            <dt class="col-sm-4">Tittel:</dt>
+                            <dd class="col-sm-8">@Model.Comment</dd>
+
+                            <dt class="col-sm-4">Kommunenummer:</dt>
+                            <dd class="col-sm-8">@Model.Municipalitynr</dd>
+
+                            <dt class="col-sm-4">Tidsstempel:</dt>
+                            <dd class="col-sm-8">@Model.Timestamp</dd>
+
+                            <dt class="col-sm-4">Kartgrunnlag:</dt>
+                            <dd class="col-sm-8">@Model.GeoJsonData.ActiveTileLayer</dd>
+                        </dl>
+                    </div>
+                    <div class="mb-3" style="padding: 15px;">
+                        <label for="adminComment" class="form-label"><strong>Kommentar fra behandler:</strong></label>
+                        <label name="adminComment" id="comment" class="form-control">@Model.AdminComment</label> <!-- Display the comment -->
+                    </div>
+                </div>
+
+                <!-- Shapes List -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Figurer</h5>
+                        <span class="badge bg-secondary">@Model.GeoJsonData.Features.Count() totalt</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="shapes-list">
+                            <ul class="list-group list-group-flush">
+                                @foreach (var feature in Model.GeoJsonData.Features)
+                                {
+                                    <li class="list-group-item shapeData" data-feature-id="@feature.Properties.Id">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <span class="badge bg-primary">@feature.Properties.Type</span>
+                                            <small class="text-muted">ID: @feature.Properties.Id</small>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Kommentar:</strong> @feature.Properties.Comment
+                                        </div>
+                                        <div class="small text-muted">
+                                            <div>Lagt til: @feature.Properties.AddedAt</div>
+                                            <div>Sist endret: @feature.Properties.LastEdited</div>
+                                        </div>
+                                        <div class="small text-muted mt-2">
+                                            @if (feature.Properties.Type == "circle" && feature.Properties.Radius.HasValue)
+                                            {
+                                                <div>Koordinater: @($"{feature.Geometry.Coordinates}, {{radius: {feature.Properties.Radius}}}")</div>
+                                            }
+                                            else
+                                            {
+                                                <div>Koordinater: @feature.Geometry.Coordinates</div>
+                                            }
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model.Status == "Ikke påbegynt")
+                {
+                    <form asp-action="Delete" asp-route-id="@Model.Id" method="post"
+                          onsubmit="return confirm('Are you sure you want to delete this submission?');"
+                          class="mt-4">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Slett innmelding
+                        </button>
+                    </form>
+                }
+            </div>
+
+            <!-- Map Column -->
+            <div class="col-12 col-lg-6 card-container details-map-container">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">Kart</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="map" style="height: 600px; width: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dialogs -->
+        <div class="modal fade" id="emailConfirmDialog" tabindex="-1" style="display: none;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Bekreft E-post</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Vil du sende en e-post om denne statusendringen?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="confirmStatusUpdate(false)">Nei</button>
+                        <button type="button" class="btn btn-primary" onclick="confirmStatusUpdate(true)">Ja</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+
+    <script>
+        // Map initialization
+        var map = L.map('map', { zoomControl: false }).setView([58.1599, 8.0182], 13);
+
+        var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        });
+        var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        });
+        var topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data: © OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap (CC-BY-SA)'
+        });
+        var turLayer = L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/toporaster/default/webmercator/{z}/{y}/{x}.png', {
+            attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>'
+        });
+        var sjoLayer = L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/sjokartraster/default/webmercator/{z}/{y}/{x}.png', {
+            attribution: '&copy; <a href="http://www.kartverket.no/">Kartverket</a>'
+        });
+
+        var baseLayers = {
+            "Standard": osmLayer,
+            "Satellittbilde": satelliteLayer,
+            "Topografisk": topoLayer,
+            "Turkart": turLayer,
+            "Sjøkart": sjoLayer
+        };
+
+        var activeTileLayer = baseLayers["@Model.GeoJsonData.ActiveTileLayer"] || osmLayer; // Default to osmLayer if TileLayer is not set
+        activeTileLayer.addTo(map);
+
+        var geoJsonData = @Html.Raw(Json.Serialize(Model.GeoJsonData));
+        console.log("Full GeoJSON data:", geoJsonData);
+
+        var featureGroup = L.featureGroup().addTo(map);
+        var bounds = L.latLngBounds();
+        var featureLayers = {};
+
+        geoJsonData.features.forEach(function (feature) {
+            console.log("Processing feature:", feature);
+
+            var layer;
+            switch (feature.properties.type.toLowerCase()) {
+                case 'circle':
+                    console.log("Creating circle with:", feature.geometry.coordinates, feature.properties.radius);
+                    if (feature.geometry.type === "Point" && feature.properties.radius) {
+                        var latlng = L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
+                        layer = L.circle(latlng, { radius: feature.properties.radius });
+
+                        // Extend bounds with a box around the circle
+                        var radiusInDegrees = feature.properties.radius / 111300; // rough approximation
+                        bounds.extend([latlng.lat - radiusInDegrees, latlng.lng - radiusInDegrees]);
+                        bounds.extend([latlng.lat + radiusInDegrees, latlng.lng + radiusInDegrees]);
+                    }
+                    break;
+                case 'marker':
+                case 'point':
+                    layer = L.marker(L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]));
+                    bounds.extend(layer.getLatLng());
+                    break;
+                case 'polygon':
+                    layer = L.polygon(feature.geometry.coordinates[0].map(coord => [coord[1], coord[0]]));
+                    bounds.extend(layer.getBounds());
+                    break;
+                case 'polyline':
+                case 'linestring':
+                    layer = L.polyline(feature.geometry.coordinates.map(coord => [coord[1], coord[0]]));
+                    bounds.extend(layer.getBounds());
+                    break;
+            }
+
+            if (layer) {
+
+                var popupContent = `ID: ${feature.properties.id}<br>${feature.properties.comment}`;
+                layer.bindPopup(popupContent, { className: 'wrapped-popup' });
+                featureGroup.addLayer(layer);
+                featureLayers[feature.properties.id] = layer; // Store the layer with its ID
+            } else {
+                console.log("Failed to create layer for feature:", feature);
+            }
+        });
+
+        if (!bounds.isValid()) {
+            console.log("No valid bounds, setting default view");
+            map.setView([0, 0], 2);
+        } else {
+            console.log("Fitting to bounds:", bounds);
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+
+        function showConfirmDialog() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('confirmDialog').style.display = 'block';
+        }
+
+        function hideConfirmDialog() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('confirmDialog').style.display = 'none';
+        }
+
+        function confirmDelete() {
+            document.getElementById('deleteForm').submit();
+        }
+
+        document.querySelectorAll('[data-feature-id]').forEach(function (element) {
+            element.addEventListener('click', function () {
+                var featureId = this.getAttribute('data-feature-id');
+                panToFeature(featureId);
+            });
+        });
+        function panToFeature(id) {
+            console.log('Panning to feature:', id);
+            var layer = featureLayers[id];
+            if (layer) {
+                console.log('Layer found:', layer);
+                if (layer.getBounds) {
+                    map.fitBounds(layer.getBounds());
+                } else if (layer.getLatLng) {
+                    map.setView(layer.getLatLng(), 16);
+                }
+                if (layer.getPopup()) layer.openPopup();
+            }
+        }
+    </script>
+</body>

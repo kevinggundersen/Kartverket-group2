@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "TAKK!";
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Takk for innmeldingen</title>
+    <link rel="stylesheet" type="text/css" href="~/css/site.css" />
+</head>
+
+<body>
+    <div class="confirmation-main">
+        <div class="background-image-basic"></div>
+        <div class="confirmation-container">
+            <div class="confirmation-box">
+                <h2>Takk for innmeldingen!</h2>
+                <img src="~/Images/check-mark-icon.png"/>
+                <p>Følge statusen på innmeldingen på<br />
+                    <a asp-controller="UserSubmissions" asp-action="MySubmissions"> profilen din.</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>

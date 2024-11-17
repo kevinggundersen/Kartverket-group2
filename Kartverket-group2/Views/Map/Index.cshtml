@@ -8,16 +8,29 @@
         <button id="overlaybutton">Skjønner!</button>
     </div>
 </div>
-<form id="shapeForm" asp-action="SaveShapes" asp-controller="Map" method="post">
+
+<!-- Form for storing shape data for http post -->
+<form id="shapeForm" asp-action="SaveShapes" asp-controller="Administration" method="post">
     <input type="hidden" name="shapeData" id="shapeData" />
-    <button type="submit" id="submit-form-data">Save Shape Data</button>
+    <button type="submit" id="submit-form-data" class="save-shape-button">Send innmelding</button>
 </form>
+
+
+
+<!-- List of shapes user has drawn -->
 <div id="shapes-list-container">
-    <h4 id="shapes-list-header">Mine kommentarer:</h4>
+    <div id="shapes-list-header">
+        <h4>Mine kommentarer:</h4>
+        <button id="toggle-shapes-list">
+            <i class="fa-solid fa-chevron-down"></i>
+        </button>
+    </div>
     <div id="shapes-list-scroll">
         <div id="shapes-list"></div>
     </div>
 </div>
+
+<!-- Map container -->
 <div id="map-container">
     <!-- Custom Zoom Control -->
     <div class="custom-zoom-control">
@@ -27,13 +40,25 @@
     <!-- The map itself -->
     <div id="map"></div>
 </div>
+
+<!-- Modal for adding a comment -->
 <div id="comment-modal" class="comment-modal" style="display: none;">
     <div class="modal-content">
-        <h3>Add a comment</h3>
-        <textarea id="comment-input" rows="4" placeholder="Enter your comment here..."></textarea>
+        <h3>Legg til en beskrivelse</h3>
+        <textarea id="comment-input" rows="4" placeholder="Skriv beskrivelsen din her..."></textarea>
         <div class="modal-buttons">
-            <button id="cancel-comment">Cancel</button>
-            <button id="submit-comment">Submit</button>
+            <button id="cancel-comment">Kanslerer</button>
+            <button id="submit-comment">Lagre</button>
         </div>
+    </div>
+</div>
+
+<!-- Custom Prompt Modal Structure -->
+<div id="customPromptModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <p id="customPromptMessage">Gi innmeldingen et navn:</p>
+        <input type="text" id="customPromptInput" class="form-control" placeholder="Skriv her..." />
+        <button id="customPromptOkButton" class="btn btn-primary">OK</button>
+        <button id="customPromptCancelButton" class="btn btn-secondary">Cancel</button>
     </div>
 </div>

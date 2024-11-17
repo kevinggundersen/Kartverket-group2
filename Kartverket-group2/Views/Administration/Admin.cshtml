@@ -1,94 +1,546 @@
-﻿@{
+﻿@model Kartverket_group2.Models.AdminViewModel
+@{
     ViewData["Title"] = "Admin page";
 }
+
+<!--
+    Admin page for managing submissions
+    Features:
+    - Sortable table columns
+    - Status filtering
+    - Municipality number filtering (single or range)
+    - Pagination
+    - Configurable results per page
+-->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Table Page</title>
+    <title>Submissions Table</title>
     <style>
+        /* Base layout styles */
+        html, body {
+            margin-top: 10px;
+            overflow-x: hidden;
+
+            font-size: 16px;
+        }
+
+        /* Main container styles */
         #adminsite {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
+
+            margin: 0px;
+            padding: 20px 0;
             background-color: #f0f0f0;
+            
+            height: calc(100vh - 120px); 
+            overflow: hidden;
         }
+
+        /* Table container with scrollable body */
+        .table-container {
+            width: 100%;
+            position: relative;
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+        }
+
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
+
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: #f2f2f2;
         }
+
         th {
             background-color: #f2f2f2;
             font-weight: bold;
+            border: 1px solid #ddd;
+            border-bottom: 2px solid #ddd;
+
+            text-align: left;
         }
-        tr:nth-child(even) {
+
+        td {
+            border: 1px solid #ddd;
+
+            text-align: left;
+            background-color: white;
+            white-space: nowrap; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+        
+        }
+
+        th, td {
+            padding: 6px 8px;
+
+        }
+        #comment {
+            max-width: 300px;
+            min-width: 75px;
+        }
+
+        tr:nth-child(even) td {
             background-color: #f9f9f9;
+        }
+
+        .view-details-btn {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .view-details-btn:hover {
+            background-color: #45a049;
+            color: white;
+        }
+
+        .pagination {
+            margin-bottom: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            padding: 5px;
+        }
+
+        .pagination a {
+            min-width: 32px;
+            height: 32px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            border: 1px solid #dee2e6;
+            color: #212529;
+            background-color: #fff;
+            font-size: 14px;
+        }
+
+        .pagination a:hover {
+            background-color: #e9ecef;
+            border-color: #dee2e6;
+            color: #0056b3;
+        }
+
+        .pagination a.active {
+            background-color: #45a049;
+            color: white;
+        }
+
+        /* Navigation arrows */
+        .pagination a.nav-arrow {
+            font-family: "system-ui";
+        }
+
+        .pagination .ellipsis {
+            min-width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+        }
+
+        .detaljer-column {
+            width: 10px;
+        }
+
+        .detaljer-column,
+        .id-column,
+        .userid-column,
+        .time-column,
+        .figur-column,
+        .status-column,
+        .kommunenummer-column {
+            width: auto; /* Remove fixed widths */
+        }
+
+        #comment {
+            max-width: none; /* Remove max-width restriction */
+            width: auto; /* Let it take available space */
+            max-width: 300px
+        }
+
+        th a {
+            color: inherit;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        th a:hover {
+            color: #4CAF50;
+        }
+
+        .filter-btn, .reset-btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .filter-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid #45a049;
+        }
+
+        .filter-btn:hover {
+            background-color: #45a049;
+        }
+
+        .reset-btn {
+            background-color: #6c757d;
+            color: white;
+            border: 1px solid #5a6268;
+        }
+
+        .reset-btn:hover {
+            background-color: #5a6268;
+            color: white;
+        }
+
+        
+        #filterForm {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        #filterForm div {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #filterForm input[type="number"] {
+            width: 80px;
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        #filterForm label {
+            margin-right: 5px;
         }
     </style>
 </head>
 <body class="adminsite">
-    <h2>Innsendinger</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Bruker</th>
-                <th>Kommune</th>
-                <th>Dato</th>
-                <th>Status</th>
+    <!-- Filter form for submissions -->
+    <form method="get" action="@Url.Action("Admin", "Administration")" id="filterForm">
+        <!-- Status filter checkboxes -->
+        <div class="status-filters">
+            <label for="statusFilter"><strong>Status:</strong></label>
+            <!-- Each checkbox represents a possible submission status -->
+            <input type="checkbox" id="statusFilter_Uapnet" name="statusFilter" value="Ikke påbegynt"
+            @(Model.StatusFilter?.Contains("Ikke påbegynt") == true ? "checked" : "") />
+            <label for="statusFilter_Uapnet">Ikke påbegynt</label>
 
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Data 1</td>
-                <td>Data 2</td>
-                <td>Data 3</td>
-                <td>Data 4</td>
-                <td>Data 5</td>
-            </tr>
-            <tr>
-                <td>Data 8</td>
-                <td>Data 9</td>
-                <td>Data 10</td>
-                <td>Data 11</td>
-                <td>Data 12</td>
-            </tr>
-            <tr>
-                <td>Data 1</td>
-                <td>Data 2</td>
-                <td>Data 3</td>
-                <td>Data 4</td>
-                <td>Data 5</td>
-            </tr>
-            <tr>
-                <td>Data 8</td>
-                <td>Data 9</td>
-                <td>Data 10</td>
-                <td>Data 11</td>
-                <td>Data 12</td>
-            </tr>
-            <tr>
-                <td>Data 1</td>
-                <td>Data 2</td>
-                <td>Data 3</td>
-                <td>Data 4</td>
-                <td>Data 5</td>
-            </tr>
-            <tr>
-                <td>Data 8</td>
-                <td>Data 9</td>
-                <td>Data 10</td>
-                <td>Data 11</td>
-                <td>Data 12</td>
-            </tr>
-            <!-- Add more rows as needed -->
-        </tbody>
-    </table>
+            <input type="checkbox" id="statusFilter_Avpavist" name="statusFilter" value="Ikke tatt til følge"
+            @(Model.StatusFilter?.Contains("Ikke tatt til følge") == true ? "checked" : "") />
+            <label for="statusFilter_Avpavist">Ikke tatt til følge</label>
+
+            <input type="checkbox" id="statusFilter_UnderArb" name="statusFilter" value="Under behandling"
+            @(Model.StatusFilter?.Contains("Under behandling") == true ? "checked" : "") />
+            <label for="statusFilter_UnderArb">Under behandling</label>
+
+            <input type="checkbox" id="statusFilter_Akseptert" name="statusFilter" value="Behandlet"
+            @(Model.StatusFilter?.Contains("Behandlet") == true ? "checked" : "") />
+            <label for="statusFilter_Akseptert">Behandlet</label>
+        </div>
+
+        <!-- Municipality number filter with single/range options -->
+        <div class="municipality-filters">
+            <!-- ... municipality filter inputs ... -->
+            <strong>Kommunenummer:</strong>
+            <div class="search-type">
+                <input type="radio" id="singleMunicipality" name="municipalitySearchType" value="single"
+                @(string.IsNullOrEmpty(Model.MunicipalitySearchType) || Model.MunicipalitySearchType == "single" ? "checked" : "")
+                       onchange="toggleMunicipalitySearch()" />
+                <label for="singleMunicipality">Enkelt nummer</label>
+
+                <input type="radio" id="rangeMunicipality" name="municipalitySearchType" value="range"
+                @(Model.MunicipalitySearchType == "range" ? "checked" : "")
+                       onchange="toggleMunicipalitySearch()" />
+                <label for="rangeMunicipality">Intervall</label>
+            </div>
+
+            <div id="singleMunicipalityInput" class="municipality-input"
+                 style="display: @(string.IsNullOrEmpty(Model.MunicipalitySearchType) || Model.MunicipalitySearchType == "single" ? "block" : "none")">
+                <input type="number" id="municipalitySingle" name="municipalitySingle"
+                       placeholder="Kommunenummer" value="@Model.MunicipalitySingle" />
+            </div>
+
+            <div id="rangeMunicipalityInput" class="municipality-input"
+                 style="display: @(Model.MunicipalitySearchType == "range" ? "block" : "none")">
+                <input type="number" id="municipalityMin" name="municipalityMin"
+                       placeholder="Fra" value="@Model.MunicipalityMin" />
+                <input type="number" id="municipalityMax" name="municipalityMax"
+                       placeholder="Til" value="@Model.MunicipalityMax" />
+            </div>
+        </div>
+
+        <!-- Results per page selector -->
+        <div class="page-size">
+            <!-- ... page size input ... -->
+            <label for="pageSize"><strong>Resultat per side:</strong></label>
+            <input type="number" id="pageSize" name="pageSize" value="@Model.PageSize" min="1" />
+        </div>
+
+        <!-- Hidden fields for maintaining sort state -->
+        <input type="hidden" name="sortColumn" value="@Model.CurrentSortColumn" />
+        <input type="hidden" name="sortDescending" value="@Model.SortDescending.ToString()" />
+
+        <!-- Form action buttons -->
+        <div class="form-buttons">
+            <!-- ... buttons ... -->
+            <button type="submit" class="filter-btn">Søk</button>
+            <a href="@Url.Action("Admin", "Administration")" class="reset-btn">Tilbakestill filter</a>
+        </div>
+    </form>
+
+    <!-- Submissions table -->
+    <div class="table-container">
+        <table>
+            <!-- Table header with sortable columns -->
+            <thead>
+                <tr>
+                    <!-- Each column header includes sort functionality -->
+                    <th class="detaljer-column">Detaljer</th>
+                    <th class="id-column">
+                        <a href="@Url.Action("Admin", new {
+                    page = Model.CurrentPage,
+                    pageSize = Model.PageSize,
+                    sortColumn = "Id",
+                    sortDescending = Model.CurrentSortColumn == "Id" ? !Model.SortDescending : false,
+                    statusFilter = Model.StatusFilter,
+                    municipalityMin = Model.MunicipalityMin,
+                    municipalityMax = Model.MunicipalityMax,
+                    municipalitySingle = Model.MunicipalitySingle,
+                    municipalitySearchType = Model.MunicipalitySearchType
+                })">
+                            ID @(Model.CurrentSortColumn == "Id" ? (Model.SortDescending ? "▼" : "▲") : "")
+                        </a>
+                    </th>
+                    <th class ="userid-column">
+                        <a href="@Url.Action("Admin", new {
+                    page = Model.CurrentPage,
+                    pageSize = Model.PageSize,
+                    sortColumn = "UserId",
+                    sortDescending = Model.CurrentSortColumn == "UserId" ? !Model.SortDescending : false,
+                    statusFilter = Model.StatusFilter,
+                    municipalityMin = Model.MunicipalityMin,
+                    municipalityMax = Model.MunicipalityMax,
+                    municipalitySingle = Model.MunicipalitySingle,
+                    municipalitySearchType = Model.MunicipalitySearchType
+                })">
+                            BrukerID @(Model.CurrentSortColumn == "UserId" ? (Model.SortDescending ? "▼" : "▲") : "")
+                        </a>
+                    </th>
+                    <th class="kommentar-column">
+                        <a href="@Url.Action("Admin", new {
+                    page = Model.CurrentPage,
+                    pageSize = Model.PageSize,
+                    sortColumn = "Comment",
+                    sortDescending = Model.CurrentSortColumn == "Comment" ? !Model.SortDescending : false,
+                    statusFilter = Model.StatusFilter,
+                    municipalityMin = Model.MunicipalityMin,
+                    municipalityMax = Model.MunicipalityMax,
+                    municipalitySingle = Model.MunicipalitySingle,
+                    municipalitySearchType = Model.MunicipalitySearchType
+                })">
+                            Tittel @(Model.CurrentSortColumn == "Comment" ? (Model.SortDescending ? "▼" : "▲") : "")
+                        </a>
+                    </th>
+                    <th class="time-column">
+                        <a href="@Url.Action("Admin", new {
+                    page = Model.CurrentPage,
+                    pageSize = Model.PageSize,
+                    sortColumn = "Timestamp",
+                    sortDescending = Model.CurrentSortColumn == "Timestamp" ? !Model.SortDescending : false,
+                    statusFilter = Model.StatusFilter,
+                    municipalityMin = Model.MunicipalityMin,
+                    municipalityMax = Model.MunicipalityMax,
+                    municipalitySingle = Model.MunicipalitySingle,
+                    municipalitySearchType = Model.MunicipalitySearchType
+                })">
+                            Dato @(Model.CurrentSortColumn == "Timestamp" ? (Model.SortDescending ? "▼" : "▲") : "")
+                        </a>
+                    </th>
+                    <th class="status-column">
+                        <a href="@Url.Action("Admin", new {
+                    page = Model.CurrentPage,
+                    pageSize = Model.PageSize,
+                    sortColumn = "Status",
+                    sortDescending = Model.CurrentSortColumn == "Status" ? !Model.SortDescending : false,
+                    statusFilter = Model.StatusFilter,
+                    municipalityMin = Model.MunicipalityMin,
+                    municipalityMax = Model.MunicipalityMax,
+                    municipalitySingle = Model.MunicipalitySingle,
+                    municipalitySearchType = Model.MunicipalitySearchType
+                })">
+                            Status @(Model.CurrentSortColumn == "Status" ? (Model.SortDescending ? "▼" : "▲") : "")
+                        </a>
+                    </th>
+                    <th class="kommunenummer-column">
+                        <a href="@Url.Action("Admin", new {
+                    page = Model.CurrentPage,
+                    pageSize = Model.PageSize,
+                    sortColumn = "Municipalitynr",
+                    sortDescending = Model.CurrentSortColumn == "Municipalitynr" ? !Model.SortDescending : false,
+                    statusFilter = Model.StatusFilter,
+                    municipalityMin = Model.MunicipalityMin,
+                    municipalityMax = Model.MunicipalityMax,
+                    municipalitySingle = Model.MunicipalitySingle,
+                    municipalitySearchType = Model.MunicipalitySearchType
+                })">
+                            Kommune nummer @(Model.CurrentSortColumn == "Municipalitynr" ? (Model.SortDescending ? "▼" : "▲") : "")
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <!-- Table body with submission data -->
+            <tbody>
+                @foreach (var submission in Model.Submissions)
+                {
+                    <!-- Each row represents a submission -->
+                    <tr>
+                        <td class="detaljer-column">
+                            <a href="@Url.Action("ViewSubmissionDetails", new { id = submission.Id })" class="view-details-btn">Åpne</a>
+                        </td>
+                        <td class="id-column">@submission.Id</td>
+                        <td class="userid-column">@submission.UserId</td>
+                        <td class ="kommentar-column" id="comment" title="@submission.Comment">@submission.Comment</td>
+                        <td class="time-column">@submission.Timestamp</td>
+                        <td class="status-column">@submission.Status</td>
+                        <td class="kommunenummer-column">@submission.Municipalitynr</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination controls -->
+    <div class="pagination">
+        <!-- Dynamic pagination generation -->
+        @{
+            var routeValues = new Dictionary<string, object>
+        {
+        {"pageSize", Model.PageSize},
+        {"sortColumn", Model.CurrentSortColumn},
+        {"sortDescending", Model.SortDescending},
+        {"municipalityMin", Model.MunicipalityMin},
+        {"municipalityMax", Model.MunicipalityMax},
+        {"municipalitySingle", Model.MunicipalitySingle},
+        {"municipalitySearchType", Model.MunicipalitySearchType}
+        };
+
+            // Handle multiple status filters correctly
+            if (Model.StatusFilter != null && Model.StatusFilter.Any())
+            {
+                routeValues["statusFilter"] = Model.StatusFilter.ToArray();
+            }
+        }
+
+        @if (Model.CurrentPage > 1)
+        {
+            routeValues["page"] = Model.CurrentPage - 1;
+            <a href="@Url.Action("Admin", routeValues)" class="nav-arrow">‹</a>
+        }
+
+        @{
+            int totalPages = Model.TotalPages;
+            int currentPage = Model.CurrentPage;
+            int range = 2;
+
+            routeValues["page"] = 1;
+            <a href="@Url.Action("Admin", routeValues)" class="@(currentPage == 1 ? "active" : "")">1</a>
+
+            int start = Math.Max(2, currentPage - range);
+            int end = Math.Min(totalPages - 1, currentPage + range);
+
+            if (start > 2)
+            {
+                <span class="ellipsis">...</span>
+            }
+
+            for (int i = start; i <= end; i++)
+            {
+                routeValues["page"] = i;
+                <a href="@Url.Action("Admin", routeValues)" class="@(currentPage == i ? "active" : "")">@i</a>
+            }
+
+            if (end < totalPages - 1)
+            {
+                <span class="ellipsis">...</span>
+            }
+
+            if (totalPages > 1)
+            {
+                routeValues["page"] = totalPages;
+                <a href="@Url.Action("Admin", routeValues)" class="@(currentPage == totalPages ? "active" : "")">@totalPages</a>
+            }
+        }
+
+        @if (Model.CurrentPage < Model.TotalPages)
+        {
+            routeValues["page"] = Model.CurrentPage + 1;
+            <a href="@Url.Action("Admin", routeValues)" class="nav-arrow">›</a>
+        }
+    </div>
+
+    <!-- JavaScript for municipality filter toggle -->
+    <script>
+        // Handles switching between single and range municipality number search
+        function toggleMunicipalitySearch() {
+            const singleSearch = document.getElementById('singleMunicipality').checked;
+            const singleInput = document.getElementById('singleMunicipalityInput');
+            const rangeInput = document.getElementById('rangeMunicipalityInput');
+
+            singleInput.style.display = singleSearch ? 'block' : 'none';
+            rangeInput.style.display = singleSearch ? 'none' : 'block';
+
+            // Clear the unused inputs but maintain the used ones
+            if (singleSearch) {
+                document.getElementById('municipalityMin').value = '';
+                document.getElementById('municipalityMax').value = '';
+            } else {
+                document.getElementById('municipalitySingle').value = '';
+            }
+        }
+
+        // Initialize correct display state on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Ensure a default selection if none is made
+            if (!document.querySelector('input[name="municipalitySearchType"]:checked')) {
+                document.getElementById('singleMunicipality').checked = true;
+            }
+            toggleMunicipalitySearch();
+        });
+    </script>
 </body>

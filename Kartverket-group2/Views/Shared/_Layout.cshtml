@@ -19,12 +19,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://kit.fontawesome.com/0dae9f11ff.js" crossorigin="anonymous"></script>
 
+    @RenderSection("Styles", required: false)
+
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Map" asp-action="Index">Rett i kartet</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Map" asp-action="Index">
+                    <img src="~/Images/Logo liggande, WEB-fargar.svg" alt="Kartverket" style="height: 30px" />
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -32,29 +36,51 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <!-- Left aligned links -->
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Map" asp-action="Index">Kart</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Hjelp">Hjelp</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="Admin">Admin</a>
-                        </li>
+                        
+                       
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="Admin">Admin</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Administration" asp-action="MapView">Kartvisning</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Administration" asp-action="UserList">User List</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Administration" asp-action="CreateUser">Create User</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("User"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="UserSubmissions" asp-action="MySubmissions">Profil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Map" asp-action="Index">Kart</a>
+                            </li>
+                        }
                     </ul>
                     <!-- Divider for mobile view -->
                     <hr class="d-sm-none my-2 navbar-divider">
                     <!-- Right aligned links -->
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Login">Logg inn</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Register">Registrer</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Logg ut</a>
-                        </li>
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item">
+                                <form asp-controller="Login" asp-action="Logout" method="post" id="logoutForm" style="padding-top: 0px;">
+                                    <button type="submit" class="nav-link text-dark btn btn-link" style="border: none; background: none; padding: 0;">
+                                        Logg ut
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                      
                     </ul>
                 </div>
             </div>
@@ -70,13 +96,19 @@
 
     <!-- Leaflet scripts-->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <!-- Leaflet Draw plugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
     <!-- Leaflet Control Geocoder plugin -->
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @if (ViewData["Title"]?.ToString() == "Rett i kartet")
+    {
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    }
+    
     @await RenderSectionAsync("Scripts", required: false)
     <footer class="border-top footer text-muted">
         <div class="container">

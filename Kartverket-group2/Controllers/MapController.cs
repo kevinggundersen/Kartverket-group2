@@ -1,50 +1,94 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using System.Collections.Generic;
-using Kartverket_group2.Models;  
+using Kartverket_group2.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Kartverket_group2.Controllers
 {
+    /// <summary>
+    /// Controller responsible for handling map-related functionality and shape data management.
+    /// </summary>
     public class MapController : Controller
-    {   
-        [HttpGet]
+    {
+        /// <summary>
+        /// Displays the main map interface. Requires authenticated user.
+        /// Redirects to welcome page if user is not authenticated.
+        /// </summary>
+        [Authorize]
         public IActionResult Index()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Welcome", "Home");
+            }
+
+            return View();
+        }
+
+        /// <summary>
+        /// Displays confirmation page after successful shape submission.
+        /// </summary>
+        public IActionResult Confirmation()
         {
             return View();
         }
 
+        /// <summary>
+        /// Handles saving of shape data submitted from the map interface.
+        /// Deserializes GeoJSON data and temporarily stores it.
+        /// </summary>
+        /// <param name="shapeData">GeoJSON string containing shape information</param>
         [HttpPost]
         public ActionResult SaveShapes(string shapeData)
         {
+            if (string.IsNullOrEmpty(shapeData))
+            {
+                return RedirectToAction("Index", new { message = "No shape data received." });
+            }
 
+            // Configure JSON deserialization options for case-insensitive property matching
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
-            
-            List<Shape> shapes = JsonSerializer.Deserialize<List<Shape>>(shapeData, options);
 
-            // Store the shape data in TempData for now (or in a database in the future)
-            TempData["ShapeData"] = shapeData;
+            try
+            {
+                // Attempt to deserialize the GeoJSON data
+                GeoJsonFeatureCollection? geoJsonData = JsonSerializer.Deserialize<GeoJsonFeatureCollection>(shapeData, options);
 
-            return RedirectToAction("ViewShapes");
+                // Store data temporarily for the next request
+                TempData["GeoJsonData"] = shapeData;
+
+                return RedirectToAction("ViewShapes");
+            }
+            catch (JsonException ex)
+            {
+                Console.WriteLine($"Error deserializing GeoJSON data: {ex.Message}");
+                return RedirectToAction("Index", new { message = "Error processing shape data." });
+            }
         }
 
+        /// <summary>
+        /// Displays the shapes previously saved in TempData.
+        /// Returns empty collection if no data is found.
+        /// </summary>
         public ActionResult ViewShapes()
         {
-            // Get the shape data from TempData
-            var shapeData = TempData["ShapeData"] as string;
-     
-
+            var geoJsonData = TempData["GeoJsonData"] as string;
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
 
-            List<Shape> shapes = JsonSerializer.Deserialize<List<Shape>>(shapeData, options);
+            if (string.IsNullOrEmpty(geoJsonData))
+            {
+                return View("ViewShapes", new GeoJsonFeatureCollection());
+            }
 
-            // Pass the shapes list to the view
-            return View(shapes);
+            // Deserialize and display the saved GeoJSON data
+            GeoJsonFeatureCollection? featureCollection = JsonSerializer.Deserialize<GeoJsonFeatureCollection>(geoJsonData, options);
+            return View(featureCollection);
         }
     }
 }

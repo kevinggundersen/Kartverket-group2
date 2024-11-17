@@ -14,12 +14,16 @@ namespace Kartverket_group2.Controllers
             
         }
 
-        public IActionResult Index()
+        public IActionResult Welcome()
         {
             return View();
         }
 
         public IActionResult Hjelp()
+        {
+            return View();
+        }
+        public IActionResult Profile()
         {
             return View();
         }
