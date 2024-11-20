@@ -11,7 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
     <None Remove="appsettings.json.example" />
+=======
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+>>>>>>> 47be2a48966766e6b01a943233856117a7bb0a18
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +44,10 @@
   <ItemGroup>
 	<Folder Include="Data\" />
     <Folder Include="wwwroot\Images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
 </Project>

@@ -20,10 +20,13 @@ namespace Kartverket_group2.Controllers
         }
 
         public IActionResult Hjelp()
+<<<<<<< HEAD
         {
             return View();
         }
         public IActionResult Profile()
+=======
+>>>>>>> 47be2a48966766e6b01a943233856117a7bb0a18
         {
             return View();
         }

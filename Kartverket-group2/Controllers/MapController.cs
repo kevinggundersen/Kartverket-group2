@@ -52,6 +52,7 @@ namespace Kartverket_group2.Controllers
             }
         }
 
+        [HttpGet]
         public ActionResult ViewShapes()
         {
             var geoJsonData = TempData["GeoJsonData"] as string;
