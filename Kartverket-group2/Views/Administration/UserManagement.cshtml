@@ -1,0 +1,165 @@
+﻿@model UserManagementViewModel
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<div class="container">
+    <h2 class="mb-4">User Management</h2>
+
+    @if (!string.IsNullOrEmpty(Model.StatusMessage))
+    {
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            @Model.StatusMessage
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    <div class="row mb-4">
+        <div class="col">
+            <button class="btn btn-primary" type="button" onclick="toggleCreateForm()">
+                <i class="fas fa-plus"></i> Toggle Create User Form
+            </button>
+        </div>
+        <div class="col">
+            <form method="get" asp-action="UserManagement" class="form-inline justify-content-end">
+                <label class="mr-2" for="role">Filter by Role:</label>
+                <select id="role" name="role" class="form-control mr-2"
+                        asp-for="SelectedRole"
+                        onchange="this.form.submit()">
+                    <option value="">All</option>
+                    @foreach (var role in Model.Roles)
+                    {
+                        <option value="@role">@role</option>
+                    }
+                </select>
+            </form>
+        </div>
+    </div>
+
+    <div id="createUserForm" class="card mb-4 @(Model.ShowCreateForm ? "" : "d-none")">
+        <div class="card-header">
+            <h3 class="card-title mb-0">Create New User</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="CreateUser" method="post">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="NewUserEmail">Email</label>
+                            <input asp-for="NewUserEmail" class="form-control" />
+                            <span asp-validation-for="NewUserEmail" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="NewUsername">Username</label>
+                            <input asp-for="NewUsername" class="form-control" />
+                            <span asp-validation-for="NewUsername" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Password">Password</label>
+                            <input asp-for="Password" class="form-control" type="password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ConfirmPassword">Confirm Password</label>
+                            <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Roles</label>
+                    <div class="row">
+                        @foreach (var role in Model.AvailableRoles)
+                        {
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input"
+                                           name="SelectedRoles" value="@role.Value"
+                                           id="role_@role.Value" />
+                                    <label class="form-check-label" for="role_@role.Value">
+                                        @role.Text
+                                    </label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success">Create User</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title mb-0">User List</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>Roles</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model.Users)
+                        {
+                            <tr>
+                                <td>@user.Email</td>
+                                <td>@user.UserName</td>
+                                <td>
+                                    @foreach (var role in await Model.UserManager.GetRolesAsync(user))
+                                    {
+                                        <span class="badge badge-info mr-1">@role</span>
+                                    }
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary"
+                                            onclick="editUser('@user.Id')">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger"
+                                            onclick="deleteUser('@user.Id')">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleCreateForm() {
+            const form = document.getElementById('createUserForm');
+            form.classList.toggle('d-none');
+        }
+
+        function editUser(userId) {
+            // Implement edit functionality
+            alert('Edit user: ' + userId);
+        }
+
+        function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                // Implement delete functionality
+                alert('Delete user: ' + userId);
+            }
+        }
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
