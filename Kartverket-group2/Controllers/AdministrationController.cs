@@ -463,6 +463,7 @@ namespace Kartverket_group2.Controllers
         /// <summary>
         /// Displays the user creation form with available roles.
         /// </summary>
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> CreateUser()
         {
@@ -483,6 +484,7 @@ namespace Kartverket_group2.Controllers
         /// Handles the creation of a new user with specified roles.
         /// </summary>
         /// <param name="model">View model containing user and role information</param>
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserViewModel model)
         {
@@ -530,6 +532,7 @@ namespace Kartverket_group2.Controllers
         /// Displays a list of users, optionally filtered by role.
         /// </summary>
         /// <param name="role">Optional role to filter users by</param>
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> UserList(string role)
         {

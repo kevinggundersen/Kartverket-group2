@@ -1,5 +1,6 @@
 ﻿using Kartverket_group2.Models;
 using Kartverket_group2.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -164,6 +165,7 @@ namespace Kartverket_group2.Controllers
         /// <summary>
         /// Handles user logout.
         /// </summary>
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
