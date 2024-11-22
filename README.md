@@ -1,7 +1,27 @@
 # Kartverket-group2
 
-### Considerations
-   We made the choice
+## Considerations
+   We made the choice to have scripts and styles for specific views inside the html documents. This is not best practice, but we made the choice for easier development. If we had more time, we would move these parts into their own files.
+
+## Why Docker?
+
+   This solution is running in Docker containers, using Docker compose. This makes the project more accessible, by making it run the same way everywhere. It eliminates setup issues, keeps apps isolated from each other.
+
+### Development Benefits
+- Consistent environment across all developer machines
+- Quick onboarding - just install Docker and run
+- Local development matches production setup
+
+### Deployment Advantages
+- Simple deployments to any cloud platform
+- Easy version rollbacks
+- Identical behavior across Windows and Linux servers
+
+### Dependencies
+- .NET runtime and SDK versions are containerized
+- Database and service dependencies managed via docker-compose
+- No conflicts with other applications or system dependencies
+
 
 ## Setup Instructions
 
@@ -21,6 +41,7 @@
    DB_SERVICE_NAME=db
    
    # Admin Configuration
+   Admin Configuration manages user roles, permissions, and settings. It includes creating roles, managing users, and ensuring access control to maintain security within the application.
    ADMIN_EMAIL=admin@admin.com
    ADMIN_PASSWORD=Admin1234
    
@@ -40,7 +61,7 @@
 
 If you want to update your environment variables in the `.env` file. Follow these steps:
 
-1. If you have containers/volumes asociated with the solution, remove those (Easiest way is through the docker desktop app).
+1. If you have containers/volumes associated with the solution, remove those (Easiest way is through the docker desktop app).
 
 2. Open `.env` and update the information with your database, and email details details:
    ```ps1
@@ -65,5 +86,6 @@ If you want to update your environment variables in the `.env` file. Follow thes
    ```
 
 3. Build and run the solution.
+
 
 
