@@ -1,4 +1,5 @@
 # Kartverket-group2
+An application that lets users report map errors and for case handlers to then view and take consideration of them.
 
 ## Considerations
    We made the choice to have scripts and styles for specific views inside the html documents. This is not best practice, but we made the choice for easier development. If we had more time, we would move these parts into their own files.
@@ -86,6 +87,8 @@ If you want to update your environment variables in the `.env` file. Follow thes
    ```
 
 3. Build and run the solution.
+
+
 
 
 
