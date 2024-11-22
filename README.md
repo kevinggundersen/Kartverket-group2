@@ -1,5 +1,8 @@
 # Kartverket-group2
 
+### Considerations
+   We made the choice
+
 ## Setup Instructions
 
 1. Clone the repository
