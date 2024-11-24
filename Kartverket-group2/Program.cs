@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<KartverketApiService>();
+builder.Services.AddScoped<IKartverketApiService, KartverketApiService>();
 builder.Services.AddLogging();
 builder.Services.AddIdentity<ApplicationUserModel, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()

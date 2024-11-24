@@ -20,7 +20,7 @@ namespace Kartverket_group2.Controllers
     {
         // Dependencies injected through constructor
         private readonly ApplicationDbContext _context;
-        private readonly KartverketApiService _kartverketApiService;
+        private readonly IKartverketApiService _kartverketApiService;
         private readonly IEmailService _emailService;
         private readonly ILogger<AdministrationController> _logger;
         private readonly UserManager<ApplicationUserModel> _userManager;
@@ -30,8 +30,8 @@ namespace Kartverket_group2.Controllers
         /// Initializes a new instance of the AdministrationController with required services.
         /// </summary>
         public AdministrationController(
-            ApplicationDbContext context, 
-            KartverketApiService kartverketApiService, 
+            ApplicationDbContext context,
+            IKartverketApiService kartverketApiService,
             ILogger<AdministrationController> logger,
             IEmailService emailService,
             UserManager<ApplicationUserModel> userManager,
