@@ -8,7 +8,7 @@ namespace Kartverket_group2.Services
     /// <summary>
     /// Service for interacting with Kartverket's API to retrieve municipality information based on coordinates.
     /// </summary>
-    public class KartverketApiService
+    public class KartverketApiService : IKartverketApiService
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<KartverketApiService> _logger;

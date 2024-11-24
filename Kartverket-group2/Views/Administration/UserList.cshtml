@@ -1,0 +1,46 @@
+﻿@model UserListViewModel
+
+@{
+    ViewData["Title"] = "User List";
+}
+
+<h2>User List</h2>
+
+<form method="get" asp-action="UserList">
+    <div class="form-group">
+        <label for="role">Filter by Role</label>
+        <select id="role" name="role" class="form-control" asp-for="SelectedRole" asp-items="@(new SelectList(Model.Roles))">
+            <option value="">All</option>
+            @foreach (var role in Model.Roles)
+            {
+                <option value="@role">@role</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Username</th>
+            <th>Roles</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>@user.UserName</td>
+                <td>
+                    @foreach (var role in await Model.UserManager.GetRolesAsync(user))
+                    {
+                        <span class="badge badge-secondary">@role</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

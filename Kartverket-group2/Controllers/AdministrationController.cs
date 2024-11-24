@@ -20,7 +20,7 @@ namespace Kartverket_group2.Controllers
     {
         // Dependencies injected through constructor
         private readonly ApplicationDbContext _context;
-        private readonly KartverketApiService _kartverketApiService;
+        private readonly IKartverketApiService _kartverketApiService;
         private readonly IEmailService _emailService;
         private readonly ILogger<AdministrationController> _logger;
         private readonly UserManager<ApplicationUserModel> _userManager;
@@ -31,7 +31,7 @@ namespace Kartverket_group2.Controllers
         /// </summary>
         public AdministrationController(
             ApplicationDbContext context,
-            KartverketApiService kartverketApiService,
+            IKartverketApiService kartverketApiService,
             ILogger<AdministrationController> logger,
             IEmailService emailService,
             UserManager<ApplicationUserModel> userManager,
@@ -460,73 +460,61 @@ namespace Kartverket_group2.Controllers
             }
         }
 
-
         /// <summary>
         /// Displays the user creation form with available roles.
         /// </summary>
-        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> CreateUser()
-
         {
-            var users = string.IsNullOrEmpty(role)
-                ? await _userManager.Users.ToListAsync()
-                : await _userManager.GetUsersInRoleAsync(role);
-
-            var model = new UserManagementViewModel
+            // Prepare view model with list of available roles
+            var model = new CreateUserViewModel
             {
-                Users = users.ToList(),
-                Roles = await _roleManager.Roles.Select(r => r.Name).ToListAsync(),
-                AvailableRoles = await _roleManager.Roles.Select(r => new SelectListItem
+                Roles = _roleManager.Roles.Select(r => new SelectListItem
                 {
                     Value = r.Name,
                     Text = r.Name
-                }).ToListAsync(),
-                SelectedRole = role,
-                UserManager = _userManager,
-                ShowCreateForm = TempData["ShowCreateForm"] as bool? ?? false,
-                StatusMessage = TempData["StatusMessage"] as string
+                }).ToList()
             };
 
             return View(model);
         }
 
-
         /// <summary>
         /// Handles the creation of a new user with specified roles.
         /// </summary>
         /// <param name="model">View model containing user and role information</param>
-        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> CreateUser(UserManagementViewModel model)
+        public async Task<IActionResult> CreateUser(CreateUserViewModel model)
         {
             if (ModelState.IsValid)
             {
+                // Create new user
                 var user = new ApplicationUserModel
                 {
-                    UserName = model.NewUsername,
-                    Email = model.NewUserEmail
+                    UserName = model.Username,
+                    Email = model.Email
                 };
 
+                // Attempt to create user
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
+                    // Assign selected roles to user
                     if (model.SelectedRoles != null && model.SelectedRoles.Any())
                     {
                         await _userManager.AddToRolesAsync(user, model.SelectedRoles);
                     }
 
-                    TempData["StatusMessage"] = "User created successfully.";
-                    return RedirectToAction(nameof(UserManagement));
+                    return RedirectToAction("UserList");
                 }
 
+                // Add any errors to ModelState
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-
 
             // If we got this far, something failed, redisplay form
             model.Roles = _roleManager.Roles.Select(r => new SelectListItem

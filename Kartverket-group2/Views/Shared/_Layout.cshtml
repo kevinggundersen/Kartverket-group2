@@ -49,7 +49,11 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Administration" asp-action="UserManagement">User Management</a>
+                                <a class="nav-link text-dark" asp-controller="Administration" asp-action="UserList">User List</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Administration" asp-action="CreateUser">Create User</a>
                             </li>
                         }
                         @if (User.IsInRole("User"))
