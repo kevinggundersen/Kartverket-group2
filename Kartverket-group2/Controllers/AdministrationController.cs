@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Kartverket_group2.Data;
 using Kartverket_group2.Models;
@@ -167,7 +167,7 @@ namespace Kartverket_group2.Controllers
 
                 // Get the first feature to determine municipality
                 var firstFeature = submission.GeoJsonData.Features.FirstOrDefault();
-                
+
                 if (firstFeature != null)
                 {
                     try
@@ -530,6 +530,7 @@ namespace Kartverket_group2.Controllers
         /// Displays a list of users, optionally filtered by role.
         /// </summary>
         /// <param name="role">Optional role to filter users by</param>
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> UserList(string role)
         {
