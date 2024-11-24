@@ -38,6 +38,7 @@ namespace Kartverket_group2.Controllers
         /// Deserializes GeoJSON data and temporarily stores it.
         /// </summary>
         /// <param name="shapeData">GeoJSON string containing shape information</param>
+        [Authorize]
         [HttpPost]
         public ActionResult SaveShapes(string shapeData)
         {
@@ -73,6 +74,7 @@ namespace Kartverket_group2.Controllers
         /// Displays the shapes previously saved in TempData.
         /// Returns empty collection if no data is found.
         /// </summary>
+        [Authorize]
         public ActionResult ViewShapes()
         {
             var geoJsonData = TempData["GeoJsonData"] as string;

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Kartverket_group2.Data;
 using Kartverket_group2.Models;
@@ -460,8 +460,14 @@ namespace Kartverket_group2.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Displays the user creation form with available roles.
+        /// </summary>
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UserManagement(string role)
+        [HttpGet]
+        public async Task<IActionResult> CreateUser()
+
         {
             var users = string.IsNullOrEmpty(role)
                 ? await _userManager.Users.ToListAsync()
@@ -485,6 +491,11 @@ namespace Kartverket_group2.Controllers
             return View(model);
         }
 
+
+        /// <summary>
+        /// Handles the creation of a new user with specified roles.
+        /// </summary>
+        /// <param name="model">View model containing user and role information</param>
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateUser(UserManagementViewModel model)
@@ -516,8 +527,40 @@ namespace Kartverket_group2.Controllers
                 }
             }
 
-            TempData["ShowCreateForm"] = true;
-            return RedirectToAction(nameof(UserManagement));
+
+            // If we got this far, something failed, redisplay form
+            model.Roles = _roleManager.Roles.Select(r => new SelectListItem
+            {
+                Value = r.Name,
+                Text = r.Name
+            }).ToList();
+
+            return View(model);
+        }
+
+        /// <summary>
+        /// Displays a list of users, optionally filtered by role.
+        /// </summary>
+        /// <param name="role">Optional role to filter users by</param>
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> UserList(string role)
+        {
+            // Get users based on role filter
+            var users = string.IsNullOrEmpty(role)
+                ? await _userManager.Users.ToListAsync()
+                : await _userManager.GetUsersInRoleAsync(role);
+
+            // Prepare view model
+            var model = new UserListViewModel
+            {
+                Users = users.ToList(),
+                Roles = _roleManager.Roles.Select(r => r.Name).ToList(),
+                SelectedRole = role,
+                UserManager = _userManager // Pass UserManager for role checks in view
+            };
+
+            return View(model);
         }
     }
 }
