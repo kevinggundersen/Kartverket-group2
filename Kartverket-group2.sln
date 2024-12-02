@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kartverket-group2", "Kartve
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{835A5D6D-497C-4C3E-96B2-0C90406C8477}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kartverket_group2.Tests", "..\Kartverket_group2.Tests\Kartverket_group2.Tests.csproj", "{117271F6-B94C-4956-9675-25C8E3E333A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kartverket_group2.Tests", "Kartverket_group2.Tests\Kartverket_group2.Tests.csproj", "{117271F6-B94C-4956-9675-25C8E3E333A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

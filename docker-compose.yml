@@ -13,7 +13,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=db;Port=${DB_PORT};Database=${DB_NAME};User=${DB_USER};Password=${DB_PASSWORD}
-      - DB_HOST=db  # Note: This should be the service name of your database
+      - DB_HOST=db
       - DB_PORT=3306
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
